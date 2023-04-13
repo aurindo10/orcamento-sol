@@ -41,16 +41,43 @@ export default function ProductCreateModal() {
   } = useForm<Product>({
     resolver: zodResolver(schema),
   });
-  const onSubmit = async (data: Product) => {
+  function removeFormatting(value: string) {
+    return value.replace(/\./g, "").replace(/,/g, ".");
+  }
+
+  const onSubmit = async (data: any) => {
     // Convertendo os valores de string para número
-    data.power = parseFloat(data.power);
-    data.price = parseFloat(data.price);
+    data.power = parseFloat(removeFormatting(data.power));
+    data.price = parseFloat(removeFormatting(data.price));
+    console.log(data.price);
+    console.log(data.power);
     const productCreated = await createProduct(data);
     if (!productCreated) return alert("Error creating product");
     if (productCreated) setOpen(false);
     if (productCreated) router.refresh();
     reset();
   };
+  function handlePriceInput(e: React.ChangeEvent<HTMLInputElement>) {
+    let value = e.target.value.replace(/\D/g, "");
+    let len = value.length;
+
+    if (len <= 2) {
+      value = value.padStart(3, "0");
+    } else {
+      value = value.replace(/^0+/, ""); // Remove os zeros à esquerda
+    }
+
+    value = value.replace(/(\d{1})(\d{2})$/, "$1,$2");
+    value = value.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+
+    e.target.value = value;
+  }
+  function formatPotenciaInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const regex = /^[0-9]*[,]{0,1}[0-9]*$/;
+    if (!regex.test(e.target.value)) {
+      e.target.value = e.target.value.substring(0, e.target.value.length - 1);
+    }
+  }
   return (
     <Dialog.Root open={open}>
       <Dialog.Trigger asChild>
@@ -164,10 +191,11 @@ export default function ProductCreateModal() {
                   Potência (kWp)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                   id="power"
                   {...register("power")}
+                  onInput={formatPotenciaInput}
                 />
                 <div className="h-[10px]">
                   {errors.power && (
@@ -186,10 +214,11 @@ export default function ProductCreateModal() {
                   Preço (R$)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                   id="price"
                   {...register("price")}
+                  onInput={handlePriceInput}
                 />
                 <div className="h-[10px]">
                   {errors.price && (
