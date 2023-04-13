@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpcContext";
+import { router, protectedProcedure, publicProcedure } from "../trpcContext";
 import { TRPCError } from "@trpc/server";
 
 export const productRouter = router({
-  createProduct: protectedProcedure
+  createProduct: publicProcedure
     .input(
       z.object({
         name: z.string(),
@@ -17,6 +17,7 @@ export const productRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      console.log("ola");
       const product = await ctx.prisma.product.create({
         data: {
           name: input.name,
@@ -29,6 +30,7 @@ export const productRouter = router({
           whoCreatedId: ctx.auth.userId,
         },
       });
+      console.log(product);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       if (!product) {
         throw new TRPCError({

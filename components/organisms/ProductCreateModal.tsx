@@ -15,11 +15,11 @@ import * as z from "zod";
 
 const schema = z.object({
   name: z.string().min(4, "Nome deve ter no mínimo 4 caracteres"),
-  price: z.number().min(0, "Preço deve ser maior que 0"),
+  price: z.string().min(0, "Preço deve ser maior que 0"),
   generation: z.string().min(3, "Geração deve ter no mínimo 3 caracteres"),
   inverterBrand: z.string().min(3, "Marca deve ter no mínimo 3 caracteres"),
   panelBrand: z.string().min(3, "Marca deve ter no mínimo 3 caracteres"),
-  power: z.number().min(0, "Potência deve ser maior que 0"),
+  power: z.string().min(0, "Potência deve ser maior que 0"),
   roofType: z
     .string()
     .min(3, "Tipo de telhado deve ter no mínimo 3 caracteres"),
@@ -42,6 +42,9 @@ export default function ProductCreateModal() {
     resolver: zodResolver(schema),
   });
   const onSubmit = async (data: Product) => {
+    // Convertendo os valores de string para número
+    data.power = parseFloat(data.power);
+    data.price = parseFloat(data.price);
     const productCreated = await createProduct(data);
     if (!productCreated) return alert("Error creating product");
     if (productCreated) setOpen(false);
@@ -137,9 +140,10 @@ export default function ProductCreateModal() {
                   className=" w-14 text-start text-[15px] text-slate-50"
                   htmlFor="generation"
                 >
-                  Geração
+                  Geração (kWh)
                 </label>
                 <input
+                  type="number"
                   className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                   id="generation"
                   {...register("generation")}
@@ -157,9 +161,10 @@ export default function ProductCreateModal() {
                   className="tex-start w-14 text-[15px] text-slate-50"
                   htmlFor="power"
                 >
-                  Potência
+                  Potência (kWp)
                 </label>
                 <input
+                  type="number"
                   className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                   id="power"
                   {...register("power")}
@@ -178,9 +183,10 @@ export default function ProductCreateModal() {
                   className="tex-start w-14 text-[15px] text-slate-50"
                   htmlFor="price"
                 >
-                  Preço
+                  Preço (R$)
                 </label>
                 <input
+                  type="number"
                   className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                   id="price"
                   {...register("price")}
