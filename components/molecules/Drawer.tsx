@@ -20,7 +20,6 @@ import Typography from "@mui/material/Typography";
 const drawerWidth = 240;
 
 interface Props {
-  children: React.ReactNode;
   window?: () => Window;
 }
 
@@ -137,9 +136,7 @@ export default function ResponsiveDrawer(props: Props) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      >
-        {props.children}
-      </Box>
+      ></Box>
     </Box>
   );
 }

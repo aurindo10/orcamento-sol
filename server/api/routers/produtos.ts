@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { router, protectedProcedure } from "../trpcContext";
+import { TRPCError } from "@trpc/server";
 
 export const productRouter = router({
   createProduct: protectedProcedure
@@ -7,7 +8,6 @@ export const productRouter = router({
       z.object({
         name: z.string(),
         price: z.number(),
-        description: z.string(),
         generation: z.string(),
         inverterBrand: z.string(),
         panelBrand: z.string(),
@@ -30,6 +30,12 @@ export const productRouter = router({
         },
       });
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      if (!product) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not create product",
+        });
+      }
       return product;
     }),
 });
