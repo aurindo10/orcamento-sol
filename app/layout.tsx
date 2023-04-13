@@ -3,22 +3,23 @@ import "../styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import React from "react";
 import ClientProvider from "../contexts/ClientProvider";
-import { api } from "utils/api";
+import ResponsiveDrawer from "components/molecules/Drawer";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data } = api.example.getAll.useQuery();
   return (
     <ClientProvider>
       <ClerkProvider>
         <html lang="pt-br">
           <head>
-            <title>Next.js 13 with Clerk</title>
+            <title>Sol Orçamentos</title>
           </head>
-          <body className="w-3 bg-slate-500">{children}</body>
+          <body className=" bg-slate-900">
+            <ResponsiveDrawer>{children}</ResponsiveDrawer>
+          </body>
         </html>
       </ClerkProvider>
     </ClientProvider>
