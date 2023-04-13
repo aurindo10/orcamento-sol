@@ -1,4 +1,4 @@
-import { exampleRouter } from "./routers/example";
+import { productRouter } from "./routers/produtos";
 import { router } from "./trpcContext";
 
 /**
@@ -7,7 +7,7 @@ import { router } from "./trpcContext";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = router({
-  example: exampleRouter,
+  product: productRouter,
 });
 
 // export type definition of API
