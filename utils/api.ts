@@ -1,3 +1,4 @@
+"use client";
 /**
  * This is the client-side entrypoint for your tRPC API. It is used to create the `api` object which
  * contains the Next.js App-wrapper, as well as your type-safe React Query hooks.
@@ -9,7 +10,6 @@ import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "server/api/root";
 import superjson from "superjson";
-
 
 export const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
