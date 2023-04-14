@@ -1,10 +1,26 @@
 import React from "react";
 import * as Select from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import { type UseFormSetValue } from "react-hook-form";
 
 interface SelectRoofProps {
-  setValue: any;
-  keySelector: string;
+  setValue: UseFormSetValue<{
+    name: string;
+    price: string;
+    generation: string;
+    inverterBrand: string;
+    panelBrand: string;
+    power: string;
+    roofType: string;
+  }>;
+  keySelector:
+    | "name"
+    | "price"
+    | "generation"
+    | "inverterBrand"
+    | "panelBrand"
+    | "power"
+    | "roofType";
 }
 type RoofType = {
   [key: string]: string;
