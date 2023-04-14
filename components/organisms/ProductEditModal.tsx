@@ -12,7 +12,6 @@ import { api } from "utils/api";
 import * as z from "zod";
 
 const schema = z.object({
-  id: z.string(),
   name: z.string().min(4, "Nome deve ter no mínimo 4 caracteres"),
   price: z.string().min(0, "Preço deve ser maior que 0"),
   generation: z.string().min(3, "Geração deve ter no mínimo 3 caracteres"),
@@ -49,6 +48,7 @@ export default function ProductEditModal({ editProduct }: any) {
 
   const onSubmit = async (data: any) => {
     // Convertendo os valores de string para número
+    data.id = editProduct.id;
     data.power = parseFloat(removeFormatting(data.power));
     data.price = parseFloat(removeFormatting(data.price));
     console.log(data.price);
@@ -61,7 +61,6 @@ export default function ProductEditModal({ editProduct }: any) {
     reset();
   };
   useEffect(() => {
-    setValue("id", editProduct.id);
     setValue("name", editProduct.name);
     setValue("price", editProduct.price);
     setValue("generation", editProduct.generation);
@@ -72,7 +71,7 @@ export default function ProductEditModal({ editProduct }: any) {
   }, [open]);
   function handlePriceInput(e: React.ChangeEvent<HTMLInputElement>) {
     let value = e.target.value.replace(/\D/g, "");
-    let len = value.length;
+    const len = value.length;
 
     if (len <= 2) {
       value = value.padStart(3, "0");
