@@ -28,9 +28,7 @@ interface ProductEditModalProps {
   editProduct: Product;
 }
 
-export default function ProductEditModal({
-  editProduct,
-}: ProductEditModalProps) {
+export default function ProductEditModal({ editProduct }: any) {
   const [open, setOpen] = useState(false);
   const { mutateAsync: updateProduct } =
     api.product.updateProduct.useMutation();
