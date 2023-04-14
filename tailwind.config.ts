@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        cabin: ["Cabin", "sans-serif"],
+      },
       colors: {
         ...mauve,
         ...violet,

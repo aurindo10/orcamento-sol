@@ -8,12 +8,13 @@ import { RoofSelector } from "components/molecules/RoofSelector";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiPlusCircle } from "react-icons/fi";
+import { FiEdit, FiPlusCircle } from "react-icons/fi";
 import { AppRouter } from "server/api/root";
 import { api } from "utils/api";
 import * as z from "zod";
 
 const schema = z.object({
+  id: z.string(),
   name: z.string().min(4, "Nome deve ter no mínimo 4 caracteres"),
   price: z.string().min(0, "Preço deve ser maior que 0"),
   generation: z.string().min(3, "Geração deve ter no mínimo 3 caracteres"),
@@ -29,7 +30,7 @@ interface ProductEditModalProps {
   editProduct: Product;
 }
 
-export default function ProductCreateModal({
+export default function ProductEditModal({
   editProduct,
 }: ProductEditModalProps) {
   const [open, setOpen] = useState(false);
@@ -56,6 +57,7 @@ export default function ProductCreateModal({
     data.price = parseFloat(removeFormatting(data.price));
     console.log(data.price);
     console.log(data.power);
+    data.id = editProduct.id;
     const productCreated = await updateProduct(data);
     if (!productCreated) return alert("Error creating product");
     if (productCreated) setOpen(false);
@@ -63,6 +65,7 @@ export default function ProductCreateModal({
     reset();
   };
   useEffect(() => {
+    setValue("id", editProduct.id);
     setValue("name", editProduct.name);
     setValue("price", editProduct.price);
     setValue("generation", editProduct.generation);
@@ -96,10 +99,10 @@ export default function ProductCreateModal({
     <Dialog.Root open={open}>
       <Dialog.Trigger asChild>
         <button
-          className="w-8 p-2  text-slate-50 hover:bg-slate-700 hover:text-slate-50 "
+          className="btn-square btn-sm btn border-blue-500 bg-blue-500 text-slate-50"
           onClick={() => setOpen(true)}
         >
-          <FiPlusCircle size={32} />
+          <FiEdit size={12}></FiEdit>
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>

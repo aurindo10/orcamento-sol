@@ -82,7 +82,7 @@ export default function ProductCreateModal() {
     <Dialog.Root open={open}>
       <Dialog.Trigger asChild>
         <button
-          className="w-8 p-2  text-slate-50 hover:bg-slate-700 hover:text-slate-50 "
+          className="btn-secondary btn-square  btn border-blue-500 bg-blue-500"
           onClick={() => setOpen(true)}
         >
           <FiPlusCircle size={32} />
