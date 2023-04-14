@@ -3,13 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { inferRouterOutputs } from "@trpc/server";
 import { RoofSelector } from "components/molecules/RoofSelector";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiEdit, FiPlusCircle } from "react-icons/fi";
-import { AppRouter } from "server/api/root";
+import { FiEdit } from "react-icons/fi";
 import { api } from "utils/api";
 import * as z from "zod";
 

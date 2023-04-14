@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
-import { api } from "utils/api";
 import * as z from "zod";
 
 const schema = z.object({
@@ -93,14 +92,14 @@ export default function AddProductModal({ product }: Produto) {
         <div className="mt-[1px] flex justify-end">
           <button
             type="submit"
-            className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+            className="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green4 px-[15px] font-medium leading-none text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 focus:outline-none"
           >
             Criar Produto
           </button>
         </div>
         <button
           onClick={() => setOpen(false)}
-          className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+          className="absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full text-violet11 hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 focus:outline-none"
           aria-label="Close"
         >
           <Cross2Icon />

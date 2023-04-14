@@ -1,5 +1,4 @@
 import ProductCreateModal from "components/organisms/ProductCreateModal";
-import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/Ai";
 import { prisma } from "server/db";
 import { PaginationButton } from "components/molecules/paginationButton";
