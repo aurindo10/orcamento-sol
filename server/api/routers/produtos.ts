@@ -38,4 +38,42 @@ export const productRouter = router({
       }
       return product;
     }),
+  updateProduct: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        price: z.number(),
+        generation: z.string(),
+        inverterBrand: z.string(),
+        panelBrand: z.string(),
+        power: z.number(),
+        roofType: z.string(),
+      })
+    )
+    .mutation(
+      // eslint-disable-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      async ({ ctx, input }) => {
+        const product = await ctx.prisma.product.update({
+          where: { id: input.id },
+          data: {
+            name: input.name,
+            price: input.price,
+            generation: input.generation,
+            inverterBrand: input.inverterBrand,
+            panelBrand: input.panelBrand,
+            power: input.power,
+            roofType: input.roofType,
+            whoCreatedId: ctx.auth.userId,
+          },
+        });
+        if (!product) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Could not update product",
+          });
+        }
+        return product;
+      }
+    ),
 });
