@@ -16,7 +16,7 @@ export default function RootLayout({
           <head>
             <title>Sol Orçamentos</title>
           </head>
-          <body className="bg-slate-800">
+          <body className="h-screen bg-slate-800">
             <ResponsiveDrawer></ResponsiveDrawer>
             {children}
           </body>
