@@ -1,27 +1,80 @@
+"use client";
 import ProductCreateModal from "components/organisms/ProductCreateModal";
 import { AiOutlineDelete } from "react-icons/ai";
 import { prisma } from "server/db";
 import { PaginationButton } from "components/molecules/paginationButton";
 import ProductEditModal from "components/organisms/ProductEditModal";
+import React, { useState, useEffect } from "react";
+import { api } from "utils/api";
 
-interface PageProps {
-  searchParams: { take: number; skipNumber: string };
+interface ProductProps {
+  id: string;
+  power: number;
+  generation: string;
+  price: number;
+  panelBrand: string;
+  inverterBrand: string;
+  roofType: string;
 }
-export default async function page({ searchParams }: PageProps) {
-  console.log(searchParams.skipNumber);
-  const numberOfProducts = await prisma.product.count();
-  const products = await prisma.product.findMany({
-    take: 5,
-    skip:
-      searchParams.skipNumber === undefined
-        ? 0
-        : parseFloat(searchParams.skipNumber) < 0
-        ? 0
-        : parseFloat(searchParams.skipNumber),
-    orderBy: {
-      createdAt: "desc", // Use 'asc' para ordem crescente e 'desc' para ordem decrescente
+export default function page() {
+  const [products, setProducts] = useState<ProductProps[]>([
+    {
+      id: "",
+      power: 0,
+      generation: "",
+      price: 0,
+      panelBrand: "",
+      inverterBrand: "",
+      roofType: "",
     },
-  });
+  ]);
+  const { mutateAsync: getAmountOfProductsFromDb } =
+    api.product.getAmountOfProducts.useMutation();
+  const [amountOfProducts, setAmountOfProducts] = useState<number>(5);
+  const { mutateAsync: getProductsFromDb } =
+    api.product.getAllProducts.useMutation();
+
+  const getAmountOfProducts = async () => {
+    const amountOfProducts = await getAmountOfProductsFromDb();
+    setAmountOfProducts(amountOfProducts);
+  };
+  const getProducts = async (amount: number) => {
+    const products = await getProductsFromDb({
+      take: amount,
+    });
+    setProducts(products);
+  };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [productsToShow, setProductsToShow] = useState(products.slice(0, 5));
+  const updateProductsToShow = () => {
+    const endIndex = currentIndex + 5;
+    setProductsToShow(products.slice(currentIndex, endIndex));
+  };
+  const handleNextClick = () => {
+    const newIndex = currentIndex + 5;
+    if (newIndex >= products.length) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(newIndex);
+    }
+  };
+
+  const handlePrevClick = () => {
+    const newIndex = currentIndex - 5;
+    if (newIndex < 0) {
+      setCurrentIndex(products.length - 5);
+    } else {
+      setCurrentIndex(newIndex);
+    }
+  };
+  useEffect(() => {
+    getProducts(30);
+    getAmountOfProducts();
+  }, []);
+
+  useEffect(() => {
+    updateProductsToShow();
+  }, [currentIndex, products]);
   return (
     <div className="space-y-4 px-4 py-4 md:px-6">
       <div className="createBUtton flex w-full justify-end pr-2">
@@ -37,7 +90,7 @@ export default async function page({ searchParams }: PageProps) {
           </label>
         </div>
         <div className="tableBody w-full space-y-0 ">
-          {products.map((product, index) => {
+          {productsToShow.map((product, index) => {
             const formatPrice = (price: number) => {
               const formatter = new Intl.NumberFormat("pt-BR", {
                 style: "currency",
@@ -93,17 +146,14 @@ export default async function page({ searchParams }: PageProps) {
               </div>
             );
           })}
-          <div>
-            <PaginationButton
-              skip={
-                searchParams.skipNumber === undefined
-                  ? "0"
-                  : searchParams.skipNumber
-              }
-              numberOfProducts={numberOfProducts}
-            ></PaginationButton>
-          </div>
+          <div></div>
         </div>
+        <PaginationButton
+          getProducts={getProducts}
+          numberOfProducts={amountOfProducts}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+        ></PaginationButton>
       </div>
     </div>
   );

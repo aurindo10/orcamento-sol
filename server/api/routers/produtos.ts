@@ -76,4 +76,33 @@ export const productRouter = router({
         return product;
       }
     ),
+  getAllProducts: publicProcedure
+    .input(
+      z.object({
+        take: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const products = await ctx.prisma.product.findMany({
+        take: input.take,
+      });
+      console.log(products);
+      if (!products) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not get products",
+        });
+      }
+      return products;
+    }),
+  getAmountOfProducts: publicProcedure.mutation(async ({ ctx }) => {
+    const amount = await ctx.prisma.product.count();
+    if (!amount) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Could not get amount of products",
+      });
+    }
+    return amount;
+  }),
 });

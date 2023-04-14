@@ -1,35 +1,41 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface PaginationButtonProps {
-  skip: string;
   numberOfProducts: number;
+  getProducts: (amount: number) => void;
+  handleNextClick: () => void;
+  handlePrevClick: () => void;
 }
 export function PaginationButton({
-  skip,
   numberOfProducts,
+  getProducts,
+  handleNextClick,
+  handlePrevClick,
 }: PaginationButtonProps) {
   const router = useRouter();
+  const [take, setTake] = useState<number>(0);
+  console.log(numberOfProducts);
   return (
     <div className="btn-group grid grid-cols-2">
       <button
         className="btn-primary btn "
         onClick={() => {
-          const skipNumber = parseFloat(skip) - 5;
-          router.replace(`/produtos?skipNumber=${skipNumber}`);
+          handlePrevClick();
+          setTake(take - 5);
         }}
-        disabled={parseFloat(skip) === 0}
+        disabled={take === 0}
       >
         Anterior
       </button>
       <button
         className="btn-primary btn"
-        disabled={parseFloat(skip) + 5 >= numberOfProducts}
+        disabled={take + 5 >= numberOfProducts}
         onClick={() => {
-          console.log(skip);
-          const skipNumber = parseFloat(skip) + 5;
-          router.replace(`/produtos?skipNumber=${skipNumber}`);
+          setTake(take + 5);
+          handleNextClick();
         }}
       >
         Próximo
