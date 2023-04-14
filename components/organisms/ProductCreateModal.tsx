@@ -52,8 +52,6 @@ export default function ProductCreateModal() {
     // Convertendo os valores de string para número
     data.power = parseFloat(removeFormatting(data.power));
     data.price = parseFloat(removeFormatting(data.price));
-    console.log(data.price);
-    console.log(data.power);
     const productCreated = await createProduct(data);
     if (!productCreated) return alert("Error creating product");
     if (productCreated) setOpen(false);

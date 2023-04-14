@@ -58,8 +58,6 @@ export default function ProductEditModal({ editProduct }: any) {
     data.id = editProduct.id;
     data.power = parseFloat(removeFormatting(data.power));
     data.price = parseFloat(removeFormatting(data.price));
-    console.log(data.price);
-    console.log(data.power);
     data.id = editProduct.id;
     const productCreated = await updateProduct(data);
     if (!productCreated) return alert("Error creating product");

@@ -1,23 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface PaginationButtonProps {
   numberOfProducts: number;
-  getProducts: (amount: number) => void;
   handleNextClick: () => void;
   handlePrevClick: () => void;
 }
 export function PaginationButton({
   numberOfProducts,
-  getProducts,
   handleNextClick,
   handlePrevClick,
 }: PaginationButtonProps) {
-  const router = useRouter();
   const [take, setTake] = useState<number>(0);
-  console.log(numberOfProducts);
   return (
     <div className="btn-group grid grid-cols-2">
       <button

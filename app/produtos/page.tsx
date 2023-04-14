@@ -1,7 +1,6 @@
 "use client";
 import ProductCreateModal from "components/organisms/ProductCreateModal";
 import { AiOutlineDelete } from "react-icons/ai";
-import { prisma } from "server/db";
 import { PaginationButton } from "components/molecules/paginationButton";
 import ProductEditModal from "components/organisms/ProductEditModal";
 import React, { useState, useEffect } from "react";
@@ -149,7 +148,6 @@ export default function page() {
           <div></div>
         </div>
         <PaginationButton
-          getProducts={getProducts}
           numberOfProducts={amountOfProducts}
           handleNextClick={handleNextClick}
           handlePrevClick={handlePrevClick}

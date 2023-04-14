@@ -86,7 +86,6 @@ export const productRouter = router({
       const products = await ctx.prisma.product.findMany({
         take: input.take,
       });
-      console.log(products);
       if (!products) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
