@@ -7,7 +7,7 @@ import ProductEditModal from "components/organisms/ProductEditModal";
 interface PageProps {
   searchParams: { take: number; skipNumber: string };
 }
-export default async function Page({ searchParams }: PageProps) {
+export default async function page({ searchParams }: PageProps) {
   console.log(searchParams.skipNumber);
   const numberOfProducts = await prisma.product.count();
   const products = await prisma.product.findMany({
