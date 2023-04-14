@@ -51,7 +51,10 @@ export default async function Page({ searchParams }: PageProps) {
             const rowBgColor =
               index % 2 === 0 ? "bg-slate-300" : "bg-slate-100";
             return (
-              <div className={`tableRow flex items-center py-2 ${rowBgColor}`}>
+              <div
+                className={`tableRow flex items-center py-2 ${rowBgColor}`}
+                key={product.id}
+              >
                 <div className="info flex w-1/2 flex-col justify-center pl-2">
                   <label className="font-cabin text-[16px]  font-bold text-slate-500">
                     {`Kit: ${product.power}kWp`}
