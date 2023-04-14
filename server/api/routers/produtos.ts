@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, publicProcedure } from "../trpcContext";
+import { router, publicProcedure } from "../trpcContext";
 import { TRPCError } from "@trpc/server";
 
 export const productRouter = router({

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type Config } from "tailwindcss";
 
 const { violet, blackA, mauve, green } = require("@radix-ui/colors");

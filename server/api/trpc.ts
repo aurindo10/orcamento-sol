@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/require-await */
 import type * as trpc from "@trpc/server";
 import type * as trpcNext from "@trpc/server/adapters/next";
-import { getAuth, clerkClient } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 import type {
   SignedInAuthObject,
   SignedOutAuthObject,
