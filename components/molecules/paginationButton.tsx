@@ -6,13 +6,16 @@ interface PaginationButtonProps {
   numberOfProducts: number;
   handleNextClick: () => void;
   handlePrevClick: () => void;
+  take: number;
+  setTake: (take: number) => void;
 }
 export function PaginationButton({
   numberOfProducts,
   handleNextClick,
   handlePrevClick,
+  take,
+  setTake,
 }: PaginationButtonProps) {
-  const [take, setTake] = useState<number>(0);
   return (
     <div className="btn-group grid grid-cols-2">
       <button

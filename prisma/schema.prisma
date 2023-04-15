@@ -10,12 +10,15 @@ datasource db {
 
 model User {
     id              String    @id @default(cuid())
-    email           String    @unique
-    firstName       String
-    lastName        String
+    email           String?    @unique
+    firstName       String?
+    lastName        String?
     createdAt       DateTime  @default(now())
     productsCreated Product[] @relation("UserProductsCreated")
     clientsCreated  Client[]
+    workers         Boolean? @default(false)
+    admin           Boolean? @default(false)
+    clerkId         String?
 }
 
 model Product {

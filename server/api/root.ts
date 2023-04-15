@@ -1,4 +1,5 @@
 import { productRouter } from "./routers/produtos";
+import { userRouter } from "./routers/user";
 import { router } from "./trpcContext";
 
 /**
@@ -8,6 +9,7 @@ import { router } from "./trpcContext";
  */
 export const appRouter = router({
   product: productRouter,
+  user: userRouter,
 });
 
 // export type definition of API

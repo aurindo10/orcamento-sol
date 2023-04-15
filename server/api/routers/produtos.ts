@@ -104,4 +104,22 @@ export const productRouter = router({
     }
     return amount;
   }),
+  lookForProduct: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const products = await ctx.prisma.product.findMany({
+        where: {
+          generation: {
+            contains: input,
+          },
+        },
+      });
+      if (!products) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not get products",
+        });
+      }
+      return products;
+    }),
 });
