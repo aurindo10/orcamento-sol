@@ -14,8 +14,10 @@ export const userRouter = router({
     });
     console.log("cheguei aqui");
     if (isThereUser) {
+      console.log("eu to aqui");
       return { name: `Olá ${isThereUser}` };
     } else {
+      console.log("n era pra eu aparecer");
       return await ctx.prisma.user.create({
         data: {
           clerkId: userId,

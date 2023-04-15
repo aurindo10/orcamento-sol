@@ -18,7 +18,7 @@ model User {
     clientsCreated  Client[]
     workers         Boolean? @default(false)
     admin           Boolean? @default(false)
-    clerkId         String?
+    clerkId         String? @unique
 }
 
 model Product {
@@ -42,13 +42,13 @@ model Product {
 model Client {
     id                  String   @id @default(cuid())
     firstName           String
-    phone               String
-    email               String
+    phone               String?
+    email               String?
     createdAt           DateTime @default(now())
     InterestedProductId String?
     InterestedProduct   Product? @relation(fields: [InterestedProductId], references: [id])
     whoCreatedId        String?
-    whoCreated          User?    @relation(fields: [whoCreatedId], references: [id])
+    whoCreated          User?    @relation(fields: [whoCreatedId], references: [clerkId])
 
     @@index([InterestedProductId])
     @@index([whoCreatedId])
