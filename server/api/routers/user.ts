@@ -29,7 +29,7 @@ export const userRouter = router({
     const { userId, user } = ctx.auth;
     const isThereUser = await ctx.prisma.user.findFirst({
       where: {
-        clerkId: user?.id,
+        clerkId: userId!,
         workers: true,
       },
     });
