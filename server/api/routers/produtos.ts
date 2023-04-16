@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpcContext";
+import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { TRPCError } from "@trpc/server";
 
 export const productRouter = router({
@@ -8,7 +8,7 @@ export const productRouter = router({
       z.object({
         name: z.string(),
         price: z.number(),
-        generation: z.string(),
+        generation: z.number(),
         inverterBrand: z.string(),
         panelBrand: z.string(),
         power: z.number(),
@@ -16,6 +16,8 @@ export const productRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("hello from back");
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       const product = await ctx.prisma.product.create({
         data: {
@@ -44,7 +46,7 @@ export const productRouter = router({
         id: z.string(),
         name: z.string(),
         price: z.number(),
-        generation: z.string(),
+        generation: z.number(),
         inverterBrand: z.string(),
         panelBrand: z.string(),
         power: z.number(),
@@ -105,13 +107,11 @@ export const productRouter = router({
     return amount;
   }),
   lookForProduct: publicProcedure
-    .input(z.string())
+    .input(z.number())
     .mutation(async ({ ctx, input }) => {
       const products = await ctx.prisma.product.findMany({
         where: {
-          generation: {
-            contains: input,
-          },
+          generation: input,
         },
       });
       if (!products) {
@@ -121,5 +121,55 @@ export const productRouter = router({
         });
       }
       return products;
+    }),
+  lookForProductByPower: publicProcedure
+    .input(
+      z.object({
+        power: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      console.log(input.power);
+      const minGeneration = input.power - 200;
+      const maxGeneration = input.power + 200;
+      const products = await ctx.prisma.product.findMany({
+        where: {
+          generation: {
+            gte: minGeneration,
+            lte: maxGeneration,
+          },
+        },
+        orderBy: {
+          generation: "asc",
+        },
+      });
+      console.log(products);
+      if (!products) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not get products",
+        });
+      }
+      return products;
+    }),
+  deleteProduct: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const product = await ctx.prisma.product.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      if (!product) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not delete product",
+        });
+      }
+      return product;
     }),
 });

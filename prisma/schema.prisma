@@ -28,7 +28,7 @@ model Product {
     discount         Float?
     power            Float
     roofType         String
-    generation       String
+    generation       Float
     panelBrand       String
     inverterBrand    String
     whoCreatedId     String?

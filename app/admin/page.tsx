@@ -1,11 +1,9 @@
+import { AdminToggle } from "components/molecules/Admintoggle";
 import { prisma } from "server/db";
-import { currentUser } from "@clerk/nextjs/app-beta";
+import { api } from "utils/api";
 
 export default async function Page() {
-  const user = await currentUser();
-
-  const allUsers = await prisma.user.findMany({});
-  console.log(allUsers);
+  const allUsers = await prisma.user.findMany();
   return (
     <div className="flex justify-center px-2 py-4 md:px-4">
       <div className="w-full space-y-2">
@@ -19,14 +17,14 @@ export default async function Page() {
         </div>
         {allUsers.map((user) => {
           return (
-            <div className="max-w-80 h-18 card  flex w-full justify-between bg-neutral py-2 text-neutral-content">
-              <div className="flex justify-around">
-                <label className="card-title">Aurindo Neto</label>
-                <label className="label cursor-pointer ">
-                  <input type="checkbox" className="toggle" />
-                </label>
-              </div>
-            </div>
+            <AdminToggle
+              user={{
+                userId: user.clerkId!,
+                name: user.firstName!,
+                isWorker: user.workers!,
+              }}
+              key={user.clerkId!}
+            ></AdminToggle>
           );
         })}
       </div>

@@ -15,6 +15,23 @@ export const clientRouter = router({
         data: {
           firstName: input.name,
           phone: input.phone,
+          whoCreatedId: ctx.auth.userId,
+        },
+      });
+      return client;
+    }),
+  updateClient: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        productId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const client = await ctx.prisma.client.update({
+        where: { id: input.id },
+        data: {
+          InterestedProductId: input.productId,
         },
       });
       return client;

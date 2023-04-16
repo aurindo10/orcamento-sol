@@ -10,7 +10,7 @@ import { SearchInputgroup } from "components/organisms/searchInputGroup";
 export interface ProductProps {
   id: string;
   power: number;
-  generation: string;
+  generation: number;
   price: number;
   panelBrand: string;
   inverterBrand: string;
@@ -21,7 +21,7 @@ export default function FullProductPage() {
     {
       id: "",
       power: 0,
-      generation: "",
+      generation: 0,
       price: 0,
       panelBrand: "",
       inverterBrand: "",
@@ -47,6 +47,8 @@ export default function FullProductPage() {
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productsToShow, setProductsToShow] = useState(products.slice(0, 5));
+  const { mutateAsync: deleteProduct } =
+    api.product.deleteProduct.useMutation();
   const updateProductsToShow = () => {
     const endIndex = currentIndex + 5;
     setProductsToShow(products.slice(currentIndex, endIndex));
@@ -147,7 +149,14 @@ export default function FullProductPage() {
                       <ProductEditModal
                         editProduct={product}
                       ></ProductEditModal>
-                      <label className="btn-square btn-sm btn border-red-500 bg-red-500 text-slate-50">
+                      <label
+                        className="btn-square btn-sm btn border-red-500 bg-red-500 text-slate-50"
+                        onClick={async () => {
+                          await deleteProduct({
+                            id: product.id,
+                          });
+                        }}
+                      >
                         <AiOutlineDelete size={12}></AiOutlineDelete>
                       </label>
                     </div>

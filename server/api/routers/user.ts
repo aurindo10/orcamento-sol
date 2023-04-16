@@ -39,4 +39,34 @@ export const userRouter = router({
       return false;
     }
   }),
+  turnUserIntoWorker: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        isWorker: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedUser = await ctx.prisma.user.update({
+        where: {
+          clerkId: input.userId,
+        },
+        data: {
+          workers: input.isWorker,
+        },
+      });
+      if (updatedUser) {
+        return updatedUser;
+      } else {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Erro ao atualizar o usuário",
+        });
+      }
+    }),
+  getAllUsers: protectedProcedure.query(async ({ ctx }) => {
+    console.log("sdasda");
+    const users = await ctx.prisma.user.findMany();
+    return users;
+  }),
 });

@@ -19,7 +19,7 @@ export const SearchInputgroup = ({
 }: SearchInputgroupProps) => {
   const { mutateAsync: loookForProduct } =
     api.product.lookForProduct.useMutation();
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<number>(0);
   useEffect(() => {
     const fetchProducts = async () => {
       const products = await loookForProduct(searchValue);
@@ -38,7 +38,7 @@ export const SearchInputgroup = ({
           placeholder="Insira a geração..."
           className="input-bordered input w-72 text-white"
           onBlur={(e) => {
-            setSearchValue(e.target.value);
+            setSearchValue(parseFloat(e.target.value));
           }}
         />
         <button className="btn-primary btn-square btn">
