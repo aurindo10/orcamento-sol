@@ -21,7 +21,7 @@ export default function Page() {
           </div>
         </ClerkLoading>
         <div className="text-center lg:text-left">
-          <h1 className="text-5xl font-bold">Entre</h1>
+          {/* <h1 className="text-5xl font-bold">Entre</h1> */}
         </div>
       </div>
     </div>

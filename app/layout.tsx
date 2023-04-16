@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import ClientProvider from "../contexts/ClientProvider";
-import { ClerkProvider } from "@clerk/nextjs/app-beta";
+import { ClerkProvider, auth } from "@clerk/nextjs/app-beta";
 import ResponsiveDrawer from "components/molecules/Drawer";
 import React from "react";
 
@@ -16,9 +16,8 @@ export default function RootLayout({
           <head>
             <title>Sol Orçamentos</title>
           </head>
-          <body className="h-screen bg-slate-800">
-            <ResponsiveDrawer></ResponsiveDrawer>
-            {children}
+          <body className="h-full min-h-screen bg-slate-900">
+            <div className="bg-slate-900 py-8 md:py-12">{children}</div>
           </body>
         </html>
       </ClerkProvider>

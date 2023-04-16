@@ -31,7 +31,7 @@ export function AdminToggle({ user }: AdminToggleProps) {
       key={user.userId}
     >
       <div className="flex justify-around">
-        <label className="card-title">Aurindo Neto</label>
+        <label className="card-title">{user.name}</label>
         <label className="label cursor-pointer ">
           <input
             type="checkbox"

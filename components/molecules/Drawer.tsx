@@ -16,16 +16,26 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import {
+  AlignBottom,
+  HandCoins,
+  PresentationChart,
+  ShoppingCart,
+} from "@phosphor-icons/react";
+import { SignedOut, UserButton } from "@clerk/nextjs";
 
 const drawerWidth = 240;
 
 interface Props {
   window?: () => Window;
+  children: React.ReactNode;
 }
 
 export default function ResponsiveDrawer(props: Props) {
-  const { window } = props;
+  const { window, children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [title, setTitle] = React.useState("");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -36,33 +46,63 @@ export default function ResponsiveDrawer(props: Props) {
       <Toolbar />
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        <Link
+          href={"/orcamento"}
+          onClick={() => {
+            setTitle("Sol Orçamentos"), setMobileOpen(false);
+          }}
+        >
+          <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <div className="mr-4 text-slate-50">
+                <HandCoins size={32} />
+              </div>
+              <label className="font-cabin font-bold text-slate-50">
+                Orçamento
+              </label>
             </ListItemButton>
           </ListItem>
-        ))}
+        </Link>
+        <Link
+          href={"/produtos"}
+          onClick={() => {
+            setTitle("Produtos"), setMobileOpen(false);
+          }}
+        >
+          <ListItem disablePadding>
+            <ListItemButton>
+              <div className="mr-4 text-slate-50">
+                <AlignBottom size={32} />
+              </div>
+              <label className="font-cabin font-bold text-slate-50">
+                Produtos
+              </label>
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        <Link
+          href={"/admin"}
+          onClick={() => {
+            setTitle("Painel do Administrador"), setMobileOpen(false);
+          }}
+        >
+          <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <div className="mr-4 text-slate-50">
+                <PresentationChart size={32} />
+              </div>
+              <label className="font-cabin font-bold text-slate-50">
+                Painel
+              </label>
             </ListItemButton>
           </ListItem>
-        ))}
+        </Link>
       </List>
     </div>
   );
-
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -86,9 +126,13 @@ export default function ResponsiveDrawer(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
+          <div className="flex w-full items-center justify-between">
+            <h1 className="font-cabin font-bold">{title}</h1>
+            <div>
+              <SignedOut />
+              <UserButton afterSignOutUrl="http://localhost:3000/login" />
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Box
@@ -110,6 +154,7 @@ export default function ResponsiveDrawer(props: Props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              bgcolor: "#64748B",
             },
           }}
         >
@@ -122,6 +167,7 @@ export default function ResponsiveDrawer(props: Props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              bgcolor: "#64748B",
             },
           }}
           open
@@ -136,7 +182,9 @@ export default function ResponsiveDrawer(props: Props) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      ></Box>
+      >
+        {children}
+      </Box>
     </Box>
   );
 }

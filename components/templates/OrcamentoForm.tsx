@@ -41,7 +41,7 @@ export function OrcamentoForm() {
     }
   };
   return (
-    <div className="md-px-4 flex flex-col items-center justify-center">
+    <div className="md-px-4 flex h-full flex-col items-center bg-slate-900">
       <div>
         <label className="label">
           <span className="label-text">Nome do Cliente</span>

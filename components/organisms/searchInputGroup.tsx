@@ -36,7 +36,7 @@ export const SearchInputgroup = ({
         <input
           type="text"
           placeholder="Insira a geração..."
-          className="input-bordered input w-72 text-white"
+          className="max-w-72 input-bordered input text-white"
           onBlur={(e) => {
             setSearchValue(parseFloat(e.target.value));
           }}

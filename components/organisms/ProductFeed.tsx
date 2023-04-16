@@ -14,7 +14,7 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
     <div>
       {product.map((product) => {
         return (
-          <div className="card my-4 w-96 bg-base-100 shadow-xl">
+          <div className="card my-4 max-w-lg bg-base-100 shadow-xl">
             <figure>
               <img
                 src="https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/203323_100223171850.jpg"
