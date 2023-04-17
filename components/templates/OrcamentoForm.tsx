@@ -53,6 +53,7 @@ export function OrcamentoForm() {
             placeholder="Nome do Cliente"
             className="input-bordered input text-slate-50"
             value={nome}
+            required
             onChange={(e) => setNome(e.target.value)}
           />
         </label>
@@ -64,8 +65,10 @@ export function OrcamentoForm() {
         <label className="input-group flex justify-center">
           <span className="w-24 text-slate-50">Telefone</span>
           <input
-            type="text"
+            type="tel"
+            pattern="^\d{2}-\d{4,5}-\d{4}$"
             placeholder="Telefone do cliente"
+            required
             className="input-bordered input text-slate-50"
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
@@ -80,9 +83,10 @@ export function OrcamentoForm() {
           <span className="w-24 text-slate-50">Consumo</span>
           <input
             type="number"
+            required
             placeholder="Energia consumida"
             className="input-bordered input text-slate-50"
-            value={consumo}
+            value={consumo ? consumo : ""}
             onChange={(e) => setConsumo(parseFloat(e.target.value))}
           />
         </label>
