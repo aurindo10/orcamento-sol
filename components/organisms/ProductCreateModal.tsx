@@ -50,12 +50,12 @@ export default function ProductCreateModal() {
 
   const onSubmit = async (data: any) => {
     // Convertendo os valores de string para número
+    setOpen(false);
     data.power = parseFloat(removeFormatting(data.power));
     data.price = parseFloat(removeFormatting(data.price));
     data.generation = parseFloat(data.generation);
     const productCreated = await createProduct(data);
     if (!productCreated) return alert("Error creating product");
-    if (productCreated) setOpen(false);
     if (productCreated) router.refresh();
     reset();
   };

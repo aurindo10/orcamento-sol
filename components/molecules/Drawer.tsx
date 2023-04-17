@@ -30,10 +30,11 @@ const drawerWidth = 240;
 interface Props {
   window?: () => Window;
   children: React.ReactNode;
+  admin: boolean | null | undefined;
 }
 
 export default function ResponsiveDrawer(props: Props) {
-  const { window, children } = props;
+  const { window, children, admin } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
 
@@ -63,43 +64,47 @@ export default function ResponsiveDrawer(props: Props) {
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link
-          href={"/produtos"}
-          onClick={() => {
-            setTitle("Produtos"), setMobileOpen(false);
-          }}
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <div className="mr-4 text-slate-50">
-                <AlignBottom size={32} />
-              </div>
-              <label className="font-cabin font-bold text-slate-50">
-                Produtos
-              </label>
-            </ListItemButton>
-          </ListItem>
-        </Link>
+        {admin && (
+          <Link
+            href={"/produtos"}
+            onClick={() => {
+              setTitle("Produtos"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <AlignBottom size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Produtos
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
       </List>
       <Divider />
       <List>
-        <Link
-          href={"/admin"}
-          onClick={() => {
-            setTitle("Painel do Administrador"), setMobileOpen(false);
-          }}
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <div className="mr-4 text-slate-50">
-                <PresentationChart size={32} />
-              </div>
-              <label className="font-cabin font-bold text-slate-50">
-                Painel
-              </label>
-            </ListItemButton>
-          </ListItem>
-        </Link>
+        {admin && (
+          <Link
+            href={"/admin"}
+            onClick={() => {
+              setTitle("Painel do Administrador"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <PresentationChart size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Painel
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
       </List>
     </div>
   );

@@ -44,7 +44,7 @@ export default async function LoginLayout({
     );
   }
   return (
-    <ResponsiveDrawer>
+    <ResponsiveDrawer admin={isThereUser?.admin}>
       <div className="bg-slate-900 py-8 md:py-12">{children}</div>
     </ResponsiveDrawer>
   );

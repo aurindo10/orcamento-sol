@@ -31,12 +31,12 @@ export const SearchInputgroup = ({
     setCurrentIndex(0);
   }, [searchValue]);
   return (
-    <div className="form-control">
-      <div className="input-group">
+    <div className="form-control w-full">
+      <div className="input-group w-full">
         <input
           type="text"
           placeholder="Insira a geração..."
-          className="max-w-72 input-bordered input text-white"
+          className="input-bordered input w-full text-white"
           onBlur={(e) => {
             setSearchValue(parseFloat(e.target.value));
           }}
