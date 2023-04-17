@@ -172,4 +172,29 @@ export const productRouter = router({
       }
       return product;
     }),
+  createManyProducts: protectedProcedure
+    .input(
+      z.object({
+        data: z.array(
+          z.object({
+            name: z.string(),
+            price: z.number(),
+            discount: z.number(),
+            generation: z.number(),
+            inverterBrand: z.string(),
+            panelBrand: z.string(),
+            power: z.number(),
+            roofType: z.string(),
+            whoCreatedId: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const products = input.data;
+      const addedProducts = await ctx.prisma.$transaction(
+        products.map((product) => ctx.prisma.product.create({ data: product }))
+      );
+      return addedProducts;
+    }),
 });

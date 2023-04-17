@@ -6,6 +6,7 @@ import ProductEditModal from "components/organisms/ProductEditModal";
 import React, { useState, useEffect } from "react";
 import { api } from "utils/api";
 import { SearchInputgroup } from "components/organisms/searchInputGroup";
+import ExcelToJson from "components/organisms/XlsUploader";
 
 export interface ProductProps {
   id: string;
@@ -76,8 +77,11 @@ export default function FullProductPage() {
       ) : (
         <div className="px-2 md:px-4">
           <div className="flex w-full flex-col items-center justify-center gap-4">
-            <div className="createBUtton flex w-full max-w-lg justify-end">
-              <ProductCreateModal></ProductCreateModal>
+            <div className="createBUtton flex w-full max-w-lg flex-col justify-end">
+              <div className="w-ful flex justify-end">
+                <ProductCreateModal></ProductCreateModal>
+              </div>
+              <ExcelToJson></ExcelToJson>
             </div>
             <div className="flex w-full max-w-lg">
               <SearchInputgroup
