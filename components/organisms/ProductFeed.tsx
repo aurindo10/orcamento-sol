@@ -31,8 +31,9 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
                 <p className="text-slate-50">{`Inversor: ${product.inverterBrand}`}</p>
                 <p className="text-slate-50">{`Painel: ${product.panelBrand}`}</p>
                 <p className="text-slate-50">{`Potência: ${product.power} kWp`}</p>
+                <label className="badge h-10 w-52 bg-red-500 text-[18px] text-slate-50">{`Geração: ${product.generation}kWh`}</label>
               </div>
-              <h2 className="flex items-center text-lg text-green-500">
+              <h2 className="badge h-10 w-52 bg-green-500 text-[18px] text-white">
                 {formatter.format(product.price)}
               </h2>
             </div>
