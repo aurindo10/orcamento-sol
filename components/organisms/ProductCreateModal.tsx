@@ -97,15 +97,9 @@ export default function ProductCreateModal() {
           className="fixed left-[50%] top-[50%] max-h-[85vh]  w-[90vw] max-w-[350px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-slate-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Dialog.Title className="m-0 text-[17px]  font-medium text-slate-50">
-              Criar Produto
-            </Dialog.Title>
-            <Dialog.Description className="mb-5 mt-[10px] text-right text-[15px] leading-normal text-slate-400">
-              Coloque as informações do produto
-            </Dialog.Description>
-            <div className="space-y-1">
-              <fieldset className="px-4">
-                <div>
+            <div className="space-y-1 px-2 py-4">
+              <div className="Descrição flex w-full justify-between px-4">
+                <fieldset className="mr-4 flex w-full flex-col justify-start">
                   <label
                     className=" w-14 text-start text-[15px] text-slate-50"
                     htmlFor="name"
@@ -113,131 +107,133 @@ export default function ProductCreateModal() {
                     Descrição
                   </label>
                   <input
-                    className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    className="inline-flex h-[35px] w-full items-center justify-center rounded-[4px] bg-slate-700 pl-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
                     id="name"
                     {...register("name")}
                   />
-                </div>
-                <div className="h-[10px]">
-                  {errors.name && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
-              <fieldset className="px-4">
-                <label
-                  className="w-14 text-start text-[15px] text-slate-50"
-                  htmlFor="panelBrand"
-                >
-                  Painel
-                </label>
-                <input
-                  className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
-                  id="panelBrand"
-                  {...register("panelBrand")}
-                />
-                <div className="h-[10px]">
-                  {errors.panelBrand && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.panelBrand.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
-
-              <fieldset className="px-4">
-                <label
-                  className=" w-14 text-start text-[15px] text-slate-50"
-                  htmlFor="inverterBrand"
-                >
-                  Inversor
-                </label>
-                <input
-                  className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
-                  id="inverterBrand"
-                  {...register("inverterBrand")}
-                />
-                <div className="h-[10px]">
-                  {errors.inverterBrand && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.inverterBrand.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
-              <fieldset className="px-4">
-                <label
-                  className=" w-14 text-start text-[15px] text-slate-50"
-                  htmlFor="generation"
-                >
-                  Geração (kWh)
-                </label>
-                <input
-                  type="number"
-                  className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
-                  id="generation"
-                  {...register("generation")}
-                />
-                <div className="h-[10px]">
-                  {errors.generation && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.generation.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
-              <fieldset className="px-4">
-                <label
-                  className="tex-start w-14 text-[15px] text-slate-50"
-                  htmlFor="power"
-                >
-                  Potência (kWp)
-                </label>
-                <input
-                  type="text"
-                  className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
-                  id="power"
-                  {...register("power")}
-                  onInput={formatPotenciaInput}
-                />
-                <div className="h-[10px]">
-                  {errors.power && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.power.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
-
-              <fieldset className="px-4">
-                <label
-                  className="tex-start w-14 text-[15px] text-slate-50"
-                  htmlFor="price"
-                >
-                  Preço (R$)
-                </label>
-                <input
-                  type="text"
-                  className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
-                  id="price"
-                  {...register("price")}
-                  onInput={handlePriceInput}
-                />
-                <div className="h-[10px]">
-                  {errors.price && (
-                    <p className="text-[10px] text-red-500">
-                      {errors.price.message}
-                    </p>
-                  )}
-                </div>
-              </fieldset>
+                  <div className="h-[10px]">
+                    {errors.name && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+                <fieldset className="flex flex-col items-center justify-center">
+                  <label
+                    className="tex-start w-14 text-[15px] text-slate-50"
+                    htmlFor="power"
+                  >
+                    P(kWp)
+                  </label>
+                  <input
+                    type="text"
+                    className="inline-flex h-[35px] w-16 flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    id="power"
+                    {...register("power")}
+                    onInput={formatPotenciaInput}
+                  />
+                  <div className="h-[10px]">
+                    {errors.power && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.power.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
+              <div className="segundo flex h-[70px] w-full justify-between px-4 ">
+                <fieldset className="mr-4 flex w-full flex-col justify-start">
+                  <label
+                    className=" w-14 text-start text-[15px] text-slate-50"
+                    htmlFor="inverterBrand"
+                  >
+                    Inversor
+                  </label>
+                  <input
+                    className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    id="inverterBrand"
+                    {...register("inverterBrand")}
+                  />
+                  <div className="h-[10px]">
+                    {errors.inverterBrand && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.inverterBrand.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+                <fieldset className="flex h-auto w-36 flex-col items-start">
+                  <label
+                    className="w-32  text-start text-[15px] text-slate-50"
+                    htmlFor="panelBrand"
+                  >
+                    Painel
+                  </label>
+                  <input
+                    className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    id="panelBrand"
+                    {...register("panelBrand")}
+                  />
+                  <div className="h-[10px]">
+                    {errors.panelBrand && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.panelBrand.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
+              <div className="terceiro flex h-[70px] justify-between px-4">
+                <fieldset className=" flex flex-col justify-start">
+                  <label
+                    className=" mr-4 text-start text-[15px] text-slate-50"
+                    htmlFor="generation"
+                  >
+                    Geração(kWh)
+                  </label>
+                  <input
+                    type="number"
+                    className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    id="generation"
+                    {...register("generation")}
+                  />
+                  <div className="h-[10px]">
+                    {errors.generation && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.generation.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+                <fieldset className="ml-4 flex flex-col justify-start">
+                  <label
+                    className="tex-start w-18 text-[15px] text-slate-50"
+                    htmlFor="price"
+                  >
+                    Preço (R$)
+                  </label>
+                  <input
+                    type="text"
+                    className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] bg-slate-700 px-[10px] text-[15px] leading-none text-slate-50 shadow-[0_0_0_1px] shadow-slate-500 outline-none focus:shadow-[0_0_0_2px] focus:shadow-slate-400"
+                    id="price"
+                    {...register("price")}
+                    onInput={handlePriceInput}
+                  />
+                  <div className="h-[10px]">
+                    {errors.price && (
+                      <p className="text-[10px] text-red-500">
+                        {errors.price.message}
+                      </p>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
             </div>
-            <fieldset className="mb-4  mt-2  space-y-1 px-4">
+            <fieldset className="mb-1  space-y-1 px-6">
               <div className="flex justify-end">
                 <label
-                  className=" tex-start mr-2 mt-[-2px] w-14 text-start text-[15px] text-slate-50"
+                  className=" tex-start mr-2 w-14 text-start text-[15px] text-slate-50"
                   htmlFor="roofType"
                 >
                   Telhado:
@@ -255,13 +251,13 @@ export default function ProductCreateModal() {
                 )}
               </div>
             </fieldset>
-            <div className="mt-[1px] flex justify-end">
+            <div className="mt-[1px] flex justify-end px-6">
               <Dialog.Close asChild>
                 <button
                   type="submit"
                   className="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green4 px-[15px] font-medium leading-none text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 focus:outline-none"
                 >
-                  Criar Produto
+                  Atualizar Produto
                 </button>
               </Dialog.Close>
             </div>
