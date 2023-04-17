@@ -11,7 +11,9 @@ export default async function Page() {
       workers: true,
     },
   });
-  console.log(workers);
-  // if (!isUserSolWorker) return <div>Você não trabalha na Sol :/</div>;
-  return <div>{workers ? <div>Olá</div> : <RegisterUser></RegisterUser>}</div>;
+  return (
+    <h1 className="font-cabin  text-3xl font-bold text-slate-50">
+      {`Olá ${user?.firstName}`}{" "}
+    </h1>
+  );
 }

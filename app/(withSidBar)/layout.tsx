@@ -25,7 +25,6 @@ export default async function LoginLayout({
         clerkId: userId,
         firstName: user?.firstName,
         lastName: user?.lastName,
-        workers: true,
       },
     });
   }
