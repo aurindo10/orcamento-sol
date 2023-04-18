@@ -49,6 +49,7 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         <Link
           href={"/orcamento"}
+          prefetch
           onClick={() => {
             setTitle("Sol Orçamentos"), setMobileOpen(false);
           }}
@@ -66,6 +67,7 @@ export default function ResponsiveDrawer(props: Props) {
         </Link>
         {admin && (
           <Link
+            prefetch
             href={"/produtos"}
             onClick={() => {
               setTitle("Produtos"), setMobileOpen(false);
@@ -88,6 +90,7 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         {admin && (
           <Link
+            prefetch
             href={"/admin"}
             onClick={() => {
               setTitle("Painel do Administrador"), setMobileOpen(false);

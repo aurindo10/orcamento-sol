@@ -78,9 +78,9 @@ export default function FullProductPage() {
         <div className="px-2 md:px-4">
           <div className="flex w-full flex-col items-center justify-center gap-4">
             <div className="createBUtton flex w-full max-w-lg flex-col justify-end">
-              <div className="w-ful flex justify-end">
+              {/* <div className="w-ful flex justify-end">
                 <ProductCreateModal></ProductCreateModal>
-              </div>
+              </div> */}
               <ExcelToJson></ExcelToJson>
             </div>
             <div className="flex w-full max-w-lg">
@@ -141,7 +141,7 @@ export default function FullProductPage() {
                         <label className="font-cabin text-sm font-bold text-red-500">
                           {`${formatedPrice}`}
                         </label>
-                        <div className="actions flex flex-col items-center">
+                        {/* <div className="actions flex flex-col items-center">
                           <label className=" font-cabin text-[14px] text-black">
                             Ações
                           </label>
@@ -160,7 +160,7 @@ export default function FullProductPage() {
                               <AiOutlineDelete size={12}></AiOutlineDelete>
                             </label>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   );
