@@ -11,7 +11,7 @@ export default async function LoginLayout({
 }) {
   const user = await currentUser();
   console.log(user);
-  if (!user?.id) {
+  if (user?.id === undefined) {
     redirect("/login");
   }
   const isThereUser = await prisma.user.findFirst({
