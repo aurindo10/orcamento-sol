@@ -24,6 +24,7 @@ import {
   ShoppingCart,
 } from "@phosphor-icons/react";
 import { UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -37,7 +38,7 @@ export default function ResponsiveDrawer(props: Props) {
   const { window, children, admin } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
-
+  const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -89,24 +90,29 @@ export default function ResponsiveDrawer(props: Props) {
       <Divider />
       <List>
         {admin && (
-          <Link
-            prefetch
-            href={"/admin"}
+          // <Link
+          //   prefetch
+          //   href={"/admin"}
+          //   onClick={() => {
+          //     setTitle("Painel do Administrador"), setMobileOpen(false);
+          //   }}
+          // >
+          <ListItem
+            disablePadding
             onClick={() => {
-              setTitle("Painel do Administrador"), setMobileOpen(false);
+              router.push("/admin");
             }}
           >
-            <ListItem disablePadding>
-              <ListItemButton>
-                <div className="mr-4 text-slate-50">
-                  <PresentationChart size={32} />
-                </div>
-                <label className="font-cabin font-bold text-slate-50">
-                  Painel
-                </label>
-              </ListItemButton>
-            </ListItem>
-          </Link>
+            <ListItemButton>
+              <div className="mr-4 text-slate-50">
+                <PresentationChart size={32} />
+              </div>
+              <label className="font-cabin font-bold text-slate-50">
+                Painel
+              </label>
+            </ListItemButton>
+          </ListItem>
+          // </Link>
         )}
       </List>
     </div>
