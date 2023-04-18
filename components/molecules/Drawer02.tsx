@@ -29,12 +29,21 @@ export default function Drawer02(props: Props) {
           <div className="mx-2 flex-1 px-2">Navbar Title</div>
           <div className="hidden flex-none lg:block">
             <ul className="menu menu-horizontal">
-              <li>
-                <a>Navbar Item 1</a>
-              </li>
-              <li>
-                <a>Navbar Item 2</a>
-              </li>
+              <Link href={"/orcamento"}>
+                <li>
+                  <a>Orcamento</a>
+                </li>
+              </Link>
+              <Link href={"/produtos"}>
+                <li>
+                  <a>Produtos</a>
+                </li>
+              </Link>
+              <Link href={"/admin"}>
+                <li>
+                  <a>Admin</a>
+                </li>
+              </Link>
             </ul>
           </div>
         </div>
