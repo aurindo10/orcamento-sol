@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/app-beta";
 import ResponsiveDrawer from "components/molecules/Drawer";
+import Drawer02 from "components/molecules/Drawer02";
 import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 import { prisma } from "server/db";
@@ -44,8 +45,10 @@ export default async function LoginLayout({
     );
   }
   return (
-    <ResponsiveDrawer admin={isThereUser?.admin}>
+    // <ResponsiveDrawer admin={isThereUser?.admin}>
+    <Drawer02>
       <div className="bg-slate-900 py-8 md:py-12">{children}</div>
-    </ResponsiveDrawer>
+    </Drawer02>
+    // </ResponsiveDrawer>
   );
 }
