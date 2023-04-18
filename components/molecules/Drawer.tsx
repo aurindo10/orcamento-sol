@@ -24,7 +24,6 @@ import {
   ShoppingCart,
 } from "@phosphor-icons/react";
 import { SignedOut, UserButton } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -38,7 +37,7 @@ export default function ResponsiveDrawer(props: Props) {
   const { window, children, admin } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const router = useRouter();
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -48,84 +47,63 @@ export default function ResponsiveDrawer(props: Props) {
       <Toolbar />
       <Divider />
       <List>
-        {/* <Link
+        <Link
           href={"/orcamento"}
           onClick={() => {
             setTitle("Sol Orçamentos"), setMobileOpen(false);
           }}
-        > */}
-        <ListItem
-          disablePadding
-          onClick={() => {
-            router.push("/orcamento"),
-              setTitle("Sol Orçamentos"),
-              setMobileOpen(false);
-          }}
         >
-          <ListItemButton>
-            <div className="mr-4 text-slate-50">
-              <HandCoins size={32} />
-            </div>
-            <label className="font-cabin font-bold text-slate-50">
-              Orçamento
-            </label>
-          </ListItemButton>
-        </ListItem>
-        {/* </Link> */}
-        {admin && (
-          // <Link
-          //   href={"/produtos"}
-          //   onClick={() => {
-          //     setTitle("Produtos"), setMobileOpen(false);
-          //   }}
-          // >
-          <ListItem
-            disablePadding
-            onClick={() => {
-              router.push("/produtos"),
-                setTitle("Sol Orçamentos"),
-                setMobileOpen(false);
-            }}
-          >
+          <ListItem disablePadding>
             <ListItemButton>
               <div className="mr-4 text-slate-50">
-                <AlignBottom size={32} />
+                <HandCoins size={32} />
               </div>
               <label className="font-cabin font-bold text-slate-50">
-                Produtos
+                Orçamento
               </label>
             </ListItemButton>
           </ListItem>
-          // </Link>
+        </Link>
+        {admin && (
+          <Link
+            href={"/produtos"}
+            onClick={() => {
+              setTitle("Produtos"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <AlignBottom size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Produtos
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
         )}
       </List>
       <Divider />
       <List>
         {admin && (
-          // <Link
-          //   href={"/admin"}
-          //   onClick={() => {
-          //     setTitle("Painel do Administrador"), setMobileOpen(false);
-          //   }}
-          // >
-          <ListItem
-            disablePadding
+          <Link
+            href={"/admin"}
             onClick={() => {
-              router.push("/admin"),
-                setTitle("Sol Orçamentos"),
-                setMobileOpen(false);
+              setTitle("Painel do Administrador"), setMobileOpen(false);
             }}
           >
-            <ListItemButton>
-              <div className="mr-4 text-slate-50">
-                <PresentationChart size={32} />
-              </div>
-              <label className="font-cabin font-bold text-slate-50">
-                Painel
-              </label>
-            </ListItemButton>
-          </ListItem>
-          // </Link>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <PresentationChart size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Painel
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
         )}
       </List>
     </div>
