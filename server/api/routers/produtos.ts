@@ -122,10 +122,11 @@ export const productRouter = router({
       }
       return products;
     }),
-  lookForProductByPower: publicProcedure
+  lookForProductByPowerAndRoof: publicProcedure
     .input(
       z.object({
         power: z.number(),
+        roofType: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -134,6 +135,7 @@ export const productRouter = router({
       const maxGeneration = input.power + 200;
       const products = await ctx.prisma.product.findMany({
         where: {
+          roofType: input.roofType,
           generation: {
             gte: minGeneration,
             lte: maxGeneration,
@@ -197,4 +199,14 @@ export const productRouter = router({
       );
       return addedProducts;
     }),
+  deleteAllProducts: protectedProcedure.mutation(async ({ ctx }) => {
+    const products = await ctx.prisma.product.deleteMany();
+    if (!products) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Could not delete products",
+      });
+    }
+    return products;
+  }),
 });

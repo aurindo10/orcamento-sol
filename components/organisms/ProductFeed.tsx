@@ -15,7 +15,7 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
       {product.map((product) => {
         return (
           <div
-            className="card my-4 max-w-lg bg-base-100 shadow-xl"
+            className="card my-4 w-full max-w-lg bg-base-100 shadow-xl"
             key={product.id}
           >
             <figure>
@@ -31,11 +31,15 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
                 <p className="text-slate-50">{`Inversor: ${product.inverterBrand}`}</p>
                 <p className="text-slate-50">{`Painel: ${product.panelBrand}`}</p>
                 <p className="text-slate-50">{`Potência: ${product.power} kWp`}</p>
-                <label className="badge h-10 w-52 bg-red-500 text-[18px] text-slate-50">{`Geração: ${product.generation}kWh`}</label>
               </div>
-              <h2 className="badge h-10 w-52 bg-green-500 text-[18px] text-white">
-                {formatter.format(product.price)}
-              </h2>
+              <div className="space-y-4">
+                <h2 className=" rounded-lg bg-red-500 px-2 py-2 text-white">
+                  {formatter.format(product.price)}
+                </h2>
+                <div className=" rounded-lg  bg-green-500 px-2 py-2">
+                  <label className="h-10 w-52 text-[20px] text-slate-50">{`Geração: ${product.generation}kWh`}</label>
+                </div>
+              </div>
             </div>
           </div>
         );

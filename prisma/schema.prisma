@@ -49,7 +49,7 @@ model Client {
     InterestedProduct   Product? @relation(fields: [InterestedProductId], references: [id])
     whoCreatedId        String?
     whoCreated          User?    @relation(fields: [whoCreatedId], references: [clerkId])
-
+    consumo            Float?
     @@index([InterestedProductId])
     @@index([whoCreatedId])
 }

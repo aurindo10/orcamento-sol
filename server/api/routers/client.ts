@@ -24,14 +24,14 @@ export const clientRouter = router({
     .input(
       z.object({
         id: z.string(),
-        productId: z.string(),
+        consumo: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const client = await ctx.prisma.client.update({
         where: { id: input.id },
         data: {
-          InterestedProductId: input.productId,
+          consumo: input.consumo,
         },
       });
       return client;

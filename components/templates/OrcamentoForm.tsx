@@ -17,6 +17,7 @@ const FormSchema = z.object({
       "Formato do telefone inválido: 00-00000-0000"
     ),
   consumo: z.number().min(1, "Consumo é obrigatório e deve ser maior que 0"),
+  roofType: z.string().min(1, "Tipo de telhado é obrigatório"),
 });
 type FormData = z.infer<typeof FormSchema>;
 
@@ -35,7 +36,7 @@ export function OrcamentoForm() {
   const { mutateAsync: createClient } = api.client.createClient.useMutation();
   const { mutateAsync: updateClient } = api.client.updateClient.useMutation();
   const { mutateAsync: lookForProductByPower } =
-    api.product.lookForProductByPower.useMutation();
+    api.product.lookForProductByPowerAndRoof.useMutation();
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -44,10 +45,11 @@ export function OrcamentoForm() {
       name: nome,
       phone: telefone,
     });
-
+    console.log(data);
     if (createdClient) {
       const foundProducts = await lookForProductByPower({
         power: consumo,
+        roofType: data.roofType,
       });
 
       setLoading(false);
@@ -56,7 +58,7 @@ export function OrcamentoForm() {
       if (foundProducts[0]) {
         const updatedClient = await updateClient({
           id: createdClient.id,
-          productId: foundProducts[0]!.id,
+          consumo: consumo,
         });
       }
     }
@@ -159,7 +161,42 @@ export function OrcamentoForm() {
           <p className="text-red-600">{errors.consumo.message}</p>
         )}
       </div>
-
+      <div>
+        <label className="label">
+          <span className="label-text">Tipo de Telhado</span>
+        </label>
+        <Controller
+          name="roofType"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <select
+              {...field}
+              className="select-error select w-full max-w-xs text-slate-50"
+              onChange={(e) =>
+                field.onChange(e.target.value ? e.target.value : "")
+              }
+            >
+              <option
+                className="text-slate-50 disabled:text-slate-50"
+                value=""
+                disabled
+              >
+                Selecione o telhado
+              </option>
+              <option className="text-slate-50" value="metalico">
+                Metálico
+              </option>
+              <option className="text-slate-50" value="ceramico">
+                Cerâmico
+              </option>
+            </select>
+          )}
+        />
+        {errors.roofType && (
+          <p className="text-red-600">{errors.roofType.message}</p>
+        )}
+      </div>
       <button type="submit" className="btn-primary btn my-4">
         Procurar Sistema
       </button>
