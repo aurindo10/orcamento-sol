@@ -137,13 +137,7 @@ export default function ResponsiveDrawer(props: Props) {
           <div className="flex w-full items-center justify-between">
             <h1 className="font-cabin font-bold">{title}</h1>
             <div>
-              <UserButton
-                afterSignOutUrl={
-                  process.env.VERCEL_URL
-                    ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
-                    : `http://localhost:${process.env.PORT ?? 3000}`
-                }
-              />
+              <UserButton afterSignOutUrl={"https://solengenharia.app/"} />
             </div>
           </div>
         </Toolbar>

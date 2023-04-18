@@ -12,16 +12,8 @@ export default async function Page() {
       <div className="flex min-h-screen flex-col-reverse items-center justify-center gap-4 lg:flex-row-reverse">
         <ClerkLoaded>
           <SignIn
-            redirectUrl={
-              process.env.VERCEL_URL
-                ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
-                : `http://localhost:${process.env.PORT ?? 3000}`
-            }
-            afterSignInUrl={
-              process.env.VERCEL_URL
-                ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
-                : `http://localhost:${process.env.PORT ?? 3000}`
-            }
+            redirectUrl={"https://solengenharia.app/"}
+            afterSignInUrl={"https://solengenharia.app/"}
           />
         </ClerkLoaded>
         <ClerkLoading>
