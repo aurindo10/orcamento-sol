@@ -1,15 +1,28 @@
+import { currentUser } from "@clerk/nextjs/app-beta";
 import {
   ClerkLoaded,
   ClerkLoading,
   SignIn,
 } from "@clerk/nextjs/app-beta/client";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+export default async function Page() {
   return (
     <div>
       <div className="flex min-h-screen flex-col-reverse items-center justify-center gap-4 lg:flex-row-reverse">
         <ClerkLoaded>
-          <SignIn />
+          <SignIn
+            redirectUrl={
+              process.env.VERCEL_URL
+                ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
+                : `http://localhost:${process.env.PORT ?? 3000}`
+            }
+            afterSignInUrl={
+              process.env.VERCEL_URL
+                ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
+                : `http://localhost:${process.env.PORT ?? 3000}`
+            }
+          />
         </ClerkLoaded>
         <ClerkLoading>
           <div

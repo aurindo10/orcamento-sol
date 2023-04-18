@@ -23,7 +23,7 @@ import {
   PresentationChart,
   ShoppingCart,
 } from "@phosphor-icons/react";
-import { SignedOut, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 
 const drawerWidth = 240;
 
@@ -137,8 +137,13 @@ export default function ResponsiveDrawer(props: Props) {
           <div className="flex w-full items-center justify-between">
             <h1 className="font-cabin font-bold">{title}</h1>
             <div>
-              <SignedOut />
-              <UserButton afterSignOutUrl="http://localhost:3000/login" />
+              <UserButton
+                afterSignOutUrl={
+                  process.env.VERCEL_URL
+                    ? `https://${process.env.VERCEL_URL}` // SSR should use vercel url
+                    : `http://localhost:${process.env.PORT ?? 3000}`
+                }
+              />
             </div>
           </div>
         </Toolbar>

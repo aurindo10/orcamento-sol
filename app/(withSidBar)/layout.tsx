@@ -9,20 +9,20 @@ export default async function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId, session } = auth();
   const user = await currentUser();
-  if (!userId) {
+  console.log(user);
+  if (!user?.id) {
     redirect("/login");
   }
   const isThereUser = await prisma.user.findFirst({
     where: {
-      clerkId: userId,
+      clerkId: user?.id,
     },
   });
   if (!isThereUser) {
     const userCreated = await prisma.user.create({
       data: {
-        clerkId: userId,
+        clerkId: user?.id,
         firstName: user?.firstName,
         lastName: user?.lastName,
       },
@@ -31,7 +31,7 @@ export default async function LoginLayout({
 
   const isSolWorker = await prisma.user.findFirst({
     where: {
-      clerkId: userId,
+      clerkId: user?.id,
       workers: true,
     },
   });
@@ -43,7 +43,6 @@ export default async function LoginLayout({
       </div>
     );
   }
-  console.log("fui executado");
   return (
     <ResponsiveDrawer admin={isThereUser?.admin}>
       <div className="bg-slate-900 py-8 md:py-12">{children}</div>
