@@ -1,11 +1,6 @@
-import {
-  ClerkLoaded,
-  ClerkLoading,
-  SignIn,
-} from "@clerk/nextjs/app-beta/client";
-import { redirect } from "next/navigation";
+import { ClerkLoaded, ClerkLoading, SignIn } from "@clerk/nextjs";
 
-export default async function Page() {
+export const LoginPage = () => {
   return (
     <div>
       <div className="flex min-h-screen flex-col-reverse items-center justify-center gap-4 lg:flex-row-reverse">
@@ -30,4 +25,4 @@ export default async function Page() {
       </div>
     </div>
   );
-}
+};

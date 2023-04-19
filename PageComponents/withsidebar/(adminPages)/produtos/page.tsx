@@ -1,9 +1,10 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
+import React from "react";
+import FullProductPage from "components/templates/FullProductPage";
 // import { auth, clerkClient } from "@clerk/nextjs/app-beta";
-import { OrcamentoForm } from "components/templates/OrcamentoForm";
+import { useUser } from "@clerk/nextjs";
 
-export default function Page() {
+export const ProductPage = () => {
   // const { userId } = auth();
   // const isUser = await clerkClient.users.getUser(userId ? userId : "");
   // const user = isUser?.publicMetadata
@@ -14,6 +15,6 @@ export default function Page() {
   if (!isLoaded) {
     return <div className="text-slate-50">loading</div>;
   }
-  if (!user!.publicMetadata.worker) return <div>Not authorized</div>;
-  return <OrcamentoForm></OrcamentoForm>;
-}
+  if (!user!.publicMetadata.admin) return <div>Not authorized</div>;
+  return <FullProductPage></FullProductPage>;
+};

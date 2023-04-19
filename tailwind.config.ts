@@ -6,8 +6,8 @@ const { violet, blackA, mauve, green } = require("@radix-ui/colors");
 
 export default {
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./pages/**/*.{ts,tsx}",
+    "./PageComponents/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
   ],
   theme: {

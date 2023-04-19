@@ -6,6 +6,7 @@ import { prisma } from "server/db";
 
 export default withClerkMiddleware(async (req: NextRequest) => {
   const { userId, user } = getAuth(req);
+  console.log(userId);
   if (!userId) {
     console.log("hello from middlware");
     const signInUrl = new URL("/login", req.url);
@@ -16,5 +17,15 @@ export default withClerkMiddleware(async (req: NextRequest) => {
 
 // Stop Middleware running on static files
 export const config = {
-  matcher: "/((?!_next/image|_next/static|favicon.ico|login).*)",
+  // matcher: "/((?!_next/image|_next/static|favicon.ico|login).*)",
+  // "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)"
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next
+     * - static (static files)
+     * - favicon.ico (favicon file)
+     */
+    "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico|login).*)",
+  ],
 };
