@@ -115,7 +115,6 @@ export default function ResponsiveDrawer(props: Props) {
                 </label>
               </ListItemButton>
             </ListItem>
-            //{" "}
           </Link>
         }
       </List>
