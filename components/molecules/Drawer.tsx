@@ -6,16 +6,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import {
   AlignBottom,
@@ -35,44 +30,41 @@ interface Props {
 
 export default function ResponsiveDrawer(props: Props) {
   const { window, children } = props;
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
+  if (!isLoaded) {
+    return <div className="text-slate-50">loading</div>;
+  }
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {
-          // user?.publicMetadata.worker!
-          true && (
-            <Link
-              href={"/orcamento"}
-              prefetch
-              onClick={() => {
-                setTitle("Sol Orçamentos"), setMobileOpen(false);
-              }}
-            >
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <div className="mr-4 text-slate-50">
-                    <HandCoins size={32} />
-                  </div>
-                  <label className="font-cabin font-bold text-slate-50">
-                    Orçamento
-                  </label>
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          )
-        }
-        {
-          // user?.publicMetadata.admin! &&
+        {user!.publicMetadata.worker! && (
+          <Link
+            href={"/orcamento"}
+            prefetch
+            onClick={() => {
+              setTitle("Sol Orçamentos"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <HandCoins size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Orçamento
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
+        {user!.publicMetadata.admin! && (
           <Link
             prefetch
             href={"/produtos"}
@@ -91,13 +83,11 @@ export default function ResponsiveDrawer(props: Props) {
               </ListItemButton>
             </ListItem>
           </Link>
-        }
+        )}
       </List>
       <Divider />
       <List>
-        {
-          // user?.publicMetadata.masterAdmin! &&
-
+        {user!.publicMetadata.masterAdmin! && (
           <Link
             prefetch
             href={"/admin"}
@@ -116,7 +106,7 @@ export default function ResponsiveDrawer(props: Props) {
               </ListItemButton>
             </ListItem>
           </Link>
-        }
+        )}
       </List>
     </div>
   );

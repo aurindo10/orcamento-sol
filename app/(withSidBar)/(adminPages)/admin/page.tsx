@@ -1,3 +1,4 @@
+import { auth, currentUser } from "@clerk/nextjs/app-beta";
 import { clerkClient } from "@clerk/nextjs/server";
 import { AdminToggle2 } from "components/molecules/Admin2Toggle";
 import { AdminToggle } from "components/molecules/Admintoggle";
@@ -5,6 +6,13 @@ import { AdminToggle3 } from "components/molecules/MasterAdmin";
 
 export default async function Page() {
   const allUsers = await clerkClient.users.getUserList();
+  const { userId } = auth();
+  const isUser = await clerkClient.users.getUser(userId ? userId : "");
+  const user = isUser?.publicMetadata
+    ? isUser
+    : { publicMetadata: { worker: false, admin: false, masterAdmin: false } };
+  if (!user.publicMetadata.masterAdmin)
+    return <div> Você não é um administrador Master</div>;
   return (
     <div className="flex justify-center px-2 py-4 md:px-4">
       <div className="w-full space-y-2">
