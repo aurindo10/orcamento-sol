@@ -1,3 +1,4 @@
+"use client";
 import ResponsiveDrawer from "components/molecules/Drawer";
 import React from "react";
 
