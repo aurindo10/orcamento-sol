@@ -17,7 +17,6 @@ export function AdminToggle2({ user }: AdminToggleProps) {
     const userUpdated = await turnUserIntoWorker({
       id: user.userId,
     });
-    console.log(userUpdated);
   }
   return (
     <div

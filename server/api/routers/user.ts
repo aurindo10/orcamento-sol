@@ -4,20 +4,15 @@ import { TRPCError } from "@trpc/server";
 import { clerkClient } from "@clerk/nextjs/server";
 export const userRouter = router({
   createUser: protectedProcedure.mutation(async ({ ctx }) => {
-    console.log("createUser");
     const { userId, user } = ctx.auth;
-    console.log(ctx.auth);
     const isThereUser = await ctx.prisma.user.findFirst({
       where: {
         clerkId: userId!,
       },
     });
-    console.log("cheguei aqui");
     if (isThereUser) {
-      console.log("eu to aqui");
       return { name: `Olá ${isThereUser}` };
     } else {
-      console.log("n era pra eu aparecer");
       return await ctx.prisma.user.create({
         data: {
           clerkId: userId,
@@ -63,7 +58,6 @@ export const userRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const allUser = await clerkClient.users.getUserList();
-      console.log(allUser);
       const updatedUser = await clerkClient.users.updateUserMetadata(input.id, {
         publicMetadata: {
           worker: true,
@@ -81,7 +75,6 @@ export const userRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const allUser = await clerkClient.users.getUserList();
-      console.log(allUser);
       const updatedUser = await clerkClient.users.updateUserMetadata(input.id, {
         publicMetadata: {
           worker: true,
@@ -92,8 +85,7 @@ export const userRouter = router({
       return updatedUser;
     }),
   getAllUsers: protectedProcedure.query(async ({ ctx }) => {
-    console.log("sdasda");
-    const users = await ctx.prisma.user.findMany();
-    return users;
+    const isUser = await clerkClient.users.getUserList();
+    return isUser;
   }),
 });

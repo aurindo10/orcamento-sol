@@ -16,8 +16,6 @@ export const productRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("hello from back");
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       const product = await ctx.prisma.product.create({
         data: {
@@ -130,7 +128,6 @@ export const productRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log(input.power);
       const minGeneration = input.power - 200;
       const maxGeneration = input.power + 200;
       const products = await ctx.prisma.product.findMany({
@@ -145,7 +142,6 @@ export const productRouter = router({
           generation: "asc",
         },
       });
-      console.log(products);
       if (!products) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

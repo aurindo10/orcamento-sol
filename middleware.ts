@@ -6,9 +6,7 @@ import { prisma } from "server/db";
 
 export default withClerkMiddleware(async (req: NextRequest) => {
   const { userId, user } = getAuth(req);
-  console.log(userId);
   if (!userId) {
-    console.log("hello from middlware");
     const signInUrl = new URL("/login", req.url);
     return NextResponse.redirect(signInUrl);
   }

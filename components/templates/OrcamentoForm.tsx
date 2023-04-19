@@ -45,7 +45,6 @@ export function OrcamentoForm() {
       name: nome,
       phone: telefone,
     });
-    console.log(data);
     if (createdClient) {
       const foundProducts = await lookForProductByPower({
         power: consumo,
