@@ -85,7 +85,13 @@ export const userRouter = router({
       return updatedUser;
     }),
   getAllUsers: protectedProcedure.query(async ({ ctx }) => {
-    const isUser = await clerkClient.users.getUserList();
-    return isUser;
+    const allUsers = await clerkClient.users.getUserList();
+    if (!allUsers) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Não foi possível encontrar usuários",
+      });
+    }
+    return allUsers;
   }),
 });

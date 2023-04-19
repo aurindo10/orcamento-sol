@@ -70,6 +70,12 @@ export default function FullProductPage() {
   useEffect(() => {
     updateProductsToShow();
   }, [currentIndex, products]);
+  if (loading)
+    return (
+      <div className="text-16 font-cabin font-bold text-slate-50">
+        Carregando...
+      </div>
+    );
   return (
     <div>
       <div className="px-2 md:px-4">

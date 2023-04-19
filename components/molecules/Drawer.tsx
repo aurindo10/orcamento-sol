@@ -186,7 +186,7 @@ export default function ResponsiveDrawer(props: Props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {children}
+        <div className="py-10">{children}</div>
       </Box>
     </Box>
   );
