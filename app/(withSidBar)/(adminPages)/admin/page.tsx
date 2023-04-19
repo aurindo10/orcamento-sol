@@ -2,8 +2,6 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { AdminToggle2 } from "components/molecules/Admin2Toggle";
 import { AdminToggle } from "components/molecules/Admintoggle";
 import { AdminToggle3 } from "components/molecules/MasterAdmin";
-import { prisma } from "server/db";
-import { api } from "utils/api";
 
 export default async function Page() {
   const allUsers = await clerkClient.users.getUserList();

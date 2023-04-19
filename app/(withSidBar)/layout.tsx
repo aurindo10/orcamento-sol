@@ -1,8 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/app-beta";
 import ResponsiveDrawer from "components/molecules/Drawer";
-import { redirect } from "next/navigation";
-import React, { Suspense } from "react";
-import { prisma } from "server/db";
+import React from "react";
 
 export default async function LoginLayout({
   children,
