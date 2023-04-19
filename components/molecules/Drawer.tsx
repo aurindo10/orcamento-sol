@@ -47,7 +47,6 @@ export default function ResponsiveDrawer(props: Props) {
         {user!.publicMetadata.worker! && (
           <Link
             href={"/orcamento"}
-            prefetch={false}
             onClick={() => {
               setTitle("Sol Orçamentos"), setMobileOpen(false);
             }}
@@ -66,7 +65,6 @@ export default function ResponsiveDrawer(props: Props) {
         )}
         {user!.publicMetadata.admin! && (
           <Link
-            prefetch={false}
             href={"/produtos"}
             onClick={() => {
               setTitle("Produtos"), setMobileOpen(false);
@@ -89,7 +87,6 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         {user!.publicMetadata.masterAdmin! && (
           <Link
-            prefetch={false}
             href={"/admin"}
             onClick={() => {
               setTitle("Painel do Administrador"), setMobileOpen(false);
