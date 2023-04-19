@@ -23,7 +23,7 @@ import {
   PresentationChart,
   ShoppingCart,
 } from "@phosphor-icons/react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
@@ -31,11 +31,11 @@ const drawerWidth = 240;
 interface Props {
   window?: () => Window;
   children: React.ReactNode;
-  admin: boolean | null | undefined;
 }
 
 export default function ResponsiveDrawer(props: Props) {
-  const { window, children, admin } = props;
+  const { window, children } = props;
+  const { user } = useUser();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const router = useRouter();
@@ -48,25 +48,31 @@ export default function ResponsiveDrawer(props: Props) {
       <Toolbar />
       <Divider />
       <List>
-        <Link
-          href={"/orcamento"}
-          prefetch
-          onClick={() => {
-            setTitle("Sol Orçamentos"), setMobileOpen(false);
-          }}
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <div className="mr-4 text-slate-50">
-                <HandCoins size={32} />
-              </div>
-              <label className="font-cabin font-bold text-slate-50">
-                Orçamento
-              </label>
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        {admin && (
+        {
+          // user?.publicMetadata.worker!
+          true && (
+            <Link
+              href={"/orcamento"}
+              prefetch
+              onClick={() => {
+                setTitle("Sol Orçamentos"), setMobileOpen(false);
+              }}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <div className="mr-4 text-slate-50">
+                    <HandCoins size={32} />
+                  </div>
+                  <label className="font-cabin font-bold text-slate-50">
+                    Orçamento
+                  </label>
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          )
+        }
+        {
+          // user?.publicMetadata.admin! &&
           <Link
             prefetch
             href={"/produtos"}
@@ -85,35 +91,33 @@ export default function ResponsiveDrawer(props: Props) {
               </ListItemButton>
             </ListItem>
           </Link>
-        )}
+        }
       </List>
       <Divider />
       <List>
-        {admin && (
-          // <Link
-          //   prefetch
-          //   href={"/admin"}
-          //   onClick={() => {
-          //     setTitle("Painel do Administrador"), setMobileOpen(false);
-          //   }}
-          // >
-          <ListItem
-            disablePadding
+        {
+          // user?.publicMetadata.masterAdmin! &&
+
+          <Link
+            prefetch
+            href={"/admin"}
             onClick={() => {
-              router.push("/admin");
+              setTitle("Painel do Administrador"), setMobileOpen(false);
             }}
           >
-            <ListItemButton>
-              <div className="mr-4 text-slate-50">
-                <PresentationChart size={32} />
-              </div>
-              <label className="font-cabin font-bold text-slate-50">
-                Painel
-              </label>
-            </ListItemButton>
-          </ListItem>
-          // </Link>
-        )}
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <PresentationChart size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Painel
+                </label>
+              </ListItemButton>
+            </ListItem>
+            //{" "}
+          </Link>
+        }
       </List>
     </div>
   );

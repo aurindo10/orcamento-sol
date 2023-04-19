@@ -1,8 +1,11 @@
-import { withClerkMiddleware } from "@clerk/nextjs/server";
+import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { prisma } from "server/db";
 
-export default withClerkMiddleware((req: NextRequest) => {
+export default withClerkMiddleware(async (req: NextRequest) => {
+  const { userId, user } = getAuth(req);
   return NextResponse.next();
 });
 

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { TRPCError } from "@trpc/server";
-import { auth } from "@clerk/nextjs/app-beta";
+import { clerkClient } from "@clerk/nextjs/server";
 export const userRouter = router({
   createUser: protectedProcedure.mutation(async ({ ctx }) => {
     console.log("createUser");
@@ -42,27 +42,54 @@ export const userRouter = router({
   turnUserIntoWorker: protectedProcedure
     .input(
       z.object({
-        userId: z.string(),
-        isWorker: z.boolean(),
+        id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const updatedUser = await ctx.prisma.user.update({
-        where: {
-          clerkId: input.userId,
-        },
-        data: {
-          workers: input.isWorker,
+      const updatedUser = await clerkClient.users.updateUserMetadata(input.id, {
+        publicMetadata: {
+          worker: true,
+          admin: false,
+          masterAdmin: false,
         },
       });
-      if (updatedUser) {
-        return updatedUser;
-      } else {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Erro ao atualizar o usuário",
-        });
-      }
+      return updatedUser;
+    }),
+  turnUserIntoAdmin: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const allUser = await clerkClient.users.getUserList();
+      console.log(allUser);
+      const updatedUser = await clerkClient.users.updateUserMetadata(input.id, {
+        publicMetadata: {
+          worker: true,
+          admin: true,
+          masterAdmin: false,
+        },
+      });
+      return updatedUser;
+    }),
+  turnUserIntoMasterAdmin: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const allUser = await clerkClient.users.getUserList();
+      console.log(allUser);
+      const updatedUser = await clerkClient.users.updateUserMetadata(input.id, {
+        publicMetadata: {
+          worker: true,
+          admin: true,
+          masterAdmin: true,
+        },
+      });
+      return updatedUser;
     }),
   getAllUsers: protectedProcedure.query(async ({ ctx }) => {
     console.log("sdasda");

@@ -9,42 +9,8 @@ export default async function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await currentUser();
-  console.log(user);
-  if (user?.id === undefined) {
-    redirect("/login");
-  }
-  const isThereUser = await prisma.user.findFirst({
-    where: {
-      clerkId: user?.id,
-    },
-  });
-  if (!isThereUser) {
-    const userCreated = await prisma.user.create({
-      data: {
-        clerkId: user?.id,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-      },
-    });
-  }
-
-  const isSolWorker = await prisma.user.findFirst({
-    where: {
-      clerkId: user?.id,
-      workers: true,
-    },
-  });
-  if (!isSolWorker) {
-    return (
-      <div>
-        Sinto muito, mas você não tem permissão para acessar essa página. Você
-        não trabalha na sol
-      </div>
-    );
-  }
   return (
-    <ResponsiveDrawer admin={isThereUser?.admin}>
+    <ResponsiveDrawer>
       <div className="bg-slate-900 py-8 md:py-12">{children}</div>
     </ResponsiveDrawer>
   );

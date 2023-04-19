@@ -1,16 +1,17 @@
-import { isWorker } from "components/molecules/isWorker";
+import { currentUser } from "@clerk/nextjs/app-beta";
 import { OrcamentoForm } from "components/templates/OrcamentoForm";
 import { prisma } from "server/db";
 
 export default async function Page() {
-  const worker = await isWorker();
+  const user = await currentUser();
+
   return (
     <div>
-      {worker ? (
-        <OrcamentoForm></OrcamentoForm>
-      ) : (
+      {/* {worker ? ( */}
+      <OrcamentoForm></OrcamentoForm>
+      {/* ) : (
         <div> Você não é um trabalhador </div>
-      )}
+      )} */}
     </div>
   );
 }

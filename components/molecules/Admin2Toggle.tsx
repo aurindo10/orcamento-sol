@@ -10,9 +10,9 @@ interface AdminToggleProps {
     name: string;
   };
 }
-export function AdminToggle({ user }: AdminToggleProps) {
+export function AdminToggle2({ user }: AdminToggleProps) {
   const { mutateAsync: turnUserIntoWorker } =
-    api.user.turnUserIntoWorker.useMutation();
+    api.user.turnUserIntoAdmin.useMutation();
   async function handleToggleChange() {
     const userUpdated = await turnUserIntoWorker({
       id: user.userId,
