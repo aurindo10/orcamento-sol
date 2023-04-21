@@ -33,35 +33,28 @@ export function OrcamentoForm() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const { mutateAsync: createClient } = api.client.createClient.useMutation();
-  const { mutateAsync: updateClient } = api.client.updateClient.useMutation();
   const { mutateAsync: lookForProductByPower } =
     api.product.lookForProductByPowerAndRoof.useMutation();
+  const { mutateAsync: creatProposta } =
+    api.proposta.creatProposta.useMutation();
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     const { nome, telefone, consumo } = data;
-    const createdClient = await createClient({
-      name: nome,
+    const createdClient = await creatProposta({
+      firstName: nome,
+      consumo: consumo,
+      roofType: data.roofType,
       phone: telefone,
     });
-    if (createdClient) {
-      const foundProducts = await lookForProductByPower({
-        power: consumo,
-        roofType: data.roofType,
-      });
-
-      setLoading(false);
-      setProducts(foundProducts!);
-
-      if (foundProducts[0]) {
-        const updatedClient = await updateClient({
-          id: createdClient.id,
-          consumo: consumo,
-        });
-      }
-    }
+    const foundProducts = await lookForProductByPower({
+      power: consumo,
+      roofType: data.roofType,
+    });
+    setLoading(false);
+    setProducts(foundProducts!);
   };
+
   const formatPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D+/g, "");
     const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);

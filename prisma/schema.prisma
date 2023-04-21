@@ -58,10 +58,10 @@ model Client {
 model Proposta {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
-    sellerIdClerk String?   @unique
+    sellerIdClerk String?   
     consumo Float?
     ClientInterestedId String?
     ClientInterested Client? @relation(fields: [ClientInterestedId], references: [id])
-
+    roofType String?
     @@index([ClientInterestedId])
 }

@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { router, publicProcedure, protectedProcedure } from "../trpcContext";
+import { z } from "zod";
 
 export const propostaRouter = router({
   lookPropostasByUser: protectedProcedure.query(async ({ ctx }) => {
@@ -49,4 +50,54 @@ export const propostaRouter = router({
     });
     return propostasPerAmountOfDays;
   }),
+  creatProposta: protectedProcedure
+    .input(
+      z.object({
+        firstName: z.string(),
+        phone: z.string(),
+        consumo: z.number(),
+        roofType: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      const foundedClient = await ctx.prisma.client.findFirst({
+        where: {
+          firstName: input.firstName,
+          phone: input.phone,
+        },
+      });
+      if (foundedClient) {
+        const createdProposta = await ctx.prisma.proposta.create({
+          data: {
+            ClientInterestedId: foundedClient.id,
+            consumo: input.consumo,
+            sellerIdClerk: userId!,
+            roofType: input.roofType,
+          },
+        });
+        return { message: "Proposta cadastrada com sucesso" };
+      }
+      if (!foundedClient) {
+        const createdClient = await ctx.prisma.client.create({
+          data: {
+            firstName: input.firstName,
+            phone: input.phone,
+            sellerIdClerk: userId!,
+          },
+        });
+        if (createdClient) {
+          console.log(createdClient.id);
+          await ctx.prisma.proposta.create({
+            data: {
+              ClientInterestedId: createdClient.id,
+              consumo: input.consumo,
+              sellerIdClerk: userId!,
+              roofType: input.roofType,
+            },
+          });
+          return createdClient;
+        }
+      }
+    }),
 });
