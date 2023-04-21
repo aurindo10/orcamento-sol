@@ -105,6 +105,27 @@ export default function ResponsiveDrawer(props: Props) {
           </Link>
         )}
       </List>
+      <List>
+        {user!.publicMetadata.worker! && (
+          <Link
+            href={"/minhaspropostas"}
+            onClick={() => {
+              setTitle("Minhas propostas"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <PresentationChart size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Propostas
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
+      </List>
     </div>
   );
   const container =

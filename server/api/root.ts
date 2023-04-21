@@ -3,6 +3,7 @@ import { userRouter } from "./routers/user";
 import { clientRouter } from "./routers/client";
 
 import { router } from "./trpcContext";
+import { propostaRouter } from "./routers/propostas";
 
 /**
  * This is the primary router for your server.
@@ -13,6 +14,7 @@ export const appRouter = router({
   product: productRouter,
   user: userRouter,
   client: clientRouter,
+  proposta: propostaRouter,
 });
 
 // export type definition of API

@@ -35,7 +35,6 @@ model Product {
     whoCreated       User?    @relation(name: "UserProductsCreated", fields: [whoCreatedId], references: [id])
     createdAt        DateTime @default(now())
     ClientInterested Client[]
-
     @@index([whoCreatedId])
 }
 
@@ -49,7 +48,20 @@ model Client {
     InterestedProduct   Product? @relation(fields: [InterestedProductId], references: [id])
     whoCreatedId        String?
     whoCreated          User?    @relation(fields: [whoCreatedId], references: [clerkId])
+    sellerIdClerk    String?
     consumo            Float?
+    Proposta           Proposta[]
     @@index([InterestedProductId])
     @@index([whoCreatedId])
+}
+
+model Proposta {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    sellerIdClerk String?   @unique
+    consumo Float?
+    ClientInterestedId String?
+    ClientInterested Client? @relation(fields: [ClientInterestedId], references: [id])
+
+    @@index([ClientInterestedId])
 }
