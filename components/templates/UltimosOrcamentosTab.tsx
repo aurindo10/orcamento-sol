@@ -1,8 +1,14 @@
 import { ArrowRight, CalendarBlank, Phone, User } from "@phosphor-icons/react";
 import * as Tabs from "@radix-ui/react-tabs";
+import { useStore } from "bearStore";
+import { ClientCard } from "components/molecules/ClientCard";
 import { DateCalendarServerRequest } from "components/organisms/Calendar";
 import { api } from "utils/api";
 export const UltimosOrcamentosTab = () => {
+  const [propostas, updatePropostas] = useStore((state) => [
+    state.propostas,
+    state.updatePropostas,
+  ]);
   const { data: allPropostasByUser, status } =
     api.proposta.lookForAllProposta.useQuery();
   if (status === "loading") return <div>Carregando...</div>;
@@ -39,7 +45,7 @@ export const UltimosOrcamentosTab = () => {
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="today" className="w-full">
-        <div className="card h-full bg-slate-600 px-4 py-4">
+        <div className="card h-full bg-base-100 px-4 py-4">
           {allPropostasByUser?.today.map((proposta) => {
             return (
               <div
@@ -75,7 +81,7 @@ export const UltimosOrcamentosTab = () => {
         </div>
       </Tabs.Content>
       <Tabs.Content value="threeDays" className="h-full w-full">
-        <div className="card h-full bg-slate-600 px-4 py-4">
+        <div className="card h-full bg-base-100 px-4 py-4">
           {allPropostasByUser?.threeDays.map((proposta) => {
             return (
               <div
@@ -111,7 +117,7 @@ export const UltimosOrcamentosTab = () => {
         </div>
       </Tabs.Content>
       <Tabs.Content value="sevenDays" className="h-full w-full">
-        <div className="card h-full bg-slate-600 px-4 py-4">
+        <div className="card h-full bg-base-100 px-4 py-4">
           {allPropostasByUser?.sevenDays.map((proposta) => {
             return (
               <div
@@ -146,11 +152,13 @@ export const UltimosOrcamentosTab = () => {
           })}
         </div>
       </Tabs.Content>
-      <Tabs.Content value="pickTheDay" className="h-96 w-full">
+      <Tabs.Content value="pickTheDay" className="h-full w-full">
         <div className="card flex h-full w-full items-center bg-base-100 shadow-xl">
-          Escolha o dia
           <DateCalendarServerRequest></DateCalendarServerRequest>
         </div>
+        {propostas.map((proposta) => {
+          return <ClientCard proposta={proposta}></ClientCard>;
+        })}
       </Tabs.Content>
     </Tabs.Root>
   );
