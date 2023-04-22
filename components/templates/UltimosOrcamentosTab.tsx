@@ -1,5 +1,6 @@
 import { ArrowRight, CalendarBlank, Phone, User } from "@phosphor-icons/react";
 import * as Tabs from "@radix-ui/react-tabs";
+import { DateCalendarServerRequest } from "components/organisms/Calendar";
 import { api } from "utils/api";
 export const UltimosOrcamentosTab = () => {
   const { data: allPropostasByUser, status } =
@@ -43,16 +44,14 @@ export const UltimosOrcamentosTab = () => {
             return (
               <div
                 className="card grid  w-full grid-cols-3 grid-rows-1  px-2 py-4 shadow-xl"
-                key={proposta.clientName.propostas[0]?.id}
+                key={proposta.id}
               >
                 <div className="col-span-2 col-start-1 flex flex-col gap-1">
                   <div className="flex gap-2 text-[19px] font-bold">
                     <div className="w-[22px]">
                       <User size={22} color="white" />
                     </div>
-                    <h1 className="text-slate-50">
-                      {proposta.clientName.name}
-                    </h1>
+                    <h1 className="text-slate-50">{proposta.firstName}</h1>
                   </div>
                   <div className="calendar flex h-auto items-end gap-2">
                     <CalendarBlank size={22} color="white" />
@@ -64,7 +63,7 @@ export const UltimosOrcamentosTab = () => {
                   </div>
                 </div>
                 <div className="col-start-3 flex w-full flex-col items-center justify-center gap-3">
-                  <div className="badge-secondary badge">{`${proposta.clientName.propostas.length} propostas`}</div>
+                  <div className="badge-secondary badge">{`${proposta.Proposta.length} propostas`}</div>
                   <div className="btn-accent btn-xs btn flex gap-2">
                     Ver
                     <ArrowRight size={18} />
@@ -75,61 +74,84 @@ export const UltimosOrcamentosTab = () => {
           })}
         </div>
       </Tabs.Content>
-      <Tabs.Content value="threeDays" className="h-96 w-full">
-        <div className="card flex h-full w-full items-center bg-base-100 shadow-xl">
-          3 dias
+      <Tabs.Content value="threeDays" className="h-full w-full">
+        <div className="card h-full bg-slate-600 px-4 py-4">
+          {allPropostasByUser?.threeDays.map((proposta) => {
+            return (
+              <div
+                className="card grid  w-full grid-cols-3 grid-rows-1  px-2 py-4 shadow-xl"
+                key={proposta.id}
+              >
+                <div className="col-span-2 col-start-1 flex flex-col gap-1">
+                  <div className="flex gap-2 text-[19px] font-bold">
+                    <div className="w-[22px]">
+                      <User size={22} color="white" />
+                    </div>
+                    <h1 className="text-slate-50">{proposta.firstName}</h1>
+                  </div>
+                  <div className="calendar flex h-auto items-end gap-2">
+                    <CalendarBlank size={22} color="white" />
+                    <h3 className="text-[14px] text-slate-200">{`${"20/04/2023"}`}</h3>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <Phone size={22} color="white" />
+                    <h3 className="text-[14px] text-slate-200">{`${"86 9 8161-8474"}`}</h3>
+                  </div>
+                </div>
+                <div className="col-start-3 flex w-full flex-col items-center justify-center gap-3">
+                  <div className="badge-secondary badge">{`${proposta.Proposta.length} propostas`}</div>
+                  <div className="btn-accent btn-xs btn flex gap-2">
+                    Ver
+                    <ArrowRight size={18} />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Tabs.Content>
-      <Tabs.Content value="sevenDays" className="h-96 w-full">
-        <div className="card flex h-full w-full items-center bg-base-100 shadow-xl">
-          7 dias
+      <Tabs.Content value="sevenDays" className="h-full w-full">
+        <div className="card h-full bg-slate-600 px-4 py-4">
+          {allPropostasByUser?.sevenDays.map((proposta) => {
+            return (
+              <div
+                className="card grid  w-full grid-cols-3 grid-rows-1  px-2 py-4 shadow-xl"
+                key={proposta.id}
+              >
+                <div className="col-span-2 col-start-1 flex flex-col gap-1">
+                  <div className="flex gap-2 text-[19px] font-bold">
+                    <div className="w-[22px]">
+                      <User size={22} color="white" />
+                    </div>
+                    <h1 className="text-slate-50">{proposta.firstName}</h1>
+                  </div>
+                  <div className="calendar flex h-auto items-end gap-2">
+                    <CalendarBlank size={22} color="white" />
+                    <h3 className="text-[14px] text-slate-200">{`${"20/04/2023"}`}</h3>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <Phone size={22} color="white" />
+                    <h3 className="text-[14px] text-slate-200">{`${"86 9 8161-8474"}`}</h3>
+                  </div>
+                </div>
+                <div className="col-start-3 flex w-full flex-col items-center justify-center gap-3">
+                  <div className="badge-secondary badge">{`${proposta.Proposta.length} propostas`}</div>
+                  <div className="btn-accent btn-xs btn flex gap-2">
+                    Ver
+                    <ArrowRight size={18} />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Tabs.Content>
       <Tabs.Content value="pickTheDay" className="h-96 w-full">
         <div className="card flex h-full w-full items-center bg-base-100 shadow-xl">
           Escolha o dia
+          <DateCalendarServerRequest></DateCalendarServerRequest>
         </div>
       </Tabs.Content>
     </Tabs.Root>
   );
 };
-
-{
-  /* <div className="card card-compact w-full">
-<div className="card-compact card-body flex justify-between">
-  <div className="flex justify-between">
-    <div className=" card-title text-slate-50">
-      <User size={22} />
-      Luciano
-    </div>
-    <div className="badge-secondary badge">3 propostas</div>
-  </div>
-  <div className="flex h-auto items-end gap-2">
-    <Phone size={22} color="white" />
-    <h3 className="text-slate-200">{`${"86 9 8161-8474"}`}</h3>
-  </div>
-  <div className="flex h-auto items-end gap-2">
-    <CalendarBlank size={22} color="white" />
-    <h3 className="text-slate-200">{`${"20/04/2023"}`}</h3>
-  </div>
-</div>
-</div> */
-}
-
-// hoje: {
-//   clientes: [
-// {    aurindo: [
-//       proposta01,
-//       proposta02,
-//       proposta03]}
-//     ]
-// },
-// 3 dias :
-//     aurindo: [
-//       proposta01
-//     ]
-//
-// ,
-// primeiro pego a lista de clientes que fizeram proposta nos ultimos 7 dias
-// depois pego a lista de propostas de cada cliente
-// depois filtro as propostas por data

@@ -1,6 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { z } from "zod";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const BRAZIL_TIMEZONE = "America/Sao_Paulo";
 
 export const propostaRouter = router({
   lookPropostasByUser: protectedProcedure.query(async ({ ctx }) => {
@@ -87,7 +93,6 @@ export const propostaRouter = router({
           },
         });
         if (createdClient) {
-          console.log(createdClient.id);
           await ctx.prisma.proposta.create({
             data: {
               ClientInterestedId: createdClient.id,
@@ -101,66 +106,135 @@ export const propostaRouter = router({
       }
     }),
   lookForAllProposta: protectedProcedure.query(async ({ ctx }) => {
-    const allPropostasDuringSevenDays = await ctx.prisma.proposta.findMany({
-      where: {
-        sellerIdClerk: ctx.auth.userId!,
-        createdAt: {
-          gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+    const date = dayjs(new Date());
+    const sevenDaysAgo = dayjs()
+      .tz(BRAZIL_TIMEZONE)
+      .subtract(7, "day")
+      .toDate();
+    const threeDaysAgo = dayjs()
+      .tz(BRAZIL_TIMEZONE)
+      .subtract(3, "day")
+      .toDate();
+    const today = dayjs().tz(BRAZIL_TIMEZONE).toDate();
+    const startOfDay = date.startOf("day").tz(BRAZIL_TIMEZONE).toDate();
+    const endOfDay = date.endOf("day").tz(BRAZIL_TIMEZONE).toDate();
+    return {
+      today: await ctx.prisma.client.findMany({
+        where: {
+          sellerIdClerk: ctx.auth.userId!,
+          Proposta: {
+            some: {
+              createdAt: {
+                gte: startOfDay,
+                lte: endOfDay,
+              },
+            },
+          },
         },
-      },
-      include: {
-        ClientInterested: true,
-      },
-    });
-    const allClientes = await ctx.prisma.client.findMany({
-      where: {
-        sellerIdClerk: ctx.auth.userId!,
-      },
-    });
-    const finalResult = {
-      threeDays: allClientes.map((cliente) => {
-        return {
-          clientName: {
-            name: cliente.firstName,
-            phone: cliente.phone,
-            propostas: allPropostasDuringSevenDays.filter((proposta) => {
-              return (
-                proposta.ClientInterestedId === cliente.id &&
-                proposta.createdAt.getDate() >= new Date().getDate() - 3
-              );
-            }),
+        include: {
+          Proposta: {
+            where: {
+              createdAt: {
+                gte: startOfDay,
+                lte: endOfDay,
+              },
+            },
           },
-        };
+        },
       }),
-      today: allClientes.map((cliente) => {
-        return {
-          clientName: {
-            name: cliente.firstName,
-            phone: cliente.phone,
-            propostas: allPropostasDuringSevenDays.filter((proposta) => {
-              return (
-                proposta.ClientInterestedId === cliente.id &&
-                proposta.createdAt.getDate() === new Date().getDate()
-              );
-            }),
+      threeDays: await ctx.prisma.client.findMany({
+        where: {
+          sellerIdClerk: ctx.auth.userId!,
+          Proposta: {
+            some: {
+              createdAt: {
+                gte: dayjs(threeDaysAgo)
+                  .startOf("day")
+                  .tz(BRAZIL_TIMEZONE)
+                  .toDate(),
+                lt: dayjs(today).endOf("day").tz(BRAZIL_TIMEZONE).toDate(),
+              },
+            },
           },
-        };
+        },
+        include: {
+          Proposta: {
+            where: {
+              createdAt: {
+                gte: dayjs(threeDaysAgo)
+                  .startOf("day")
+                  .tz(BRAZIL_TIMEZONE)
+                  .toDate(),
+                lt: dayjs(today).endOf("day").tz(BRAZIL_TIMEZONE).toDate(),
+              },
+            },
+          },
+        },
       }),
-      sevenDays: allClientes.map((cliente) => {
-        return {
-          clientName: {
-            name: cliente.firstName,
-            phone: cliente.phone,
-            propostas: allPropostasDuringSevenDays.filter((proposta) => {
-              return (
-                proposta.ClientInterestedId === cliente.id &&
-                proposta.createdAt.getDate() >= new Date().getDate() - 7
-              );
-            }),
+      sevenDays: await ctx.prisma.client.findMany({
+        where: {
+          sellerIdClerk: ctx.auth.userId!,
+          Proposta: {
+            some: {
+              createdAt: {
+                gte: dayjs(sevenDaysAgo)
+                  .startOf("day")
+                  .tz(BRAZIL_TIMEZONE)
+                  .toDate(),
+                lt: dayjs(today).endOf("day").tz(BRAZIL_TIMEZONE).toDate(),
+              },
+            },
           },
-        };
+        },
+        include: {
+          Proposta: {
+            where: {
+              createdAt: {
+                gte: dayjs(sevenDaysAgo)
+                  .startOf("day")
+                  .tz(BRAZIL_TIMEZONE)
+                  .toDate(),
+                lt: dayjs(today).endOf("day").tz(BRAZIL_TIMEZONE).toDate(),
+              },
+            },
+          },
+        },
       }),
     };
-    return finalResult;
   }),
+  getPropostaByDay: protectedProcedure
+    .input(
+      z.object({
+        date: z.date(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const date = dayjs(input.date);
+      const startOfDay = date.startOf("day").tz(BRAZIL_TIMEZONE).toDate();
+      const endOfDay = date.endOf("day").tz(BRAZIL_TIMEZONE).toDate();
+      const clients = await ctx.prisma.client.findMany({
+        where: {
+          sellerIdClerk: ctx.auth.userId!,
+          Proposta: {
+            some: {
+              createdAt: {
+                gte: startOfDay,
+                lte: endOfDay,
+              },
+            },
+          },
+        },
+        include: {
+          Proposta: {
+            where: {
+              createdAt: {
+                gte: startOfDay,
+                lte: endOfDay,
+              },
+            },
+          },
+        },
+      });
+      return clients;
+    }),
 });
