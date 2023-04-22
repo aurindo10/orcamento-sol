@@ -157,7 +157,9 @@ export const UltimosOrcamentosTab = () => {
           <DateCalendarServerRequest></DateCalendarServerRequest>
         </div>
         {propostas.map((proposta) => {
-          return <ClientCard proposta={proposta}></ClientCard>;
+          return (
+            <ClientCard proposta={proposta} key={proposta.id}></ClientCard>
+          );
         })}
       </Tabs.Content>
     </Tabs.Root>
