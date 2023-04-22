@@ -3,7 +3,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { api } from "utils/api";
 export const UltimosOrcamentosTab = () => {
   const { data: allPropostasByUser, status } =
-    api.proposta.lookPropostasByUser.useQuery();
+    api.proposta.lookForAllProposta.useQuery();
   if (status === "loading") return <div>Carregando...</div>;
   return (
     <Tabs.Root className="flex flex-col items-center">
@@ -38,17 +38,20 @@ export const UltimosOrcamentosTab = () => {
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="today" className="w-full">
-        <div className="card h-96 bg-slate-600 px-4 py-4">
-          {allPropostasByUser?.map((proposta) => {
+        <div className="card h-full bg-slate-600 px-4 py-4">
+          {allPropostasByUser?.today.map((proposta) => {
             return (
-              <div className="card grid  w-full grid-cols-3 grid-rows-1  px-2 py-4 shadow-xl">
+              <div
+                className="card grid  w-full grid-cols-3 grid-rows-1  px-2 py-4 shadow-xl"
+                key={proposta.clientName.propostas[0]?.id}
+              >
                 <div className="col-span-2 col-start-1 flex flex-col gap-1">
                   <div className="flex gap-2 text-[19px] font-bold">
                     <div className="w-[22px]">
                       <User size={22} color="white" />
                     </div>
                     <h1 className="text-slate-50">
-                      {proposta.clientInfo.name}
+                      {proposta.clientName.name}
                     </h1>
                   </div>
                   <div className="calendar flex h-auto items-end gap-2">
@@ -61,7 +64,7 @@ export const UltimosOrcamentosTab = () => {
                   </div>
                 </div>
                 <div className="col-start-3 flex w-full flex-col items-center justify-center gap-3">
-                  <div className="badge-secondary badge">3 propostas</div>
+                  <div className="badge-secondary badge">{`${proposta.clientName.propostas.length} propostas`}</div>
                   <div className="btn-accent btn-xs btn flex gap-2">
                     Ver
                     <ArrowRight size={18} />
@@ -112,3 +115,21 @@ export const UltimosOrcamentosTab = () => {
 </div>
 </div> */
 }
+
+// hoje: {
+//   clientes: [
+// {    aurindo: [
+//       proposta01,
+//       proposta02,
+//       proposta03]}
+//     ]
+// },
+// 3 dias :
+//     aurindo: [
+//       proposta01
+//     ]
+//
+// ,
+// primeiro pego a lista de clientes que fizeram proposta nos ultimos 7 dias
+// depois pego a lista de propostas de cada cliente
+// depois filtro as propostas por data

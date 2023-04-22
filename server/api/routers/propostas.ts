@@ -100,4 +100,67 @@ export const propostaRouter = router({
         }
       }
     }),
+  lookForAllProposta: protectedProcedure.query(async ({ ctx }) => {
+    const allPropostasDuringSevenDays = await ctx.prisma.proposta.findMany({
+      where: {
+        sellerIdClerk: ctx.auth.userId!,
+        createdAt: {
+          gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+        },
+      },
+      include: {
+        ClientInterested: true,
+      },
+    });
+    const allClientes = await ctx.prisma.client.findMany({
+      where: {
+        sellerIdClerk: ctx.auth.userId!,
+      },
+    });
+    const finalResult = {
+      threeDays: allClientes.map((cliente) => {
+        return {
+          clientName: {
+            name: cliente.firstName,
+            phone: cliente.phone,
+            propostas: allPropostasDuringSevenDays.filter((proposta) => {
+              return (
+                proposta.ClientInterestedId === cliente.id &&
+                proposta.createdAt.getDate() >= new Date().getDate() - 3
+              );
+            }),
+          },
+        };
+      }),
+      today: allClientes.map((cliente) => {
+        return {
+          clientName: {
+            name: cliente.firstName,
+            phone: cliente.phone,
+            propostas: allPropostasDuringSevenDays.filter((proposta) => {
+              return (
+                proposta.ClientInterestedId === cliente.id &&
+                proposta.createdAt.getDate() === new Date().getDate()
+              );
+            }),
+          },
+        };
+      }),
+      sevenDays: allClientes.map((cliente) => {
+        return {
+          clientName: {
+            name: cliente.firstName,
+            phone: cliente.phone,
+            propostas: allPropostasDuringSevenDays.filter((proposta) => {
+              return (
+                proposta.ClientInterestedId === cliente.id &&
+                proposta.createdAt.getDate() >= new Date().getDate() - 7
+              );
+            }),
+          },
+        };
+      }),
+    };
+    return finalResult;
+  }),
 });
