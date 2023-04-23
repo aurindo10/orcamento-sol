@@ -4,6 +4,8 @@ import type { NextPage } from "next/types";
 import { ReactElement, ReactNode } from "react";
 import "../styles/globals.css";
 import { api } from "utils/api";
+import { Analytics } from "@vercel/analytics/react";
+
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
@@ -19,6 +21,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
   return (
     <div className="h-full min-h-screen bg-slate-900">
       <ClerkProvider {...pageProps}>{layout}</ClerkProvider>
+      <Analytics />
       <div className="bg-slate-900 py-8 md:py-12"></div>
     </div>
   );
