@@ -3,6 +3,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { useStore } from "bearStore";
 import { ClientCard } from "components/molecules/ClientCard";
 import { DateCalendarServerRequest } from "components/organisms/Calendar";
+import { useState } from "react";
 import { api } from "utils/api";
 export const UltimosOrcamentosTab = () => {
   const [propostas, updatePropostas, updateLoading, loadingClient] = useStore(
@@ -15,34 +16,58 @@ export const UltimosOrcamentosTab = () => {
   );
   const { data: allPropostasByUser, status } =
     api.proposta.lookForAllProposta.useQuery();
+  const [value, setValue] = useState("today");
   if (status === "loading") return <div>Carregando propostas...</div>;
   return (
-    <Tabs.Root className="flex flex-col items-center">
+    <Tabs.Root
+      className="flex flex-col items-center"
+      defaultValue="today"
+      onValueChange={(value: string) => {
+        setValue(value);
+        console.log(value === "today");
+      }}
+    >
       <Tabs.List className="mb-2 space-x-2">
         <Tabs.Trigger value="today" className="">
           <div className="flex flex-col items-center">
-            <span className="btn-outline btn-accent  btn-xs btn mb-0  rounded-t-lg px-2">
+            <span
+              className={`olaaa btn-outline btn-accent btn-xs btn mb-0 rounded-t-lg px-2 ${
+                value === "today" ? "btn-active" : ""
+              }`}
+            >
               Hoje
             </span>
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger value="threeDays">
           <div className="flex flex-col items-center">
-            <span className="btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2">
+            <span
+              className={`btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2 ${
+                value === "threeDays" ? "btn-active" : ""
+              }`}
+            >
               3 dias
             </span>
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger value="sevenDays">
           <div className="flex flex-col items-center">
-            <span className="btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2">
+            <span
+              className={`btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2 ${
+                value === "sevenDays" ? "btn-active" : ""
+              }`}
+            >
               7 dias
             </span>
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger value="pickTheDay">
           <div className="flex flex-col items-center">
-            <span className="btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2">
+            <span
+              className={`btn-outline btn-accent  btn-xs btn mb-0 rounded-t-lg  px-2 ${
+                value === "pickTheDay" ? "btn-active" : ""
+              }`}
+            >
               Escolha o dia
             </span>
           </div>
