@@ -17,7 +17,8 @@ export const UltimosOrcamentosTab = () => {
   const { data: allPropostasByUser, status } =
     api.proposta.lookForAllProposta.useQuery();
   const [value, setValue] = useState("today");
-  if (status === "loading") return <div>Carregando propostas...</div>;
+  if (status === "loading")
+    return <div className="text-slate-50">Carregando propostas...</div>;
   return (
     <Tabs.Root
       className="flex flex-col items-center"
