@@ -1,4 +1,10 @@
-import { ArrowRight, CalendarBlank, Phone, User } from "@phosphor-icons/react";
+import {
+  ArrowRight,
+  CalendarBlank,
+  CaretDown,
+  Phone,
+  User,
+} from "@phosphor-icons/react";
 import { PostCreateInput } from "components/organisms/Calendar";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -7,6 +13,7 @@ interface ClientCardProps {
   proposta: PostCreateInput[0];
 }
 export const ClientCard = ({ proposta }: ClientCardProps) => {
+  const dataFormatada = dayjs(proposta.createdAt).format("DD/MM/YYYY");
   const [open, setOpen] = useState("collapse-close");
   return (
     <div className={`collapse ${open}`}>
@@ -30,25 +37,25 @@ export const ClientCard = ({ proposta }: ClientCardProps) => {
             </div>
             <div className="calendar flex h-auto items-end gap-2">
               <CalendarBlank size={22} color="white" />
-              <h3 className="text-[14px] text-slate-200">{`${"20/04/2023"}`}</h3>
+              <h3 className="text-[14px] text-slate-200">{`${dataFormatada}`}</h3>
             </div>
             <div className="flex items-end gap-2">
               <Phone size={22} color="white" />
-              <h3 className="text-[14px] text-slate-200">{`${"86 9 8161-8474"}`}</h3>
+              <h3 className="text-[14px] text-slate-200">{`${proposta.phone}`}</h3>
             </div>
           </div>
           <div className="col-start-3 flex w-full flex-col items-center justify-center gap-3">
             <div className="badge-secondary badge">{`${proposta.Proposta.length} propostas`}</div>
             <div className="btn-accent btn-xs btn flex gap-2">
               Ver
-              <ArrowRight size={18} />
+              <CaretDown size={18} />
             </div>
           </div>
         </div>
       </div>
       <div className="collapse-content">
         {proposta.Proposta.map((consulta) => {
-          const dataFormatada = dayjs(proposta.createdAt).format("DD/MM/YYYY");
+          const dataFormatada = dayjs(consulta.createdAt).format("DD/MM/YYYY");
           return (
             <div className="flex justify-between px-6 py-1" key={consulta.id}>
               <h1 className="text-[14px] text-slate-50">{dataFormatada}</h1>

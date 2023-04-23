@@ -47,14 +47,16 @@ const customTheme = createTheme({
 });
 
 export const DateCalendarServerRequest = () => {
-  const [propostas, updatePropostas] = useStore((state) => [
+  const [propostas, updatePropostas, updateLoading] = useStore((state) => [
     state.propostas,
     state.updatePropostas,
+    state.updateLoading,
   ]);
   const BRAZIL_TIMEZONE = "America/Sao_Paulo";
   const { mutateAsync: getPropostaByDay } =
     api.proposta.getPropostaByDay.useMutation();
   const handleDayChange = async (date: Dayjs | null) => {
+    updateLoading(true);
     if (date) {
       const localDate = date.tz(BRAZIL_TIMEZONE);
       const jsDate = localDate.toDate();
@@ -62,6 +64,7 @@ export const DateCalendarServerRequest = () => {
         date: jsDate,
       });
       if (clientFromServer) {
+        updateLoading(false);
         updatePropostas(clientFromServer);
       }
     } else {
