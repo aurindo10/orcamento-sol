@@ -14,6 +14,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Link from "next/link";
 import {
   AlignBottom,
+  FileCloud,
   HandCoins,
   PresentationChart,
   ShoppingCart,
@@ -116,10 +117,10 @@ export default function ResponsiveDrawer(props: Props) {
             <ListItem disablePadding>
               <ListItemButton>
                 <div className="mr-4 text-slate-50">
-                  <PresentationChart size={32} />
+                  <FileCloud size={32} />
                 </div>
                 <label className="font-cabin font-bold text-slate-50">
-                  Propostas
+                  Minhas Propostas
                 </label>
               </ListItemButton>
             </ListItem>
