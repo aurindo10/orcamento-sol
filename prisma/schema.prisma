@@ -65,15 +65,3 @@ model Proposta {
     roofType String?
     @@index([ClientInterestedId])
 }
-
-model Precificacao {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    sellerIdClerk String?
-    type String?
-    price Float?
-    minPower Float?
-    maxPower Float?
-    percent Float?
-    power Float?   
-}
