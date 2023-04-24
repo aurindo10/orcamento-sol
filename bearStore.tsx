@@ -19,6 +19,7 @@ type usePrecificationStore = {
   precifications: GetAllPrecifications;
   setPrecifications: (precifications: GetAllPrecifications) => void;
   addPrecifications: (precifications: GetAllPrecifications[0]) => void;
+  deleteOnedPrecification: (precification: GetAllPrecifications[0]) => void;
 };
 
 export const useStore = create<BearStore>((set) => ({
@@ -34,5 +35,11 @@ export const usePrecificationStore = create(
       set((state) => state.precifications.push(precifications)),
     setPrecifications: (precifications) =>
       set({ precifications: precifications }),
+    deleteOnedPrecification: (precification) =>
+      set((state) => {
+        state.precifications = state.precifications.filter((item) => {
+          return item.id !== precification.id;
+        });
+      }),
   }))
 );
