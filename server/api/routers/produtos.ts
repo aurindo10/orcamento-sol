@@ -190,8 +190,58 @@ export const productRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const products = input.data;
+      const pricificationTable = await ctx.prisma.precificacao.findMany();
+      const perKwp = pricificationTable.filter((precification) => {
+        return precification.type === "perKwp";
+      });
+      const perRangeKwp = pricificationTable.filter((precification) => {
+        return precification.type === "perRangeKwp";
+      });
+      const fixedValue = pricificationTable.filter((precification) => {
+        return precification.type === "fixedValue";
+      });
+      const percentByTotal = pricificationTable.filter((precification) => {
+        return precification.type === "percentByTotal";
+      });
+      const amountPanel = pricificationTable.filter((precification) => {
+        return precification.type === "percentByTotal";
+      });
       const addedProducts = await ctx.prisma.$transaction(
-        products.map((product) => ctx.prisma.product.create({ data: product }))
+        products.map((product) => {
+          // perKwp
+          for (let i = 0; i < perKwp.length; i += 1) {
+            if (
+              perKwp[i]!.minPower! <= product.power &&
+              perKwp[i]!.maxPower! > product.power
+            ) {
+              product.price += perKwp[i]!.price! * product.power;
+            }
+          }
+          // perRangeKwp
+          for (let i = 0; i < perKwp.length; i += 1) {
+            if (
+              perRangeKwp[i]!.minPower! <= product.power &&
+              perRangeKwp[i]!.maxPower! > product.power
+            ) {
+              product.price += perRangeKwp[i]!.price!;
+            }
+          }
+          // fixedValue
+          for (let i = 0; i < fixedValue.length; i += 1) {
+            product.price += fixedValue[i]!.price!;
+          }
+          // percentByTotal
+          let allPercent = 0;
+          for (let i = 0; i < percentByTotal.length; i += 1) {
+            allPercent += percentByTotal[i]?.percent!;
+          }
+          product.price = product.price / (1 - allPercent / 100);
+          // amountPanel
+          for (let i = 0; i < amountPanel.length; i += 1) {
+            product.price += amountPanel[i]!.price! * (product.power / 0.335);
+          }
+          return ctx.prisma.product.create({ data: product });
+        })
       );
       return addedProducts;
     }),
