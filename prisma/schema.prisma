@@ -75,5 +75,6 @@ model Precificacao {
     minPower Float?
     maxPower Float?
     percent Float?
-    power Float?   
+    power Float?
+    descricao String?   
 }

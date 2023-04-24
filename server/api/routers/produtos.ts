@@ -204,7 +204,7 @@ export const productRouter = router({
         return precification.type === "percentByTotal";
       });
       const amountPanel = pricificationTable.filter((precification) => {
-        return precification.type === "percentByTotal";
+        return precification.type === "amountPanel";
       });
       const addedProducts = await ctx.prisma.$transaction(
         products.map((product) => {
