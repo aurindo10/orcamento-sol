@@ -33,4 +33,18 @@ export const precificacaoRouter = router({
     const getAllPrecifications = await ctx.prisma.precificacao.findMany();
     return getAllPrecifications;
   }),
+  dellPrecification: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const dellPrecification = await ctx.prisma.precificacao.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return dellPrecification;
+    }),
 });

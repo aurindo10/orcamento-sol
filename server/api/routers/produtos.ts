@@ -191,6 +191,7 @@ export const productRouter = router({
     .mutation(async ({ ctx, input }) => {
       const products = input.data;
       const pricificationTable = await ctx.prisma.precificacao.findMany();
+      console.log(pricificationTable);
       const perKwp = pricificationTable.filter((precification) => {
         return precification.type === "perKwp";
       });
@@ -210,20 +211,21 @@ export const productRouter = router({
         products.map((product) => {
           // perKwp
           for (let i = 0; i < perKwp.length; i += 1) {
+            console.log(perKwp[i]);
             if (
-              perKwp[i]!.minPower! <= product.power &&
-              perKwp[i]!.maxPower! > product.power
+              perKwp[i]?.minPower! <= product.power &&
+              perKwp[i]?.maxPower! > product.power
             ) {
-              product.price += perKwp[i]!.price! * product.power;
+              product.price += perKwp[i]?.price! * product.power;
             }
           }
           // perRangeKwp
           for (let i = 0; i < perKwp.length; i += 1) {
             if (
-              perRangeKwp[i]!.minPower! <= product.power &&
-              perRangeKwp[i]!.maxPower! > product.power
+              perRangeKwp[i]?.minPower! <= product.power &&
+              perRangeKwp[i]?.maxPower! > product.power
             ) {
-              product.price += perRangeKwp[i]!.price!;
+              product.price += perRangeKwp[i]?.price!;
             }
           }
           // fixedValue

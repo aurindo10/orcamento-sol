@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { usePrecificationStore } from "bearStore";
 import { useForm, Controller } from "react-hook-form";
 import { AppRouter } from "server/api/root";
 import { api } from "utils/api";
@@ -19,6 +20,12 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export const PrecificacaoForm = () => {
+  const [precifications, setPrecifications, addPrecifications] =
+    usePrecificationStore((state) => [
+      state.precifications,
+      state.setPrecifications,
+      state.addPrecifications,
+    ]);
   const { mutateAsync: createParameter } =
     api.precificaca.createParameter.useMutation();
   const {
@@ -32,6 +39,7 @@ export const PrecificacaoForm = () => {
   const onSubmit = async (data: FormData) => {
     console.log("ssasa");
     const createdParameter = await createParameter(data);
+    addPrecifications(createdParameter);
     reset();
   };
   console.log(errors);

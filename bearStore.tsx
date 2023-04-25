@@ -32,7 +32,9 @@ export const usePrecificationStore = create(
   immer<usePrecificationStore>((set) => ({
     precifications: [],
     addPrecifications: (precifications) =>
-      set((state) => state.precifications.push(precifications)),
+      set((state) => {
+        state.precifications.push(precifications);
+      }),
     setPrecifications: (precifications) =>
       set({ precifications: precifications }),
     deleteOnedPrecification: (precification) =>
