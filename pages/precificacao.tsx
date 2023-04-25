@@ -4,12 +4,14 @@ import Drawer from "components/molecules/Drawer";
 import { ProductPage } from "˜/withsidebar/(adminPages)/produtos/page";
 import { PrecificacaoForm } from "components/templates/PrecificacaoForm";
 import { TableOfParameters } from "components/organisms/TableOfParameters";
+import { SecondTableOfParams } from "components/organisms/SecondTableOfParams";
 
 const Page: NextPageWithLayout = () => {
   return (
     <div>
-      <PrecificacaoForm></PrecificacaoForm>
-      <TableOfParameters></TableOfParameters>
+      {/* <PrecificacaoForm></PrecificacaoForm> */}
+      <SecondTableOfParams></SecondTableOfParams>
+      {/* <TableOfParameters></TableOfParameters> */}
     </div>
   );
 };

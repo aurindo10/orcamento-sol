@@ -12,9 +12,11 @@ export const precificacaoRouter = router({
         maxPower: z.number(),
         price: z.number(),
         percent: z.number(),
+        descricaoId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      console.log(input.descricaoId);
       const createParameter = await ctx.prisma.precificacao.create({
         data: {
           descricao: input.descricao,
@@ -25,6 +27,7 @@ export const precificacaoRouter = router({
           sellerIdClerk: ctx.auth.userId,
           price: input.price,
           percent: input.percent,
+          descricaoId: input.descricaoId,
         },
       });
       return createParameter;
