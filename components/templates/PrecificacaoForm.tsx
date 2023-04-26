@@ -14,7 +14,6 @@ const FormSchema = z.object({
   type: z.string().min(1, "Tipo é obrigatório"),
   minPower: z.number().min(0, "Potência mínima é obrigatório"),
   maxPower: z.number().min(0, "Potência máxima é obrigatório"),
-  descricao: z.string().min(1, "Descrição é obrigatório"),
   percent: z.number().min(0, "Percentual é obrigatório"),
 });
 type FormData = z.infer<typeof FormSchema>;
@@ -62,6 +61,7 @@ export const PrecificacaoForm = ({
         id="my-modal-3"
         className="modal-toggle"
         checked={open}
+        readOnly
       />
       <div className="modal">
         <div className="modal-box relative">
@@ -74,23 +74,6 @@ export const PrecificacaoForm = ({
           </label>
           <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex w-full flex-col items-start">
-              <label className="label">
-                <span className="label-text">Descrição</span>
-              </label>
-              <Controller
-                name="descricao"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    placeholder="0.01"
-                    className=" input w-full max-w-xl"
-                  />
-                )}
-              />
-
               <label className="label">
                 <span className="label-text">Escolha o tipo de parâmetro</span>
               </label>

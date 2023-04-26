@@ -1,5 +1,7 @@
 import { usePrecificationSecondStore } from "bearStore";
+import { DeleteModalParametroMaster } from "components/molecules/DeleteModalDescricao";
 import { DeleteModalParam } from "components/molecules/DeleteParmModal";
+import { DescricaoCard } from "components/molecules/DescricaoCar";
 import { PrecificacaoForm } from "components/templates/PrecificacaoForm";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
@@ -7,8 +9,11 @@ import { api } from "utils/api";
 export const SecondTableOfParams = () => {
   const [name, setName] = useState("");
   const [openModaldelete, setOpenModaldelete] = useState(false);
-  const [descricao, setDescricao] = useState("");
+  const [idParametroMaster, setIdParametroMaster] = useState("");
+  const [openModaldeleteparametroMaster, setOpenModaldeleteParametroMaster] =
+    useState(false);
   const [idParametro, setIdParametro] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [open, setOpen] = useState(false);
   const [descricoes, setDescricoes, deleteOnedDescricao, addDescricoes] =
     usePrecificationSecondStore((state) => [
@@ -22,7 +27,6 @@ export const SecondTableOfParams = () => {
   const { mutateAsync: createDescricao } =
     api.descricao.createDescricao.useMutation();
   useEffect(() => {
-    console.log(allDescricaoFromDB);
     if (allDescricaoFromDB) {
       setDescricoes(allDescricaoFromDB);
     }
@@ -35,7 +39,8 @@ export const SecondTableOfParams = () => {
             type="text"
             value={name}
             placeholder="Descrição..."
-            className="input-bordered input w-full max-w-lg"
+            required
+            className="input-bordered input w-full max-w-lg text-slate-50"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
             }
@@ -43,12 +48,16 @@ export const SecondTableOfParams = () => {
           <button
             className="btn-primary btn"
             onClick={async () => {
-              const createdDescricao = await createDescricao({
-                name: name,
-              });
-              if (createdDescricao) {
-                addDescricoes(createdDescricao);
-                setName("");
+              if (name) {
+                const createdDescricao = await createDescricao({
+                  name: name,
+                });
+                if (createdDescricao) {
+                  addDescricoes(createdDescricao);
+                  setName("");
+                }
+              } else {
+                alert("Preencha o campo de descrição");
               }
             }}
           >
@@ -58,57 +67,19 @@ export const SecondTableOfParams = () => {
       </div>
       {descricoes.map((descricao) => {
         return (
-          <div
-            tabIndex={0}
-            className="collapse-arrow rounded-box collapse my-4 border border-base-300 bg-base-100"
-          >
-            <div className="card card-compact grid grid-cols-3">
-              <div className="card-body col-span-2 w-full text-center">
-                <div className="card-title justify-center text-slate-50">
-                  {descricao.name}
-                </div>
-              </div>
-              <div className="col-start-3 flex w-full items-center justify-center">
-                <button
-                  className="btn-secondary btn-square btn"
-                  onClick={() => {
-                    setDescricao(descricao.id);
-                    setOpen(!open);
-                  }}
-                >
-                  criar
-                </button>
-              </div>
-            </div>
-            <div className="collapse-content " key={descricao.id}>
-              {descricao.Precificacao.map((precificacao) => {
-                return (
-                  <div key={precificacao.id} className="grid grid-cols-2">
-                    <div className="">
-                      <p>{`Tipo: ${
-                        precificacao.type === "perKwp" ? "Por kWp" : ""
-                      }`}</p>
-                      <p>{`Min: R$ ${precificacao.minPower}`}</p>
-                      <p>{`Max: R$ ${precificacao.maxPower}`}</p>
-                      <p>{`Valor: R$ ${precificacao.price}`}</p>
-                      <p>{`% sobre total:  ${precificacao.percent}`}</p>
-                    </div>
-                    <div className="flex w-full justify-center">
-                      <button
-                        className="btn-square btn"
-                        onClick={() => {
-                          setIdParametro(precificacao.id);
-                          setOpenModaldelete(true);
-                        }}
-                      >
-                        Del
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <DescricaoCard
+            key={descricao.id}
+            descricaoInfo={descricao}
+            setOpenModaldelete={setOpenModaldelete}
+            setIdParametro={setIdParametro}
+            setOpen={setOpen}
+            setDescricao={setDescricao}
+            open={open}
+            setIdParametroMaster={setIdParametroMaster}
+            setOpenModaldeleteParametroMaster={
+              setOpenModaldeleteParametroMaster
+            }
+          ></DescricaoCard>
         );
       })}
       <DeleteModalParam
@@ -121,6 +92,11 @@ export const SecondTableOfParams = () => {
         open={open}
         setOpen={setOpen}
       ></PrecificacaoForm>
+      <DeleteModalParametroMaster
+        id={idParametroMaster}
+        setOpenModaldeleteParametroMaster={setOpenModaldeleteParametroMaster}
+        openModaldeleteparametroMaster={openModaldeleteparametroMaster}
+      ></DeleteModalParametroMaster>
     </div>
   );
 };

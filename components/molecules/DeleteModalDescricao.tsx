@@ -2,23 +2,23 @@ import { usePrecificationSecondStore } from "bearStore";
 import { api } from "utils/api";
 interface DeleteModalParamProps {
   id: string;
-  openModaldelete: boolean;
-  setOpenModaldelete: (state: boolean) => void;
+  openModaldeleteparametroMaster: boolean;
+  setOpenModaldeleteParametroMaster: (state: boolean) => void;
 }
-export const DeleteModalParam = ({
+export const DeleteModalParametroMaster = ({
   id,
-  openModaldelete,
-  setOpenModaldelete,
+  openModaldeleteparametroMaster,
+  setOpenModaldeleteParametroMaster,
 }: DeleteModalParamProps) => {
-  const [deleteParameter] = usePrecificationSecondStore((state) => [
-    state.deleteParameter,
+  const [deleteOnedDescricao] = usePrecificationSecondStore((state) => [
+    state.deleteOnedDescricao,
   ]);
-  const { mutateAsync: dellPrecification } =
-    api.precificaca.dellPrecification.useMutation();
+  const { mutateAsync: dellDescricao } =
+    api.descricao.deleteDescricao.useMutation();
   const handleDelete = async () => {
-    const deletedParametro = await dellPrecification({ id: id });
-    if (deletedParametro) {
-      deleteParameter(deletedParametro);
+    const deleteDescricao = await dellDescricao({ id: id });
+    if (deleteDescricao) {
+      deleteOnedDescricao(deleteDescricao);
     }
   };
   return (
@@ -27,7 +27,7 @@ export const DeleteModalParam = ({
         type="checkbox"
         id="my-modal-3"
         className="modal-toggle"
-        checked={openModaldelete}
+        checked={openModaldeleteparametroMaster}
         readOnly
       />
       <div className="modal">
@@ -35,26 +35,25 @@ export const DeleteModalParam = ({
           <label
             htmlFor="my-modal-3"
             className="btn-sm btn-circle btn absolute right-2 top-2"
-            onClick={() => setOpenModaldelete(false)}
+            onClick={() => setOpenModaldeleteParametroMaster(false)}
           >
             ✕
           </label>
           <h3 className="text-lg font-bold text-slate-50">
-            Você tem certeza que deseja deletar este parâmetro?
+            Você tem certeza que deseja deletar?
           </h3>
           <button
             className="btn-primary btn"
-            onClick={() => setOpenModaldelete(false)}
+            onClick={() => setOpenModaldeleteParametroMaster(false)}
           >
             Não
           </button>
           <button
             className="btn-primary btn"
             onClick={() => {
-              handleDelete(), setOpenModaldelete(false);
+              handleDelete(), setOpenModaldeleteParametroMaster(false);
             }}
           >
-            {" "}
             Deletar
           </button>
         </div>

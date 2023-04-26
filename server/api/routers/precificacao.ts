@@ -6,7 +6,6 @@ export const precificacaoRouter = router({
   createParameter: protectedProcedure
     .input(
       z.object({
-        descricao: z.string(),
         type: z.string(),
         minPower: z.number(),
         maxPower: z.number(),
@@ -16,10 +15,8 @@ export const precificacaoRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log(input.descricaoId);
       const createParameter = await ctx.prisma.precificacao.create({
         data: {
-          descricao: input.descricao,
           type: input.type,
           minPower: input.minPower,
           maxPower: input.maxPower,

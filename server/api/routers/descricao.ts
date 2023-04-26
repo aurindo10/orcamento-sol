@@ -35,6 +35,9 @@ export const descricaoRouter = router({
         where: {
           id: input.id,
         },
+        include: {
+          Precificacao: true,
+        },
       });
       return deletedDescricao;
     }),

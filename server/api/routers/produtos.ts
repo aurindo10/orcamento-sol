@@ -191,7 +191,6 @@ export const productRouter = router({
     .mutation(async ({ ctx, input }) => {
       const products = input.data;
       const pricificationTable = await ctx.prisma.precificacao.findMany();
-      console.log(pricificationTable);
       const perKwp = pricificationTable.filter((precification) => {
         return precification.type === "perKwp";
       });
@@ -211,7 +210,6 @@ export const productRouter = router({
         products.map((product) => {
           // perKwp
           for (let i = 0; i < perKwp.length; i += 1) {
-            console.log(perKwp[i]);
             if (
               perKwp[i]?.minPower! <= product.power &&
               perKwp[i]?.maxPower! > product.power
