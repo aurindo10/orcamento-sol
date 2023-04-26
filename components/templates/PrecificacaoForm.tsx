@@ -21,8 +21,13 @@ type FormData = z.infer<typeof FormSchema>;
 interface PrecificacaoForm {
   descricao: string;
   open: boolean;
+  setOpen: (state: boolean) => void;
 }
-export const PrecificacaoForm = ({ descricao, open }: PrecificacaoForm) => {
+export const PrecificacaoForm = ({
+  descricao,
+  open,
+  setOpen,
+}: PrecificacaoForm) => {
   const [addPrecifications] = usePrecificationStore((state) => [
     state.addPrecifications,
   ]);
@@ -41,6 +46,7 @@ export const PrecificacaoForm = ({ descricao, open }: PrecificacaoForm) => {
   });
 
   const onSubmit = async (data: FormData) => {
+    setOpen(false);
     const createdParameter = await createParameter({
       descricaoId: descricao,
       ...data,
@@ -62,6 +68,7 @@ export const PrecificacaoForm = ({ descricao, open }: PrecificacaoForm) => {
           <label
             htmlFor="my-modal-3"
             className="btn-sm btn-circle btn absolute right-2 top-2"
+            onClick={() => setOpen(false)}
           >
             ✕
           </label>

@@ -54,6 +54,7 @@ type DescricaoSecondStore = {
   setDescricoes: (descricoes: GetAllDescricoes) => void;
   deleteOnedDescricao: (descricao: GetAllDescricoes[0]) => void;
   addParameter: (parametro: GetAllPrecifications[0]) => void;
+  deleteParameter: (parametro: GetAllPrecifications[0]) => void;
 };
 export const usePrecificationSecondStore = create(
   immer<DescricaoSecondStore>((set) => ({
@@ -75,6 +76,17 @@ export const usePrecificationSecondStore = create(
           return item.id === parameter.descricaoId;
         });
         state.descricoes[IndexToupdate]?.Precificacao?.push(parameter);
+      }),
+    deleteParameter: (parameter) =>
+      set((state) => {
+        const IndexToupdate = state.descricoes.findIndex((item) => {
+          return item.id === parameter.descricaoId;
+        });
+        state.descricoes[IndexToupdate]!.Precificacao = state.descricoes[
+          IndexToupdate
+        ]!.Precificacao.filter((item) => {
+          return item.id !== parameter.id;
+        });
       }),
   }))
 );

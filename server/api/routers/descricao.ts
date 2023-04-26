@@ -28,4 +28,14 @@ export const descricaoRouter = router({
     });
     return getAllDescricao;
   }),
+  deleteDescricao: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const deletedDescricao = await ctx.prisma.descricao.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return deletedDescricao;
+    }),
 });
