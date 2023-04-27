@@ -1,4 +1,5 @@
 import { usePrecificationSecondStore } from "bearStore";
+import { useState } from "react";
 import { api } from "utils/api";
 interface DeleteModalParamProps {
   id: string;
@@ -13,12 +14,17 @@ export const DeleteModalParam = ({
   const [deleteParameter] = usePrecificationSecondStore((state) => [
     state.deleteParameter,
   ]);
+  const [btnLoading, setBtnLoading] = useState("");
+
   const { mutateAsync: dellPrecification } =
     api.precificaca.dellPrecification.useMutation();
   const handleDelete = async () => {
+    setBtnLoading("loading");
     const deletedParametro = await dellPrecification({ id: id });
     if (deletedParametro) {
+      setBtnLoading("");
       deleteParameter(deletedParametro);
+      setOpenModaldelete(false);
     }
   };
   return (
@@ -39,24 +45,25 @@ export const DeleteModalParam = ({
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold text-slate-50">
+          <h3 className="max-w-md text-lg font-bold text-slate-50">
             Você tem certeza que deseja deletar este parâmetro?
           </h3>
-          <button
-            className="btn-primary btn"
-            onClick={() => setOpenModaldelete(false)}
-          >
-            Não
-          </button>
-          <button
-            className="btn-primary btn"
-            onClick={() => {
-              handleDelete(), setOpenModaldelete(false);
-            }}
-          >
-            {" "}
-            Deletar
-          </button>
+          <div className="flex justify-end gap-2 py-4">
+            <button
+              className="btn-primary btn"
+              onClick={() => setOpenModaldelete(false)}
+            >
+              Não
+            </button>
+            <button
+              className={`btn-primary btn ${btnLoading}`}
+              onClick={() => {
+                handleDelete();
+              }}
+            >
+              Deletar
+            </button>
+          </div>
         </div>
       </div>
     </div>

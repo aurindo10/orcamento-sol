@@ -1,4 +1,5 @@
 import { usePrecificationSecondStore } from "bearStore";
+import { useState } from "react";
 import { api } from "utils/api";
 interface DeleteModalParamProps {
   id: string;
@@ -13,12 +14,17 @@ export const DeleteModalParametroMaster = ({
   const [deleteOnedDescricao] = usePrecificationSecondStore((state) => [
     state.deleteOnedDescricao,
   ]);
+  const [btnLoading, setBtnLoading] = useState("");
+
   const { mutateAsync: dellDescricao } =
     api.descricao.deleteDescricao.useMutation();
   const handleDelete = async () => {
+    setBtnLoading("loading");
     const deleteDescricao = await dellDescricao({ id: id });
     if (deleteDescricao) {
       deleteOnedDescricao(deleteDescricao);
+      setBtnLoading("");
+      setOpenModaldeleteParametroMaster(false);
     }
   };
   return (
@@ -39,23 +45,25 @@ export const DeleteModalParametroMaster = ({
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold text-slate-50">
+          <h3 className="max-w-lg text-lg font-bold text-slate-50">
             Você tem certeza que deseja deletar?
           </h3>
-          <button
-            className="btn-primary btn"
-            onClick={() => setOpenModaldeleteParametroMaster(false)}
-          >
-            Não
-          </button>
-          <button
-            className="btn-primary btn"
-            onClick={() => {
-              handleDelete(), setOpenModaldeleteParametroMaster(false);
-            }}
-          >
-            Deletar
-          </button>
+          <div className="flex justify-end gap-2 py-4">
+            <button
+              className="btn-primary btn"
+              onClick={() => setOpenModaldeleteParametroMaster(false)}
+            >
+              Não
+            </button>
+            <button
+              className={`btn-primary btn ${btnLoading}`}
+              onClick={() => {
+                handleDelete();
+              }}
+            >
+              Deletar
+            </button>
+          </div>
         </div>
       </div>
     </div>

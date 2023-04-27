@@ -10,6 +10,7 @@ export const SecondTableOfParams = () => {
   const [name, setName] = useState("");
   const [openModaldelete, setOpenModaldelete] = useState(false);
   const [idParametroMaster, setIdParametroMaster] = useState("");
+  const [btnLoading, setBtnLoading] = useState("");
   const [openModaldeleteparametroMaster, setOpenModaldeleteParametroMaster] =
     useState(false);
   const [idParametro, setIdParametro] = useState("");
@@ -31,6 +32,8 @@ export const SecondTableOfParams = () => {
       setDescricoes(allDescricaoFromDB);
     }
   }, [status, allDescricaoFromDB]);
+  if (status === "loading")
+    return <div className="text-slate-50">Carregando...</div>;
   return (
     <div className="py-4">
       <div className="form-control">
@@ -46,15 +49,17 @@ export const SecondTableOfParams = () => {
             }
           />
           <button
-            className="btn-primary btn"
+            className={`btn-primary btn ${btnLoading}`}
             onClick={async () => {
               if (name) {
+                setBtnLoading("loading");
                 const createdDescricao = await createDescricao({
                   name: name,
                 });
                 if (createdDescricao) {
                   addDescricoes(createdDescricao);
                   setName("");
+                  setBtnLoading("");
                 }
               } else {
                 alert("Preencha o campo de descrição");

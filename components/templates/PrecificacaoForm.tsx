@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { usePrecificationSecondStore, usePrecificationStore } from "bearStore";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { AppRouter } from "server/api/root";
 import { api } from "utils/api";
@@ -27,6 +28,7 @@ export const PrecificacaoForm = ({
   open,
   setOpen,
 }: PrecificacaoForm) => {
+  const [btnLoading, setBtnLoading] = useState("");
   const [addPrecifications] = usePrecificationStore((state) => [
     state.addPrecifications,
   ]);
@@ -45,14 +47,20 @@ export const PrecificacaoForm = ({
   });
 
   const onSubmit = async (data: FormData) => {
-    setOpen(false);
+    setBtnLoading("loading");
     const createdParameter = await createParameter({
       descricaoId: descricao,
       ...data,
     });
-    addParameter(createdParameter);
-    addPrecifications(createdParameter);
-    reset();
+    if (createdParameter) {
+      setBtnLoading("");
+      setOpen(false);
+      addParameter(createdParameter);
+      addPrecifications(createdParameter);
+      reset();
+    } else {
+      alert("Erro ao criar parâmetro");
+    }
   };
   return (
     <div key={descricao}>
@@ -198,7 +206,7 @@ export const PrecificacaoForm = ({
               </label>
               <div className="flex w-full max-w-xl justify-center">
                 <button
-                  className="btn-primary btn mt-4 max-w-md  text-slate-50"
+                  className={`btn-primary btn mt-4 max-w-md  text-slate-50 ${btnLoading}`}
                   type="submit"
                   key={descricao}
                 >
