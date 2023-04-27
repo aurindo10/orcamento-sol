@@ -230,16 +230,18 @@ export const productRouter = router({
           for (let i = 0; i < fixedValue.length; i += 1) {
             product.price += fixedValue[i]!.price!;
           }
+          // amountPanel
+          for (let i = 0; i < amountPanel.length; i += 1) {
+            product.price += amountPanel[i]!.price! * (product.power / 0.5);
+          }
           // percentByTotal
           let allPercent = 0;
           for (let i = 0; i < percentByTotal.length; i += 1) {
             allPercent += percentByTotal[i]?.percent!;
           }
-          product.price = product.price / (1 - allPercent / 100);
-          // amountPanel
-          for (let i = 0; i < amountPanel.length; i += 1) {
-            product.price += amountPanel[i]!.price! * (product.power / 0.335);
-          }
+          const e = allPercent / 100;
+          const d = 1 - e;
+          product.price = product.price / d;
           return ctx.prisma.product.create({ data: product });
         })
       );

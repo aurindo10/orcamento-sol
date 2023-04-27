@@ -1,7 +1,7 @@
 import { usePrecificationSecondStore } from "bearStore";
 import { DeleteModalParametroMaster } from "components/molecules/DeleteModalDescricao";
 import { DeleteModalParam } from "components/molecules/DeleteParmModal";
-import { DescricaoCard } from "components/molecules/DescricaoCar";
+import { DescricaoCard } from "components/molecules/DescricaoCard";
 import { PrecificacaoForm } from "components/templates/PrecificacaoForm";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";

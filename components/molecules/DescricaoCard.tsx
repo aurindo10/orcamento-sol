@@ -79,7 +79,17 @@ export const DescricaoCard = ({
                 >
                   <div className="">
                     <p>{`Tipo: ${
-                      precificacao.type === "perKwp" ? "Por kWp" : ""
+                      precificacao.type === "perKwp"
+                        ? "Por kWp"
+                        : precificacao.type === "perRangeKwp"
+                        ? "Por faixa de Potência"
+                        : precificacao.type === "fixedValue"
+                        ? "Valor fixo"
+                        : precificacao.type === "percentByTotal"
+                        ? "Percentual sobre o total"
+                        : precificacao.type === "amountPanel"
+                        ? "Quantidade de paineis"
+                        : ""
                     }`}</p>
                     <p>{`Min: ${precificacao.minPower} kWp`}</p>
                     <p>{`Max: ${precificacao.maxPower} kWp`}</p>

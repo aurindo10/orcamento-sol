@@ -83,7 +83,7 @@ export const PrecificacaoForm = ({
                 defaultValue=""
                 render={({ field }) => (
                   <select
-                    className="select-bordered select w-full max-w-xl"
+                    className="select-bordered select w-full max-w-xl text-slate-50"
                     {...field}
                     onChange={(e) =>
                       field.onChange(e.target.value ? e.target.value : "")
@@ -105,7 +105,7 @@ export const PrecificacaoForm = ({
               <label className="label">
                 <span className="label-text">Informe a potência</span>
               </label>
-              <label className="input-group w-full max-w-xl">
+              <label className="input-group w-full max-w-xl  text-slate-50">
                 <Controller
                   name="minPower"
                   control={control}
@@ -115,10 +115,14 @@ export const PrecificacaoForm = ({
                       {...field}
                       type="number"
                       placeholder="0.01"
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value))
-                      }
-                      className="input-bordered input w-full"
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          field.onChange(parseFloat(e.target.value));
+                        } else {
+                          field.onChange(e.target.value);
+                        }
+                      }}
+                      className="input-bordered input w-full  text-slate-50"
                     />
                   )}
                 />
@@ -132,10 +136,14 @@ export const PrecificacaoForm = ({
                       {...field}
                       type="number"
                       placeholder="0.01"
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value))
-                      }
-                      className="input-bordered input w-full"
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          field.onChange(parseFloat(e.target.value));
+                        } else {
+                          field.onChange(e.target.value);
+                        }
+                      }}
+                      className="input-bordered input w-full text-slate-50"
                     />
                   )}
                 />
@@ -144,7 +152,7 @@ export const PrecificacaoForm = ({
               <label className="label">
                 <span className="label-text">Valor</span>
               </label>
-              <label className="input-group max-w-xl">
+              <label className="input-group max-w-xl  text-slate-50">
                 <Controller
                   name="price"
                   control={control}
@@ -153,11 +161,15 @@ export const PrecificacaoForm = ({
                     <input
                       {...field}
                       type="number"
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value))
-                      }
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          field.onChange(parseFloat(e.target.value));
+                        } else {
+                          field.onChange(e.target.value);
+                        }
+                      }}
                       placeholder="0.01"
-                      className="input-bordered input w-full"
+                      className="input-bordered input w-full  text-slate-50"
                     />
                   )}
                 />
@@ -170,11 +182,15 @@ export const PrecificacaoForm = ({
                     <input
                       {...field}
                       type="number"
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value))
-                      }
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          field.onChange(parseFloat(e.target.value));
+                        } else {
+                          field.onChange(e.target.value);
+                        }
+                      }}
                       placeholder="0.01"
-                      className="input-bordered input w-full"
+                      className="input-bordered input w-full  text-slate-50"
                     />
                   )}
                 />
@@ -182,7 +198,7 @@ export const PrecificacaoForm = ({
               </label>
               <div className="flex w-full max-w-xl justify-center">
                 <button
-                  className="btn-primary btn mt-4 max-w-md"
+                  className="btn-primary btn mt-4 max-w-md  text-slate-50"
                   type="submit"
                   key={descricao}
                 >
