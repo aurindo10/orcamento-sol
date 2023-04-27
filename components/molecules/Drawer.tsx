@@ -15,6 +15,7 @@ import Link from "next/link";
 import {
   AlignBottom,
   FileCloud,
+  Gear,
   HandCoins,
   PresentationChart,
   ShoppingCart,
@@ -121,6 +122,27 @@ export default function ResponsiveDrawer(props: Props) {
                 </div>
                 <label className="font-cabin font-bold text-slate-50">
                   Minhas Propostas
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
+      </List>
+      <List>
+        {user!.publicMetadata.admin! && (
+          <Link
+            href={"/precificacao"}
+            onClick={() => {
+              setTitle("Precificação"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <Gear size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Precificação
                 </label>
               </ListItemButton>
             </ListItem>

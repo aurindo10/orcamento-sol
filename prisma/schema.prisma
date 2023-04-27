@@ -65,3 +65,28 @@ model Proposta {
     roofType String?
     @@index([ClientInterestedId])
 }
+
+model Precificacao {
+
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    sellerIdClerk String?
+    type String?
+    price Float?
+    minPower Float?
+    maxPower Float?
+    percent Float?
+    power Float?
+    descricao String? 
+    descricaoId String?
+    descricaoRelation Descricao? @relation(fields: [descricaoId], references: [id])
+    @@index([descricaoId])
+}
+
+model Descricao {
+    id String @id @default(cuid())
+    name String?
+    createdAt DateTime @default(now())
+    sellerIdClerk String?
+    Precificacao Precificacao[]
+}

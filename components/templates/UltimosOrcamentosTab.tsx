@@ -25,7 +25,6 @@ export const UltimosOrcamentosTab = () => {
       defaultValue="today"
       onValueChange={(value: string) => {
         setValue(value);
-        console.log(value === "today");
       }}
     >
       <Tabs.List className="mb-2 space-x-2">
