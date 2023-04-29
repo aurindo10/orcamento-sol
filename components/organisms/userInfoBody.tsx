@@ -12,6 +12,16 @@ export const UserInfobody = () => {
   const [propostas, setPropostas] = useState<LookForPropostaByDate>();
   const router = useRouter();
   const { userId } = router.query;
+  useEffect(() => {
+    const lookForProposta = async () => {
+      const data = await lookForPropostaByDate({
+        userId: userId as string,
+        days: days,
+      });
+      setPropostas(data);
+    };
+    lookForProposta();
+  }, [days]);
   if (!userId) return <div className="text-slate-50">Carregando...</div>;
   const { mutateAsync: lookForPropostaByDate } =
     api.proposta.lookForPropostaByDate.useMutation();
@@ -24,16 +34,7 @@ export const UserInfobody = () => {
     });
     setPropostas(data);
   };
-  useEffect(() => {
-    const lookForProposta = async () => {
-      const data = await lookForPropostaByDate({
-        userId: userId as string,
-        days: days,
-      });
-      setPropostas(data);
-    };
-    lookForProposta();
-  }, [days]);
+
   return (
     <div className="mt-8">
       <div className="subHeader flex justify-between">
