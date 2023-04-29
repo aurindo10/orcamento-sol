@@ -3,7 +3,7 @@ import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { z } from "zod";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { subDays } from "date-fns";
+import { startOfDay, subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -260,4 +260,15 @@ export const propostaRouter = router({
       });
       return proposals;
     }),
+  getNumberOfPropostasOfToday: protectedProcedure.query(async ({ ctx }) => {
+    const today = startOfDay(new Date());
+    const count = await ctx.prisma.proposta.count({
+      where: {
+        createdAt: {
+          gte: today,
+        },
+      },
+    });
+    return count;
+  }),
 });

@@ -3,27 +3,11 @@ import { CursorClick, Eye, UserCircle } from "@phosphor-icons/react";
 import { usePropostaStore } from "bearStore";
 // import { c } from "components/templates/OrcamentoForm";
 import { useRouter } from "next/router";
+import { api } from "utils/api";
 
 export const UserInfoHeader = () => {
   const router = useRouter();
   const { name } = router.query;
-  const handleFetch = async () => {
-    // const messages = await c.consume({
-    //   consumerGroupId: "group_1",
-    //   instanceId: "instance_1",
-    //   topics: ["logs"],
-    //   autoOffsetReset: "earliest",
-    // });
-    // const messages = await c.fetch({
-    //   topic: "logs",
-    //   partition: 1,
-    //   offset: 42,
-    //   timeout: 1000,
-    // });
-    // console.log(JSON.stringify(messages));
-    // return JSON.stringify(messages);
-  };
-  handleFetch();
   return (
     <div className="container">
       <div className="mt-2 flex  items-center justify-between px-4 py-2 md:justify-center">
@@ -39,7 +23,7 @@ export const UserInfoHeader = () => {
           </label>
           <div className="stat-value flex justify-around gap-4 text-[38px] font-bold text-orange-600">
             <span className="flex w-full items-center justify-around gap-2">
-              24
+              {24}
               <Eye size={32} />
             </span>
           </div>
