@@ -1,0 +1,80 @@
+import { UserCircle } from "@phosphor-icons/react";
+import { usePropostaStore } from "bearStore";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { RouterOutputs, api } from "utils/api";
+
+export type LookForPropostaByDate =
+  RouterOutputs["proposta"]["lookForPropostaByDate"];
+
+export const UserInfobody = () => {
+  const [days, setDays] = useState(1);
+  const [propostas, setPropostas] = useState<LookForPropostaByDate>();
+  const router = useRouter();
+  const { userId } = router.query;
+  if (!userId) return <div className="text-slate-50">Carregando...</div>;
+  const { mutateAsync: lookForPropostaByDate } =
+    api.proposta.lookForPropostaByDate.useMutation();
+  useEffect(() => {
+    const lookForProposta = async () => {
+      const data = await lookForPropostaByDate({
+        userId: userId as string,
+        days: days,
+      });
+      setPropostas(data);
+    };
+    lookForProposta();
+  }, [days]);
+  const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDays(Number(e.target.value));
+    const data = await lookForPropostaByDate({
+      userId: userId as string,
+      days: Number(e.target.value),
+    });
+    setPropostas(data);
+  };
+  return (
+    <div className="mt-8">
+      <div className="subHeader flex justify-between">
+        <label className="text-[32px] font-bold text-slate-50">Propostas</label>
+        <select
+          className="select-warning select w-28 text-slate-50 "
+          onChange={handleSelect}
+        >
+          <option disabled selected>
+            Dias
+          </option>
+          <option className="" value={1}>
+            Hoje
+          </option>
+          <option value={3}>3 dias</option>
+          <option value={7}>7 dias</option>
+        </select>
+      </div>
+      {propostas?.map((proposta) => {
+        return (
+          <div className="grid grid-cols-3">
+            <div className="col-span-2 mt-2 flex items-center gap-2">
+              <UserCircle size={45} color="white" />
+              <div className="flex flex-col">
+                <label className="text-[24px] font-bold text-orange-600">
+                  {proposta?.ClientInterested?.firstName}
+                </label>
+                <label className="text-[12px] text-slate-50">
+                  Telefone: {proposta?.ClientInterested?.phone}
+                </label>
+                <label className="text-[12px] text-slate-50">
+                  Telhado: {proposta?.roofType}
+                </label>
+              </div>
+            </div>
+            <div className="flex items-center justify-end text-center text-[22px] font-bold text-slate-50">
+              800kWh
+            </div>
+            <div className="col-span-3 mt-2 h-[0.4px] bg-neutral-600"></div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};

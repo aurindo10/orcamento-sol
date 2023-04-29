@@ -19,10 +19,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const layout = getLayout(<Component {...pageProps} />);
   return (
-    <div className="h-full min-h-screen bg-slate-900">
+    <div className="h-full min-h-screen bg-gray-900">
       <ClerkProvider {...pageProps}>{layout}</ClerkProvider>
       <Analytics />
-      <div className="bg-slate-900 py-8 md:py-12"></div>
     </div>
   );
 }

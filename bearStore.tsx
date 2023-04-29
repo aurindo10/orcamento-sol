@@ -90,3 +90,16 @@ export const usePrecificationSecondStore = create(
       }),
   }))
 );
+type Proposta = {
+  id: string;
+  firstName: string;
+};
+type usePropostaStore = {
+  proposta: Proposta;
+  setProposta: (proposta: Proposta) => void;
+};
+export const usePropostaStore = create<usePropostaStore>((set) => ({
+  proposta: { firstName: "", id: "" },
+  setProposta: (state) =>
+    set({ proposta: { firstName: state.firstName, id: state.id } }),
+}));

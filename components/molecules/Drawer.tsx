@@ -15,6 +15,7 @@ import Link from "next/link";
 import {
   AlignBottom,
   FileCloud,
+  Gauge,
   Gear,
   HandCoins,
   PresentationChart,
@@ -143,6 +144,27 @@ export default function ResponsiveDrawer(props: Props) {
                 </div>
                 <label className="font-cabin font-bold text-slate-50">
                   Precificação
+                </label>
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
+      </List>
+      <List>
+        {user!.publicMetadata.masterAdmin! && (
+          <Link
+            href={"/dashboard"}
+            onClick={() => {
+              setTitle("Dashboard"), setMobileOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <div className="mr-4 text-slate-50">
+                  <Gauge size={32} />
+                </div>
+                <label className="font-cabin font-bold text-slate-50">
+                  Painel
                 </label>
               </ListItemButton>
             </ListItem>

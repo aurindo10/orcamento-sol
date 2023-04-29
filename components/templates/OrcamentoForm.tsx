@@ -6,6 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "utils/api";
 import { useState } from "react";
 import { z } from "zod";
+import { Kafka } from "@upstash/kafka";
+import { useUser } from "@clerk/nextjs";
+
+const kafka = new Kafka({
+  url: "https://evolved-toad-5826-us1-rest-kafka.upstash.io",
+  username: "ZXZvbHZlZC10b2FkLTU4MjYkQSkI789q3N4nRDTHDUktLIcBDIureSPBSMORyoA",
+  password: "2e231c364d1044f99a4b584d309a43fa",
+});
+export const p = kafka.producer();
+export const c = kafka.consumer();
 
 const FormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -22,6 +32,7 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function OrcamentoForm() {
+  const { user } = useUser();
   const {
     handleSubmit,
     control,
@@ -41,6 +52,13 @@ export function OrcamentoForm() {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     const { nome, telefone, consumo } = data;
+    const message = [
+      { userId: user?.id },
+      { cliente: data.nome },
+      { telefone: data.telefone },
+      { consumo: data.consumo },
+    ];
+    const res = await p.produce("logs", message);
     const createdClient = await creatProposta({
       firstName: nome,
       consumo: consumo,
@@ -69,7 +87,7 @@ export function OrcamentoForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="md-px-4 flex h-full flex-col items-center bg-slate-900"
+      className="md-px-4 flex h-full flex-col items-center "
     >
       {/* Nome field */}
       <div>

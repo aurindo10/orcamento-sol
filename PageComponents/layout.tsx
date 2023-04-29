@@ -17,7 +17,7 @@ export default function RootLayout({
             <title>Sol Orçamentos</title>
           </head>
           <body className="h-full min-h-screen bg-slate-900">
-            <div className="bg-slate-900 py-8 md:py-12">{children}</div>
+            <div className=" py-8 md:py-12">{children}</div>
           </body>
         </html>
       </ClerkProvider>

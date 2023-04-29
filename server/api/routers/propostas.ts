@@ -3,6 +3,7 @@ import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { z } from "zod";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -236,5 +237,27 @@ export const propostaRouter = router({
         },
       });
       return clients;
+    }),
+  lookForPropostaByDate: protectedProcedure
+    .input(
+      z.object({
+        days: z.number(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const fromDate = subDays(new Date(), input.days);
+      const proposals = await ctx.prisma.proposta.findMany({
+        where: {
+          sellerIdClerk: input.userId,
+          createdAt: {
+            gte: fromDate,
+          },
+        },
+        include: {
+          ClientInterested: true,
+        },
+      });
+      return proposals;
     }),
 });
