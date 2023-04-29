@@ -15,6 +15,15 @@ export const UserInfobody = () => {
   if (!userId) return <div className="text-slate-50">Carregando...</div>;
   const { mutateAsync: lookForPropostaByDate } =
     api.proposta.lookForPropostaByDate.useMutation();
+
+  const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDays(Number(e.target.value));
+    const data = await lookForPropostaByDate({
+      userId: userId as string,
+      days: Number(e.target.value),
+    });
+    setPropostas(data);
+  };
   useEffect(() => {
     const lookForProposta = async () => {
       const data = await lookForPropostaByDate({
@@ -25,14 +34,6 @@ export const UserInfobody = () => {
     };
     lookForProposta();
   }, [days]);
-  const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDays(Number(e.target.value));
-    const data = await lookForPropostaByDate({
-      userId: userId as string,
-      days: Number(e.target.value),
-    });
-    setPropostas(data);
-  };
   return (
     <div className="mt-8">
       <div className="subHeader flex justify-between">
@@ -53,7 +54,7 @@ export const UserInfobody = () => {
       </div>
       {propostas?.map((proposta) => {
         return (
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-3" key={proposta.id}>
             <div className="col-span-2 mt-2 flex items-center gap-2">
               <UserCircle size={45} color="white" />
               <div className="flex flex-col">

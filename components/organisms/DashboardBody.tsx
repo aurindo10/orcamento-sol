@@ -16,7 +16,7 @@ export const Dashboardbody = () => {
       <div className="mt-4 space-y-2">
         {allUsers?.map((user) => {
           return (
-            <div className="user flex justify-between">
+            <div className="user flex justify-between" key={user.id}>
               {}
               <div className="flex">
                 <UserCircle size={55} color="white" />
