@@ -6,16 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "utils/api";
 import { useState } from "react";
 import { z } from "zod";
-import { Kafka } from "@upstash/kafka";
+// import { Kafka } from "@upstash/kafka";
 import { useUser } from "@clerk/nextjs";
 
-const kafka = new Kafka({
-  url: "https://evolved-toad-5826-us1-rest-kafka.upstash.io",
-  username: "ZXZvbHZlZC10b2FkLTU4MjYkQSkI789q3N4nRDTHDUktLIcBDIureSPBSMORyoA",
-  password: "2e231c364d1044f99a4b584d309a43fa",
-});
-export const p = kafka.producer();
-export const c = kafka.consumer();
+// const kafka = new Kafka({
+//   url: "https://evolved-toad-5826-us1-rest-kafka.upstash.io",
+//   username: "ZXZvbHZlZC10b2FkLTU4MjYkQSkI789q3N4nRDTHDUktLIcBDIureSPBSMORyoA",
+//   password: "2e231c364d1044f99a4b584d309a43fa",
+// });
+// export const p = kafka.producer();
+// export const c = kafka.consumer();
 
 const FormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -58,7 +58,7 @@ export function OrcamentoForm() {
       { telefone: data.telefone },
       { consumo: data.consumo },
     ];
-    const res = await p.produce("logs", message);
+    // const res = await p.produce("logs", message);
     const createdClient = await creatProposta({
       firstName: nome,
       consumo: consumo,
