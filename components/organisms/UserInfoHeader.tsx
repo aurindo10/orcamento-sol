@@ -7,7 +7,12 @@ import { api } from "utils/api";
 
 export const UserInfoHeader = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { name, userId } = router.query;
+
+  const { data: numberOfPropostas, status } =
+    api.proposta.getNumberOfPropostasByUser.useQuery({
+      userId: userId ? (userId as string) : "",
+    });
   return (
     <div className="container">
       <div className="mt-2 flex  items-center justify-between px-4 py-2 md:justify-center">
@@ -23,7 +28,7 @@ export const UserInfoHeader = () => {
           </label>
           <div className="stat-value flex justify-around gap-4 text-[38px] font-bold text-orange-600">
             <span className="flex w-full items-center justify-around gap-2">
-              {24}
+              {numberOfPropostas}
               <Eye size={32} />
             </span>
           </div>

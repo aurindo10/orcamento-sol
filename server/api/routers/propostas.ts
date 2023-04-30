@@ -271,4 +271,22 @@ export const propostaRouter = router({
     });
     return count;
   }),
+  getNumberOfPropostasByUser: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const today = startOfDay(new Date());
+      const count = await ctx.prisma.proposta.count({
+        where: {
+          createdAt: {
+            gte: today,
+          },
+          sellerIdClerk: input.userId,
+        },
+      });
+      return count;
+    }),
 });

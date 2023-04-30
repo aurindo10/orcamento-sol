@@ -71,7 +71,7 @@ export const UserInfobody = () => {
               </div>
             </div>
             <div className="flex items-center justify-end text-center text-[22px] font-bold text-slate-50">
-              800kWh
+              {`${proposta.consumo} kWh`}
             </div>
             <div className="col-span-3 mt-2 h-[0.4px] bg-neutral-600"></div>
           </div>
