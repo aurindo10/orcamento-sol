@@ -8,6 +8,7 @@ import { createContext } from "server/api/trpc";
 export default createNextApiHandler({
   router: appRouter,
   createContext: createContext,
+
   onError:
     env.NODE_ENV === "development"
       ? ({ path, error }) => {
