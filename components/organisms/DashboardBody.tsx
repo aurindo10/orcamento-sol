@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import { ArrowRight, UserCircle } from "@phosphor-icons/react";
+import { DashboardbodySkeleton } from "components/Skeletons/DBBodySkeleton";
 import { useRouter } from "next/router";
 import { api } from "utils/api";
 
@@ -7,7 +8,8 @@ export const Dashboardbody = () => {
   const { user } = useUser();
   const router = useRouter();
   const { data: allUsers, status } = api.user.getAllUsers.useQuery();
-  if (status === "loading") return <div>Carregando...</div>;
+  if (status === "loading")
+    return <DashboardbodySkeleton></DashboardbodySkeleton>;
   return (
     <div className="py-4">
       <label className="text-[32px] font-bold text-slate-50">
@@ -17,7 +19,6 @@ export const Dashboardbody = () => {
         {allUsers?.map((user) => {
           return (
             <div className="user flex justify-between" key={user.id}>
-              {}
               <div className="flex">
                 <UserCircle size={55} color="white" />
                 <div className="ml-2">

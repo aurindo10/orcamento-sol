@@ -1,7 +1,9 @@
 import { useUser } from "@clerk/nextjs";
 import { CursorClick, Eye, UserCircle } from "@phosphor-icons/react";
 import { usePropostaStore } from "bearStore";
+import { UserInfoHeaderSkeleton } from "components/Skeletons/UserInfoHeaderSkeleton";
 import { Skeleton } from "components/molecules/skeleton";
+import { stat } from "fs";
 // import { c } from "components/templates/OrcamentoForm";
 import { useRouter } from "next/router";
 import { api } from "utils/api";
@@ -14,6 +16,15 @@ export const UserInfoHeader = () => {
     api.proposta.getNumberOfPropostasByUser.useQuery({
       userId: userId ? (userId as string) : "",
     });
+  const {
+    data: amountOfPropostasPerMonthByUser,
+    status: amountOfPropostasByUserPerMounth,
+  } = api.proposta.getAmountOfPropostasPerMOnthByUser.useQuery({
+    userId: userId?.toString() ?? "",
+  });
+  if (status === "loading") {
+    return <UserInfoHeaderSkeleton></UserInfoHeaderSkeleton>;
+  }
   return (
     <div className="container">
       <div className="mt-2 flex  items-center justify-between px-4 py-2 md:justify-center">
@@ -23,42 +34,32 @@ export const UserInfoHeader = () => {
         </div>
       </div>
       <div className="min-w-36 mt-6 flex justify-between gap-6 md:justify-center">
-        {status === "success" ? (
-          <div className="max-w-40 h-32 w-36 rounded-lg bg-neutral-700">
-            <Skeleton className="h-10 w-14 bg-neutral-500 font-bold"></Skeleton>
-            <div className="stat-value flex justify-around gap-4 text-[38px] font-bold text-orange-600">
-              <Skeleton className="flex w-full items-center justify-around gap-2"></Skeleton>
-            </div>
-            <Skeleton className="text-center text-[14px] font-bold text-neutral-400"></Skeleton>
+        <div className="max-w-40 flex h-32 flex-col justify-center gap-3 rounded-xl bg-neutral-700 px-2 py-4">
+          <label className="text-center text-[14px] font-bold text-neutral-400">
+            Propostas de hoje
+          </label>
+          <div className="stat-value flex justify-around gap-4 text-[38px] font-bold text-orange-600">
+            <span className="flex w-full items-center justify-around gap-2">
+              {numberOfPropostas}
+              <Eye size={32} />
+            </span>
           </div>
-        ) : (
-          <div className="max-w-40 flex h-32 flex-col justify-center gap-3 rounded-xl bg-neutral-700 px-2 py-4">
-            <label className="text-center text-[14px] font-bold text-neutral-400">
-              Propostas de hoje
-            </label>
-            <div className="stat-value flex justify-around gap-4 text-[38px] font-bold text-orange-600">
-              <span className="flex w-full items-center justify-around gap-2">
-                {numberOfPropostas}
-                <Eye size={32} />
-              </span>
-            </div>
-            <label className="text-center text-[14px] font-bold text-neutral-400">
-              Consultas de hoje
-            </label>
-          </div>
-        )}
+          <label className="text-center text-[14px] font-bold text-neutral-400">
+            Consultas de hoje
+          </label>
+        </div>
         <div className="flex h-32 min-w-[140px] max-w-[140px] flex-col justify-center gap-3 rounded-xl bg-neutral-700 px-2 py-4">
           <label className="text-center text-[14px] font-bold text-neutral-400">
-            Cliques
+            Propostas no mês
           </label>
           <div className="stat-value flex justify-center gap-4 text-[38px] font-bold text-orange-600">
             <span className="flex w-full items-center justify-around gap-2">
-              24
+              {amountOfPropostasPerMonthByUser}
               <CursorClick size={32} />
             </span>
           </div>
           <label className="text-center text-[14px] font-bold text-neutral-400">
-            Cliques de hoje
+            Total
           </label>
         </div>
       </div>

@@ -289,4 +289,63 @@ export const propostaRouter = router({
       });
       return count;
     }),
+  getAmountOfPropostasPerMOnth: protectedProcedure.query(async ({ ctx }) => {
+    const currentDate = new Date();
+    const startOfMonth = new Date(
+      Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), 1)
+    );
+    const endOfMonth = new Date(
+      Date.UTC(
+        currentDate.getUTCFullYear(),
+        currentDate.getUTCMonth() + 1,
+        0,
+        23,
+        59,
+        59
+      )
+    );
+
+    const proposalsCount = await ctx.prisma.proposta.count({
+      where: {
+        createdAt: {
+          gte: startOfMonth,
+          lte: endOfMonth,
+        },
+      },
+    });
+    return proposalsCount;
+  }),
+  getAmountOfPropostasPerMOnthByUser: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const currentDate = new Date();
+      const startOfMonth = new Date(
+        Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), 1)
+      );
+      const endOfMonth = new Date(
+        Date.UTC(
+          currentDate.getUTCFullYear(),
+          currentDate.getUTCMonth() + 1,
+          0,
+          23,
+          59,
+          59
+        )
+      );
+
+      const proposalsCount = await ctx.prisma.proposta.count({
+        where: {
+          createdAt: {
+            gte: startOfMonth,
+            lte: endOfMonth,
+          },
+          sellerIdClerk: input.userId,
+        },
+      });
+      return proposalsCount;
+    }),
 });
