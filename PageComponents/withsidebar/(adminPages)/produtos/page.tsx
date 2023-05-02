@@ -10,11 +10,8 @@ export const ProductPage = () => {
   // const user = isUser?.publicMetadata
   //   ? isUser
   //   : { publicMetadata: { worker: false, admin: false, masterAdmin: false } };
-  const { user, isLoaded } = useUser();
-
-  if (!isLoaded) {
-    return <div className="text-slate-50">loading</div>;
-  }
-  if (!user!.publicMetadata.admin) return <div>Not authorized</div>;
+  const { user } = useUser();
+  if (!user!.publicMetadata.admin)
+    return <div className="text-slate-50">Not authorized</div>;
   return <FullProductPage></FullProductPage>;
 };
