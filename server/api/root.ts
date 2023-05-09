@@ -6,6 +6,7 @@ import { router } from "./trpcContext";
 import { propostaRouter } from "./routers/propostas";
 import { precificacaoRouter } from "./routers/precificacao";
 import { descricaoRouter } from "./routers/descricao";
+import { fortlevRouter } from "./routers/fortlev";
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = router({
   proposta: propostaRouter,
   precificaca: precificacaoRouter,
   descricao: descricaoRouter,
+  fortlev: fortlevRouter,
 });
 
 // export type definition of API

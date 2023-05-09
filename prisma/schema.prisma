@@ -90,3 +90,8 @@ model Descricao {
     sellerIdClerk String?
     Precificacao Precificacao[]
 }
+
+model TokenFortLev {
+    id String @id @default(cuid())
+    accessToken  String? @db.VarChar(1000)
+}
