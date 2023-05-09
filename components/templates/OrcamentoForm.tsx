@@ -32,6 +32,8 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function OrcamentoForm() {
+  const { data: allSurfaces, status: statusAllSurfaces } =
+    api.fortlev.getAllSurfaces.useQuery();
   const { user } = useUser();
   const {
     handleSubmit,
@@ -44,8 +46,10 @@ export function OrcamentoForm() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const { mutateAsync: lookForProductByPower } =
-    api.product.lookForProductByPowerAndRoof.useMutation();
+  // const { mutateAsync: lookForProductByPower } =
+  //   api.product.lookForProductByPowerAndRoof.useMutation();
+  const { mutateAsync: getPricesFromFortlev } =
+    api.fortlev.getPricesFromFortlev.useMutation();
   const { mutateAsync: creatProposta } =
     api.proposta.creatProposta.useMutation();
 
@@ -65,7 +69,7 @@ export function OrcamentoForm() {
       roofType: data.roofType,
       phone: telefone,
     });
-    const foundProducts = await lookForProductByPower({
+    const foundProducts = await getPricesFromFortlev({
       power: consumo,
       roofType: data.roofType,
     });
@@ -183,23 +187,23 @@ export function OrcamentoForm() {
             <select
               {...field}
               className="select-error select w-full max-w-xs text-slate-50"
-              onChange={(e) =>
-                field.onChange(e.target.value ? e.target.value : "")
-              }
+              onChange={(e) => {
+                console.log(e.target.value),
+                  field.onChange(e.target.value ? e.target.value : "");
+              }}
             >
-              <option
-                className="text-slate-50 disabled:text-slate-50"
-                value=""
-                disabled
-              >
-                Selecione o telhado
-              </option>
-              <option className="text-slate-50" value="metalico">
-                Metálico
-              </option>
-              <option className="text-slate-50" value="ceramico">
-                Cerâmico
-              </option>
+              {statusAllSurfaces === "loading"
+                ? "carregando..."
+                : allSurfaces.docs.map((surface: any) => {
+                    return (
+                      <option
+                        className="text-slate-50 disabled:text-slate-50"
+                        value={surface._id}
+                      >
+                        {surface.name}
+                      </option>
+                    );
+                  })}
             </select>
           )}
         />

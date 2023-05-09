@@ -9,7 +9,6 @@ const Page: NextPageWithLayout = () => {
   const { mutateAsync: getAuthenthicationFromFortlev } =
     api.fortlev.getAuthenthication.useMutation();
   const { mutateAsync: getProducts } = api.fortlev.getProducts.useMutation();
-  const { mutateAsync: getSurfaces } = api.fortlev.getAllSurfaces.useMutation();
   const handleGetToken = async () => {
     const token = await getAuthenthicationFromFortlev();
     console.log(token);
@@ -18,10 +17,7 @@ const Page: NextPageWithLayout = () => {
     const allProducts = await getProducts();
     console.log(allProducts);
   };
-  const handlegetAllSurfaces = async () => {
-    const allSurfaces = await getSurfaces();
-    console.log(allSurfaces);
-  };
+  const handlegetAllSurfaces = async () => {};
   return (
     <div>
       <OrcamentoPage></OrcamentoPage>

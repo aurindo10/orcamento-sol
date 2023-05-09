@@ -37,7 +37,9 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
                   {formatter.format(product.price)}
                 </h2>
                 <div className=" rounded-lg  bg-green-500 px-2 py-2">
-                  <label className="h-10 w-52 text-[20px] text-slate-50">{`Geração: ${product.generation}kWh`}</label>
+                  <label className="h-10 w-52 text-[20px] text-slate-50">{`Geração: ${product.generation.toFixed(
+                    2
+                  )}kWh`}</label>
                 </div>
               </div>
             </div>
