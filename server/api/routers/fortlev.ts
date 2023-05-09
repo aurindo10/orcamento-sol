@@ -124,45 +124,44 @@ export const fortlevRouter = router({
       const amountPanel = pricificationTable.filter((precification) => {
         return precification.type === "amountPanel";
       });
-      const addedProducts = await ctx.prisma.$transaction(
-        products.map((product: any) => {
-          // perKwp
-          for (let i = 0; i < perKwp.length; i += 1) {
-            if (
-              perKwp[i]?.minPower! <= product.power &&
-              perKwp[i]?.maxPower! > product.power
-            ) {
-              product.price += perKwp[i]?.price! * product.power;
-            }
+      const addedProducts = products.map((product: any) => {
+        // perKwp
+        for (let i = 0; i < perKwp.length; i += 1) {
+          if (
+            perKwp[i]?.minPower! <= product.power &&
+            perKwp[i]?.maxPower! > product.power
+          ) {
+            product.price += perKwp[i]?.price! * product.power;
           }
-          // perRangeKwp
-          for (let i = 0; i < perKwp.length; i += 1) {
-            if (
-              perRangeKwp[i]?.minPower! <= product.power &&
-              perRangeKwp[i]?.maxPower! > product.power
-            ) {
-              product.price += perRangeKwp[i]?.price!;
-            }
+        }
+        // perRangeKwp
+        for (let i = 0; i < perKwp.length; i += 1) {
+          if (
+            perRangeKwp[i]?.minPower! <= product.power &&
+            perRangeKwp[i]?.maxPower! > product.power
+          ) {
+            product.price += perRangeKwp[i]?.price!;
           }
-          // fixedValue
-          for (let i = 0; i < fixedValue.length; i += 1) {
-            product.price += fixedValue[i]!.price!;
-          }
-          // amountPanel
-          for (let i = 0; i < amountPanel.length; i += 1) {
-            product.price += amountPanel[i]!.price! * (product.power / 0.5);
-          }
-          // percentByTotal
-          let allPercent = 0;
-          for (let i = 0; i < percentByTotal.length; i += 1) {
-            allPercent += percentByTotal[i]?.percent!;
-          }
-          const e = allPercent / 100;
-          const d = 1 - e;
-          product.price = product.price / d;
-          return ctx.prisma.product.create({ data: product });
-        })
-      );
+        }
+        // fixedValue
+        for (let i = 0; i < fixedValue.length; i += 1) {
+          product.price += fixedValue[i]!.price!;
+        }
+        // amountPanel
+        for (let i = 0; i < amountPanel.length; i += 1) {
+          product.price += amountPanel[i]!.price! * (product.power / 0.5);
+        }
+        // percentByTotal
+        let allPercent = 0;
+        for (let i = 0; i < percentByTotal.length; i += 1) {
+          allPercent += percentByTotal[i]?.percent!;
+        }
+        const e = allPercent / 100;
+        const d = 1 - e;
+        product.price = product.price / d;
+        return ctx.prisma.product.create({ data: product });
+      });
+
       return addedProducts;
     }),
 });
