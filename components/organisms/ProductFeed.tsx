@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/nextjs";
 import { Product } from "@prisma/client";
 
 interface ProductFeedProps {
@@ -5,6 +6,7 @@ interface ProductFeedProps {
 }
 
 export const ProductFeed = ({ product }: any) => {
+  const { user } = useUser();
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -49,6 +51,15 @@ export const ProductFeed = ({ product }: any) => {
                     2
                   )}kWh`}</label>
                 </div>
+                {user?.publicMetadata.admin ? (
+                  <div className=" rounded-lg  bg-yellow-300 px-2 py-2 ">
+                    <label className="h-10 w-52 text-[14px] text-slate-900">{`Valor de custo: ${formatter.format(
+                      product.coastValue
+                    )}`}</label>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

@@ -192,6 +192,13 @@ export function OrcamentoForm() {
                   field.onChange(e.target.value ? e.target.value : "");
               }}
             >
+              <option
+                className="text-slate-50 disabled:text-slate-50"
+                value={""}
+                disabled
+              >
+                Selecione
+              </option>
               {statusAllSurfaces === "loading"
                 ? "carregando..."
                 : allSurfaces.docs.map((surface: any) => {
