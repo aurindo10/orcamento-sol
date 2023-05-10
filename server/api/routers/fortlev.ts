@@ -2,13 +2,14 @@ import { z } from "zod";
 const axios = require("axios");
 import { router, publicProcedure, protectedProcedure } from "../trpcContext";
 import { TRPCError } from "@trpc/server";
+import { api } from "utils/api";
 export const fortlevRouter = router({
   getAuthenthication: protectedProcedure.mutation(async ({ ctx }) => {
     const response = await axios.post(
       "https://api.fortlevsolar.app/authenticate",
       {
-        email: "sol.engenhariasolar@gmail.com",
-        password: "Sucesso123#",
+        email: process.env.EMAIL,
+        password: process.env.PASSWORD,
       }
     );
     const deleteMany = ctx.prisma.tokenFortLev.deleteMany();
@@ -23,39 +24,6 @@ export const fortlevRouter = router({
     ]);
     return tokenUpdated[1].accessToken;
   }),
-  getProducts: protectedProcedure
-    // .input(
-    //   z.object({
-    //     // targetPower: z.number(),
-    //     // acPhases: z.number(),
-    //     // acNominalVoltage: z.string(),
-    //     // testingDiscounts: z.boolean(),
-    //     // uf: z.string(),
-    //     // city: z.string(),
-    //   })
-    // )
-    .mutation(async ({ ctx, input }) => {
-      console.log("cheguei");
-      const token = await ctx.prisma.tokenFortLev.findFirst();
-      console.log(token);
-      const response = await axios({
-        method: "post",
-        url: "https://api.fortlevsolar.app/project/generator/batch-cheapest-options",
-        data: {
-          targetPower: 20,
-          acPhases: 3,
-          acNominalVoltage: "380",
-          testingDiscounts: false,
-          uf: "MA",
-          city: "SAO DOMINGOS DO MARANHAO",
-        },
-        headers: {
-          "x-access-token": token?.accessToken,
-        },
-      });
-      console.log(response.data);
-      return response.data;
-    }),
   getAllSurfaces: protectedProcedure.query(async ({ ctx }) => {
     const token = await ctx.prisma.tokenFortLev.findFirst();
     const response = await axios({
@@ -64,8 +32,45 @@ export const fortlevRouter = router({
       headers: {
         "x-access-token": token?.accessToken,
       },
+    }).catch((err: any) => {
+      return err.response.status;
     });
-    return response.data;
+    if (response === 401) {
+      const getAcessToken = async () => {
+        const response = await axios.post(
+          "https://api.fortlevsolar.app/authenticate",
+          {
+            email: process.env.EMAIL,
+            password: process.env.PASSWORD,
+          }
+        );
+        const deleteMany = ctx.prisma.tokenFortLev.deleteMany();
+        const tokenCreated = ctx.prisma.tokenFortLev.create({
+          data: {
+            accessToken: response.data.token,
+          },
+        });
+        const tokenUpdated = await ctx.prisma.$transaction([
+          deleteMany,
+          tokenCreated,
+        ]);
+        return tokenUpdated[1].accessToken;
+      };
+      const acessToken = await getAcessToken();
+      console.log(acessToken);
+      const response = await axios({
+        method: "get",
+        url: "https://api.fortlevsolar.app/surface/all",
+        headers: {
+          "x-access-token": acessToken,
+        },
+      }).catch((err: any) => {
+        return err.response.status;
+      });
+      return response.data;
+    } else {
+      return response.data;
+    }
   }),
   getPricesFromFortlev: protectedProcedure
     .input(
@@ -76,7 +81,7 @@ export const fortlevRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const token = await ctx.prisma.tokenFortLev.findFirst();
-      const targetPower = (input.power / 30 / 5.32) * 1.32;
+      const targetPower = (input.power / 30 / 5.32) * 1.25;
       const response = await axios({
         method: "post",
         url: "https://api.fortlevsolar.app/project/generator/batch-cheapest-options",
@@ -92,6 +97,8 @@ export const fortlevRouter = router({
         headers: {
           "x-access-token": token?.accessToken,
         },
+      }).catch((err: any) => {
+        return err.response.status;
       });
       const productsToCalculateTheFinalPrice = response.data.map(
         (produto: any) => {
@@ -104,6 +111,11 @@ export const fortlevRouter = router({
             generation: produto.systemPower * 5.32 * 30 * 0.8,
             panelBrand: produto.components.modules[0].componentInfos.name,
             inverterBrand: produto.components.inverters[0].componentInfos.name,
+            panelImage: produto.components.modules[0].componentInfos.image.path,
+            inverterImage:
+              produto.components.inverters[0].componentInfos.image.path,
+            panelAmount: produto.components.modules[0].quantity,
+            coastValue: produto.financialResume.finalPrice,
           };
         }
       );
@@ -149,7 +161,7 @@ export const fortlevRouter = router({
         }
         // amountPanel
         for (let i = 0; i < amountPanel.length; i += 1) {
-          product.price += amountPanel[i]!.price! * (product.power / 0.5);
+          product.price += amountPanel[i]!.price! * product.panelAmount;
         }
         // percentByTotal
         let allPercent = 0;
@@ -159,9 +171,8 @@ export const fortlevRouter = router({
         const e = allPercent / 100;
         const d = 1 - e;
         product.price = product.price / d;
-        return ctx.prisma.product.create({ data: product });
+        return product;
       });
-
       return addedProducts;
     }),
 });

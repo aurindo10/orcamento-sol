@@ -44,7 +44,7 @@ export function OrcamentoForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any>([]);
 
   // const { mutateAsync: lookForProductByPower } =
   //   api.product.lookForProductByPowerAndRoof.useMutation();

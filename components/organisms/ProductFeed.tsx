@@ -4,7 +4,7 @@ interface ProductFeedProps {
   product: Product[];
 }
 
-export const ProductFeed = ({ product }: ProductFeedProps) => {
+export const ProductFeed = ({ product }: any) => {
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -12,17 +12,25 @@ export const ProductFeed = ({ product }: ProductFeedProps) => {
   });
   return (
     <div>
-      {product.map((product) => {
+      {product.map((product: any) => {
         return (
           <div
             className="card my-4 w-full max-w-lg bg-base-100 shadow-xl"
             key={product.id}
           >
             <figure>
-              <img
-                src="https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/203323_100223171850.jpg"
-                alt="Shoes"
-              />
+              <div className="flex w-full justify-center gap-3 px-4 py-4">
+                <img
+                  src={product.inverterImage}
+                  alt="Shoes"
+                  className="h-[20rem] w-auto"
+                />
+                <img
+                  src={product.panelImage}
+                  alt="Shoes"
+                  className="h-[20rem] w-auto"
+                />
+              </div>
             </figure>
             <div className="card-body flex flex-row justify-around">
               <div>
