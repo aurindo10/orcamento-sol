@@ -57,7 +57,6 @@ export const fortlevRouter = router({
         return tokenUpdated[1].accessToken;
       };
       const acessToken = await getAcessToken();
-      console.log(acessToken);
       const response = await axios({
         method: "get",
         url: "https://api.fortlevsolar.app/surface/all",

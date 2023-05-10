@@ -188,8 +188,7 @@ export function OrcamentoForm() {
               {...field}
               className="select-error select w-full max-w-xs text-slate-50"
               onChange={(e) => {
-                console.log(e.target.value),
-                  field.onChange(e.target.value ? e.target.value : "");
+                field.onChange(e.target.value ? e.target.value : "");
               }}
             >
               <option
