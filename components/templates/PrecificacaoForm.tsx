@@ -40,7 +40,7 @@ export const PrecificacaoForm = ({
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
     reset,
   } = useForm<CreateParameter>({
     resolver: zodResolver(FormSchema),
