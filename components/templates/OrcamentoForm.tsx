@@ -206,6 +206,7 @@ export function OrcamentoForm() {
                       <option
                         className="text-slate-50 disabled:text-slate-50"
                         value={surface._id}
+                        key={surface._id}
                       >
                         {surface.name}
                       </option>

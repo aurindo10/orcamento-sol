@@ -14,11 +14,11 @@ export const ProductFeed = ({ product }: any) => {
   });
   return (
     <div>
-      {product.map((product: any) => {
+      {product.map((product: any, index: number) => {
         return (
           <div
             className="card my-4 w-full max-w-lg bg-base-100 shadow-xl"
-            key={product.id}
+            key={index}
           >
             <figure>
               <div className="flex w-full justify-center gap-3 px-4 py-4">
