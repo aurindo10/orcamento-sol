@@ -46,10 +46,10 @@ export function OrcamentoForm() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<any>([]);
 
-  // const { mutateAsync: lookForProductByPower } =
-  //   api.product.lookForProductByPowerAndRoof.useMutation();
-  const { mutateAsync: getPricesFromFortlev } =
-    api.fortlev.getPricesFromFortlev.useMutation();
+  const { mutateAsync: lookForProductByPower } =
+    api.product.lookForProductByPowerAndRoof.useMutation();
+  // const { mutateAsync: getPricesFromFortlev } =
+  //   api.fortlev.getPricesFromFortlev.useMutation();
   const { mutateAsync: creatProposta } =
     api.proposta.creatProposta.useMutation();
 
@@ -69,7 +69,7 @@ export function OrcamentoForm() {
       roofType: data.roofType,
       phone: telefone,
     });
-    const foundProducts = await getPricesFromFortlev({
+    const foundProducts = await lookForProductByPower({
       power: consumo,
       roofType: data.roofType,
     });
@@ -198,19 +198,19 @@ export function OrcamentoForm() {
               >
                 Selecione
               </option>
-              {statusAllSurfaces === "loading"
-                ? "carregando..."
-                : allSurfaces.docs.map((surface: any) => {
-                    return (
-                      <option
-                        className="text-slate-50 disabled:text-slate-50"
-                        value={surface._id}
-                        key={surface._id}
-                      >
-                        {surface.name}
-                      </option>
-                    );
-                  })}
+              <option
+                className="text-slate-50 disabled:text-slate-50"
+                value=""
+                disabled
+              >
+                Selecione o telhado
+              </option>
+              <option className="text-slate-50" value="metalico">
+                Metálico
+              </option>
+              <option className="text-slate-50" value="ceramico">
+                Cerâmico
+              </option>
             </select>
           )}
         />

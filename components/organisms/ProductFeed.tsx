@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import { Product } from "@prisma/client";
-
+import Image from "next/image";
+import sistema from "../../public/sistema.svg";
 interface ProductFeedProps {
   product: Product[];
 }
@@ -20,19 +21,13 @@ export const ProductFeed = ({ product }: any) => {
             className="card my-4 w-full max-w-lg bg-base-100 shadow-xl"
             key={index}
           >
-            <figure>
-              <div className="flex w-full justify-center gap-3 px-4 py-4">
-                <img
-                  src={product.inverterImage}
-                  alt="Shoes"
-                  className="h-[20rem] w-auto"
-                />
-                <img
-                  src={product.panelImage}
-                  alt="Shoes"
-                  className="h-[20rem] w-auto"
-                />
-              </div>
+            <figure className="py-2">
+              <Image
+                src={sistema}
+                alt="Sistema fotovoltaico"
+                width={300}
+                height={300}
+              />
             </figure>
             <div className="card-body flex flex-row justify-around">
               <div>
@@ -51,7 +46,7 @@ export const ProductFeed = ({ product }: any) => {
                     2
                   )}kWh`}</label>
                 </div>
-                {user?.publicMetadata.admin ? (
+                {/* {user?.publicMetadata.admin ? (
                   <div className=" rounded-lg  bg-yellow-300 px-2 py-2 ">
                     <label className="h-10 w-52 text-[14px] text-slate-900">{`Valor de custo: ${formatter.format(
                       product.coastValue
@@ -59,7 +54,7 @@ export const ProductFeed = ({ product }: any) => {
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             </div>
           </div>
