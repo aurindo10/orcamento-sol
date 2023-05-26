@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { startOfDay, subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
+import puppeteer from "puppeteer";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BRAZIL_TIMEZONE = "America/Sao_Paulo";
@@ -348,7 +349,6 @@ export const propostaRouter = router({
       });
       return proposalsCount;
     }),
-
   getPdf: protectedProcedure
     .input(
       z.object({
@@ -380,31 +380,19 @@ export const propostaRouter = router({
 
       const url = `http://localhost:3000/proposta?${params.toString()}`;
       let browser = null;
-      try {
-        const chromium = require("chrome-aws-lambda");
-        browser = await chromium.puppeteer.launch({
-          args: chromium.args,
-          defaultViewport: chromium.defaultViewport,
-          executablePath: await chromium.executablePath,
-          headless: chromium.headless,
-        });
+      browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.goto(url, { waitUntil: "networkidle0" });
+      // await page.emulateMediaFeatures([
+      //   { name: "prefers-color-scheme", value: "dark" },
+      // ]);
+      const pdfBuffer = await page.pdf({
+        format: "A4",
+        printBackground: true,
+      });
 
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: "networkidle0" });
-        const pdfBuffer = await page.pdf({
-          format: "a4",
-          printBackground: true,
-        });
-
-        // Convertendo para Base64
-        console.log(pdfBuffer);
-        return pdfBuffer.toString("base64");
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (browser) {
-          await browser.close();
-        }
-      }
+      // Convertendo para Base64
+      console.log(pdfBuffer);
+      return pdfBuffer.toString("base64");
     }),
 });
