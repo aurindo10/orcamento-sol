@@ -395,4 +395,5 @@ export const propostaRouter = router({
       console.log(pdfBuffer);
       return pdfBuffer.toString("base64");
     }),
+  //sl,slas;;a
 });
