@@ -380,7 +380,7 @@ export const propostaRouter = router({
 
       const url = `http://localhost:3000/proposta?${params.toString()}`;
       let browser = null;
-      browser = await puppeteer.launch();
+      browser = await puppeteer.launch({ headless: "new" });
       const page = await browser.newPage();
       await page.goto(url, { waitUntil: "networkidle0" });
       // await page.emulateMediaFeatures([
