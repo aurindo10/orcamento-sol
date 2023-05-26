@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { startOfDay, subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
-import puppeteer from "puppeteer";
+import { chromium } from "playwright";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BRAZIL_TIMEZONE = "America/Sao_Paulo";
@@ -380,12 +380,10 @@ export const propostaRouter = router({
 
       const url = `http://localhost:3000/proposta?${params.toString()}`;
       let browser = null;
-      browser = await puppeteer.launch({ headless: "new" });
+      browser = await chromium.launch();
       const page = await browser.newPage();
-      await page.goto(url, { waitUntil: "networkidle0" });
-      // await page.emulateMediaFeatures([
-      //   { name: "prefers-color-scheme", value: "dark" },
-      // ]);
+      await page.goto(url, { waitUntil: "networkidle" });
+      // await page.emulateMedia({ media: 'screen', colorScheme: 'dark' });
       const pdfBuffer = await page.pdf({
         format: "A4",
         printBackground: true,
