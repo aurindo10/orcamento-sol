@@ -9,6 +9,7 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BRAZIL_TIMEZONE = "America/Sao_Paulo";
+const puppeteer = require("puppeteer-core");
 
 export const propostaRouter = router({
   lookPropostasByUser: protectedProcedure.query(async ({ ctx }) => {
@@ -349,6 +350,7 @@ export const propostaRouter = router({
       });
       return proposalsCount;
     }),
+
   getPdf: protectedProcedure
     .input(
       z.object({
@@ -381,7 +383,7 @@ export const propostaRouter = router({
       const url = `http://localhost:3000/proposta?${params.toString()}`;
       let browser = null;
       try {
-        browser = await chromium.puppeteer.launch({
+        browser = await puppeteer.launch({
           args: chromium.args,
           defaultViewport: chromium.defaultViewport,
           executablePath: await chromium.executablePath,
