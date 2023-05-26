@@ -135,23 +135,25 @@ export const fortlevRouter = router({
       const amountPanel = pricificationTable.filter((precification) => {
         return precification.type === "amountPanel";
       });
-      const addedProducts = products.map((product: any) => {
-        // perKwp
-        for (let i = 0; i < perKwp.length; i += 1) {
-          if (
-            perKwp[i]?.minPower! <= product.power &&
-            perKwp[i]?.maxPower! > product.power
-          ) {
-            product.price += perKwp[i]?.price! * product.power;
+      const addedProducts = await ctx.prisma.$transaction(
+        products.map((product: any) => {
+          // perKwp
+          for (let i = 0; i < perKwp.length; i += 1) {
+            if (
+              perKwp[i]?.minPower! <= product.power &&
+              perKwp[i]?.maxPower! > product.power
+            ) {
+              product.price += perKwp[i]?.price! * product.power;
+            }
           }
-        }
-        // perRangeKwp
-        for (let i = 0; i < perKwp.length; i += 1) {
-          if (
-            perRangeKwp[i]?.minPower! <= product.power &&
-            perRangeKwp[i]?.maxPower! > product.power
-          ) {
-            product.price += perRangeKwp[i]?.price!;
+          // perRangeKwp
+          for (let i = 0; i < perKwp.length; i += 1) {
+            if (
+              perRangeKwp[i]?.minPower! <= product.power &&
+              perRangeKwp[i]?.maxPower! > product.power
+            ) {
+              product.price += perRangeKwp[i]?.price!;
+            }
           }
         }
         // fixedValue
@@ -160,7 +162,7 @@ export const fortlevRouter = router({
         }
         // amountPanel
         for (let i = 0; i < amountPanel.length; i += 1) {
-          product.price += amountPanel[i]!.price! * product.panelAmount;
+          product.price += amountPanel[i]!.price! * (product.power / 0.5);
         }
         // percentByTotal
         let allPercent = 0;
@@ -170,8 +172,9 @@ export const fortlevRouter = router({
         const e = allPercent / 100;
         const d = 1 - e;
         product.price = product.price / d;
-        return product;
+        return ctx.prisma.product.create({ data: product });
       });
+
       return addedProducts;
     }),
 });
