@@ -97,9 +97,18 @@ type Proposta = {
 type usePropostaStore = {
   proposta: Proposta;
   setProposta: (proposta: Proposta) => void;
+  clientName: string;
+  setClienteName: (name: string) => void;
 };
 export const usePropostaStore = create<usePropostaStore>((set) => ({
   proposta: { firstName: "", id: "" },
   setProposta: (state) =>
     set({ proposta: { firstName: state.firstName, id: state.id } }),
+  clientName: "",
+  setClienteName: (name) => {
+    set((state) => ({
+      ...state,
+      clientName: name,
+    }));
+  },
 }));

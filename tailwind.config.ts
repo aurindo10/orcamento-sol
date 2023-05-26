@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+const { violet, blackA, mauve, green } = require("@radix-ui/colors");
+
 import { type Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
-const { violet, blackA, mauve, green } = require("@radix-ui/colors");
 
 export default {
   content: [
     "./pages/**/*.{ts,tsx}",
     "./PageComponents/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
+    "./components/**/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
         cabin: ["Cabin", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
@@ -21,11 +24,6 @@ export default {
         ...violet,
         ...green,
         ...blackA,
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        background: "hsl(var(--background))",
       },
       keyframes: {
         "accordion-down": {
@@ -56,7 +54,7 @@ export default {
       },
     },
   },
-  plugins: [require("daisyui"), require("tailwindcss-animate")],
+  plugins: [require("daisyui")],
   daisyui: {
     themes: ["dark", "dark", "dark"],
   },

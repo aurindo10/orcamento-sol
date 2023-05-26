@@ -24,6 +24,6 @@ export const config = {
      * - static (static files)
      * - favicon.ico (favicon file)
      */
-    "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico|login).*)",
+    "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico|login|proposta|proposta2).*)",
   ],
 };
