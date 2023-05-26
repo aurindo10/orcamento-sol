@@ -7,6 +7,7 @@ import efeito from "../../public/efeito.png";
 import { useRouter } from "next/router";
 
 export const PropostaHeader02 = () => {
+  //ok
   const router = useRouter();
   return (
     <div className="relative h-[1123px] w-[794px] bg-white">
