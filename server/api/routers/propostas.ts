@@ -378,7 +378,7 @@ export const propostaRouter = router({
         value: input.value,
       });
 
-      const url = `http://localhost:3000/proposta?${params.toString()}`;
+      const url = `https://solengenharia.app/proposta?${params.toString()}`;
       let browser = null;
       browser = await chromium.launch();
       const page = await browser.newPage();
