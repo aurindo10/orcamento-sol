@@ -367,7 +367,7 @@ export const propostaRouter = router({
     .mutation(async ({ ctx, input }) => {
       const response = axios({
         method: "POST",
-        url: "https://solengenharia.app/api/pdf",
+        url: "https://pdfgeneratoraurindo.herokuapp.com/getpdf",
         data: {
           productName: input.productName,
           name: input.name,
@@ -383,7 +383,7 @@ export const propostaRouter = router({
       })
         .then((response) => {
           console.log(response.data);
-          return response.data;
+          return response.data.pdf;
         })
         .catch((error) => {
           console.log(error);
