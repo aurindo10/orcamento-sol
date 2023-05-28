@@ -30,7 +30,7 @@
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
-    "puppeteer-core.d.ts",
+    "types/**/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
