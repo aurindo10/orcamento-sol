@@ -6,10 +6,13 @@ import utc from "dayjs/plugin/utc";
 import { startOfDay, subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
 import { chromium } from "playwright";
+import puppeteer from "puppeteer-core";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BRAZIL_TIMEZONE = "America/Sao_Paulo";
-
+import edgeChromium from "chrome-aws-lambda";
+const LOCAL_CHROME_EXECUTABLE =
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 export const propostaRouter = router({
   lookPropostasByUser: protectedProcedure.query(async ({ ctx }) => {
     const { userId } = ctx.auth;
@@ -377,15 +380,20 @@ export const propostaRouter = router({
         panel: input.panel,
         value: input.value,
       });
-
+      const executablePath =
+        (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
       const url = `https://solengenharia.app/proposta?${params.toString()}`;
       let browser = null;
-      browser = await chromium.launch();
+      browser = await puppeteer.launch({
+        executablePath,
+        args: edgeChromium.args,
+        headless: false,
+      });
       const page = await browser.newPage();
-      await page.goto(url, { waitUntil: "networkidle" });
+      await page.goto(url);
       // await page.emulateMedia({ media: 'screen', colorScheme: 'dark' });
       const pdfBuffer = await page.pdf({
-        format: "A4",
+        format: "a4",
         printBackground: true,
       });
 
