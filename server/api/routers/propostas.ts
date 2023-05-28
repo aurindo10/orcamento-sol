@@ -4,14 +4,12 @@ import { z } from "zod";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { startOfDay, subDays } from "date-fns";
+import axios from "axios";
 import timezone from "dayjs/plugin/timezone";
-import puppeteer from "puppeteer-core";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BRAZIL_TIMEZONE = "America/Sao_Paulo";
-import edgeChromium from "chrome-aws-lambda";
-const LOCAL_CHROME_EXECUTABLE =
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+
 export const propostaRouter = router({
   lookPropostasByUser: protectedProcedure.query(async ({ ctx }) => {
     const { userId } = ctx.auth;
@@ -367,37 +365,29 @@ export const propostaRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const params = new URLSearchParams({
-        productName: input.productName,
-        name: input.name,
-        city: input.city,
-        roofType: input.roofType,
-        power: input.power,
-        generation: input.generation,
-        area: input.area,
-        inverter: input.inverter,
-        panel: input.panel,
-        value: input.value,
-      });
-      const executablePath =
-        (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
-      const url = `https://solengenharia.app/proposta?${params.toString()}`;
-      let browser = null;
-      browser = await puppeteer.launch({
-        executablePath,
-        args: edgeChromium.args,
-        headless: false,
-      });
-      const page = await browser.newPage();
-      await page.goto(url);
-      // await page.emulateMedia({ media: 'screen', colorScheme: 'dark' });
-      const pdfBuffer = await page.pdf({
-        format: "a4",
-        printBackground: true,
-      });
-
-      // Convertendo para Base64
-      console.log(pdfBuffer);
-      return pdfBuffer.toString("base64");
+      const response = axios({
+        method: "POST",
+        url: "https://solengenharia.app/api/pdf",
+        data: {
+          productName: input.productName,
+          name: input.name,
+          city: input.city,
+          roofType: input.roofType,
+          power: input.power,
+          generation: input.generation,
+          area: input.area,
+          inverter: input.inverter,
+          panel: input.panel,
+          value: input.value,
+        },
+      })
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return response;
     }),
 });
