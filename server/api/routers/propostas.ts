@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { startOfDay, subDays } from "date-fns";
 import timezone from "dayjs/plugin/timezone";
-import { chromium } from "playwright";
 import puppeteer from "puppeteer-core";
 dayjs.extend(utc);
 dayjs.extend(timezone);
