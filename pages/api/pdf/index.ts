@@ -22,8 +22,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const executablePath =
         (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
       const url = `https://solengenharia.app/proposta?${params.toString()}`;
-      let browser = null;
-      browser = await puppeteer.launch({
+      const browser = await puppeteer.launch({
         executablePath,
         args: edgeChromium.args,
         headless: false,
