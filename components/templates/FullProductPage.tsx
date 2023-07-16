@@ -26,6 +26,7 @@ export default function FullProductPage() {
   const [take, setTake] = useState<number>(0);
   const { mutateAsync: getProductsFromDb } =
     api.product.getAllProducts.useMutation();
+  const { data: linkXls, isLoading } = api.product.getLastLink.useQuery();
   const [loading, setLoading] = useState<boolean>(true);
   const getAmountOfProducts = async () => {
     const amountOfProducts = await getAmountOfProductsFromDb();
@@ -75,7 +76,17 @@ export default function FullProductPage() {
   return (
     <div>
       <div className="px-2 md:px-4">
-        <div className="flex w-full flex-col items-center justify-center gap-4">
+        <div className="flex w-full flex-col items-center justify-center gap-2">
+          <div className="flex w-full max-w-lg items-center justify-end gap-2 pt-4 text-white">
+            Baixar ultimo xls enviado
+            {linkXls?.url ? (
+              <a href={linkXls?.url} download className="btn">
+                Baixar
+              </a>
+            ) : (
+              <p>Não há xls enviado</p>
+            )}
+          </div>
           <div className="createBUtton flex w-full max-w-lg flex-col justify-end">
             {/* <div className="w-ful flex justify-end">
                 <ProductCreateModal></ProductCreateModal>

@@ -3,6 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { api } from "utils/api";
+import { useUploadThing } from "utils/lib/uploadThing2";
 import * as XLSX from "xlsx";
 
 interface Product {
@@ -20,18 +21,24 @@ interface Product {
 const ExcelToJson: React.FC = () => {
   const router = useRouter();
   const [jsonData, setJsonData] = useState<Product[]>([]);
+  const [status, setStatus] = useState("Aguardando envio...");
+
   const { isLoaded, isSignedIn, user } = useUser();
   const [isFileLoading, setIsFileLoading] = useState(false);
   const [isThereFile, setIsThereFile] = useState(true); // [
   const [isFileSent, setIsFileSent] = useState(false);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsFileLoading(true);
+    setStatus("Carregando arquivo...");
     const file = e.target.files && e.target.files[0];
     if (!file) {
       setIsFileLoading(false);
       return;
     } else {
       setIsThereFile(false);
+      console.log(file);
+      setStatus("Enviando para a nuvem...");
+      startUpload([file]);
     }
 
     const reader = new FileReader();
@@ -44,6 +51,7 @@ const ExcelToJson: React.FC = () => {
         const worksheet = workbook.Sheets[sheetName];
         if (worksheet) {
           const json = XLSX.utils.sheet_to_json<Product>(worksheet);
+          console.log(json);
           setJsonData(json);
         } else {
           alert("Não foi possível encontrar a planilha no arquivo fornecido.");
@@ -59,7 +67,7 @@ const ExcelToJson: React.FC = () => {
   const { mutateAsync: deleteAllProducts } =
     api.product.deleteAllProducts.useMutation();
   const handleSaveToDatabase = async () => {
-    setIsFileSent(true);
+    setStatus("Gravando produtos no banco de dados...");
     try {
       const products = jsonData.map((item) => {
         return {
@@ -84,25 +92,33 @@ const ExcelToJson: React.FC = () => {
         router.push("/");
         console.log("produtos carregados com sucesso");
       }
-      alert("Produtos salvos no banco de dados com sucesso!");
+      // alert("Produtos salvos no banco de dados com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar produtos no banco de dados:", error);
       alert("Erro ao salvar produtos no banco de dados.");
     }
   };
 
+  const { startUpload, isUploading } = useUploadThing("pdfUploader", {
+    onClientUploadComplete: async () => {
+      setStatus("Gravar preços");
+    },
+    onUploadError: () => {
+      alert("error occurred while uploading");
+    },
+  });
+
   return (
     <div className="flex w-full flex-col items-end">
       <div className="flex w-full items-center justify-end">
-        {isFileLoading || isFileSent ? (
-          <button className="loading btn mt-2 ">carregando</button>
-        ) : null}
         <button
+          className={`${
+            isUploading ? "loading" : ""
+          } btn-primary btn ml-2 mt-2 max-w-md`}
+          disabled={status !== "Gravar preços"}
           onClick={handleSaveToDatabase}
-          className="btn-primary btn ml-2 mt-2 max-w-md"
-          disabled={isThereFile}
         >
-          Salvar
+          {status}
         </button>
       </div>
       <input

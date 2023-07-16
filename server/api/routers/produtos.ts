@@ -257,4 +257,12 @@ export const productRouter = router({
     }
     return products;
   }),
+  getLastLink: publicProcedure.query(async ({ ctx }) => {
+    const link = await ctx.prisma.xls.findFirst({
+      orderBy: {
+        date: "desc",
+      },
+    });
+    return link;
+  }),
 });

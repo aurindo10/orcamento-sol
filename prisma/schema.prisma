@@ -96,3 +96,10 @@ model TokenFortLev {
     id String @id @default(cuid())
     accessToken  String? @db.VarChar(1000)
 }
+
+model xls {
+    id String @id @default(cuid())
+    date DateTime @default(now())
+    url String?
+    fileKey String?
+}
