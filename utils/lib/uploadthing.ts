@@ -18,7 +18,6 @@ export const ourFileRouter = {
           try {
             // delete all files except the uploaded file
             const files = await utapi.listFiles();
-            console.log(uploadedFile);
             const allFileKeys = files.files.map((file) => {
               return file.key;
             });
@@ -26,7 +25,6 @@ export const ourFileRouter = {
               (item) => item != uploadedFile.key
             );
             const result = await utapi.deleteFiles(allFilesToDelete);
-            console.log(result);
             // delete all files from the database
             await tx.xls.deleteMany();
             await tx.xls.create({
