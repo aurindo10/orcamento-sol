@@ -4,14 +4,21 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./pages/env/env.mjs"));
 
-/** @type {import("next").NextConfig} */
-const config = {
-  reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ['uploadthing.com', 'utfs.io'], // Adicione os domínios necessários para suas imagens
   },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  reactStrictMode: true,
   experimental: {
     esmExternals: false, // THIS IS THE FLAG THAT MATTERS
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
@@ -20,4 +27,5 @@ const config = {
    * @see https://github.com/vercel/next.js/issues/41980
    */
 };
-export default config;
+
+export default nextConfig;
