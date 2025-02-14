@@ -1,8 +1,9 @@
 // import { currentUser } from "@clerk/nextjs/app-beta";
 import { prisma } from "server/db";
-import { utapi } from "uploadthing/server";
+import {} from "uploadthing/server";
 
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
+import { utapi } from "./utApi";
 
 const f = createUploadthing();
 
@@ -17,11 +18,11 @@ export const ourFileRouter = {
           try {
             // delete all files except the uploaded file
             const files = await utapi.listFiles();
-            const allFileKeys = files.map((file) => {
+            const allFileKeys = files.files.map((file) => {
               return file.key;
             });
             const allFilesUrls = await utapi.getFileUrls(allFileKeys);
-            const allFilesToDelete = allFilesUrls
+            const allFilesToDelete = allFilesUrls.data
               .filter((item) => item.url != uploadedFile.url)
               .map((item) => {
                 return item.url;
