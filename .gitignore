@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+*.sql
 # testing
 /coverage
 
@@ -40,3 +40,4 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+pscale_dump_sol-orcamento_main_20240405_232056/metadata
