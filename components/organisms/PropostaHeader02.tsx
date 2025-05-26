@@ -116,7 +116,12 @@ export const PropostaHeader02 = () => {
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
         <span className="border-b-[0.1px] border-slate-500">
-          Instalação: 5 anos
+          Instalação: 2 anos
+        </span>
+      </div>
+      <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
+        <span className="border-b-[0.1px] border-slate-500">
+          Goteiras: 1 ano
         </span>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
