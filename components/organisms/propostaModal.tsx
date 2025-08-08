@@ -104,7 +104,8 @@ export default function CreatePropostaModal({
   const onSubmit = async () => {
     setLoading("loading");
     function base64ToBlob(base64: string, type: string): Blob {
-      const binStr = atob(base64);
+      const pureBase64 = base64.includes(",") ? base64.split(",").pop()! : base64;
+      const binStr = atob(pureBase64);
       const len = binStr.length;
       const arr = new Uint8Array(len);
       for (let i = 0; i < len; i++) {
@@ -133,18 +134,39 @@ export default function CreatePropostaModal({
         searchParams.set("monthlyPaymentSimulacao", parcelaMensalSimulacao);
     }
 
-    const url = `${window.location.origin}/proposta?${searchParams.toString()}`;
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const base = origin || "https://solengenharia.app";
+    const url = `${base}/proposta?${searchParams.toString()}`;
     try {
-      const pdfInBase64 = await createPdf({ url });
+      const pdfInBase64 = await createPdf({
+        productName: propostaInfo.productName,
+        name: getValues("name"),
+        generation: propostaInfo.generation.toString(),
+        inverter: propostaInfo.inverter,
+        roofType: propostaInfo.roofType,
+        power: propostaInfo.power.toString(),
+        city: getValues("city"),
+        panel: propostaInfo.panel,
+        area: "xx",
+        value: propostaInfo.value.toString(),
+        url,
+      });
       if (pdfInBase64) {
         const pdfBlob = base64ToBlob(pdfInBase64, "application/pdf");
         const objectUrl = URL.createObjectURL(pdfBlob);
         const link = document.createElement("a");
         link.href = objectUrl;
-        link.download = "file.pdf";
+        const safeName = (getValues("name") || "proposta").replace(/[^\p{L}\p{N}_-]+/gu, "_");
+        link.download = `${safeName}.pdf`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(objectUrl);
+      } else {
+        console.error("PDF base64 vazio/indefinido recebido do endpoint.");
       }
+    } catch (e) {
+      console.error("Falha ao gerar o PDF:", e);
     } finally {
       setLoading("");
       setOpen(false);

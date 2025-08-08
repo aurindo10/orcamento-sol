@@ -352,7 +352,17 @@ export const propostaRouter = router({
   getPdf: protectedProcedure
     .input(
       z.object({
-        url: z.string(),
+        productName: z.string(),
+        name: z.string(),
+        city: z.string(),
+        roofType: z.string(),
+        power: z.string(),
+        generation: z.string(),
+        area: z.string(),
+        inverter: z.string(),
+        panel: z.string(),
+        value: z.string(),
+        url: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -360,6 +370,16 @@ export const propostaRouter = router({
         method: "POST",
         url: "https://pdfgeneratoraurindo.herokuapp.com/getpdf",
         data: {
+          productName: input.productName,
+          name: input.name,
+          city: input.city,
+          roofType: input.roofType,
+          power: input.power,
+          generation: input.generation,
+          area: input.area,
+          inverter: input.inverter,
+          panel: input.panel,
+          value: input.value,
           url: input.url,
         },
       })
