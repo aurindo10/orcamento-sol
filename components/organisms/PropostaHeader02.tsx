@@ -45,22 +45,22 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
           Detalhes da Proposta
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold  text-black ">
-          <span className="border-b-2 border-slate-400 pb-1">{`Cliente: ${q?.name ?? ""}`}</span>
+          {`Cliente: ${q?.name ?? ""}`}
         </div>
         <div className="mt-2 px-8 text-[22.5px] font-bold text-black">
-          <span className="border-b-2 border-slate-400 pb-1 font-poppins font-semibold">{`Localidade da usina: ${q?.city ?? ""}`}</span>
+          {`Localidade da usina: ${q?.city ?? ""}`}
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <span className="border-b-2 border-slate-400 pb-1">{`Tipo de estrutura: ${q?.roofType ?? ""}`}</span>
+          {`Tipo de estrutura: ${q?.roofType ?? ""}`}
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <span className="border-b-2 border-slate-400 pb-1">{`Potência do sistema dimensionado: ${q?.productName ?? ""}`}</span>
+          {`Potência do sistema dimensionado: ${q?.productName ?? ""}`}
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <span className="border-b-2 border-slate-400 pb-1">{`Energia estimada a ser gerada (média anual): ${q?.generation ?? ""}kWh/mês`}</span>
+          {`Energia estimada a ser gerada (média anual): ${q?.generation ?? ""}kWh/mês`}
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <span className="border-b-2 border-slate-400 pb-1">{`Área útil necessária para a instalação (estimada): ${`XX`}`}</span>
+          {`Área útil necessária para a instalação (estimada): ${`XX`}`}
         </div>
       </div>
       <div className="mt-6 px-8 font-poppins text-[30px] font-semibold text-black">
@@ -97,28 +97,28 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
         Detalhes do Sistema
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">{`Inversor: ${q?.inverter ?? ""}`}</span>
+        {`Inversor: ${q?.inverter ?? ""}`}
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">{`Painel: ${q?.panel ?? ""}`}</span>
+        {`Painel: ${q?.panel ?? ""}`}
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">Estrutura: Alumínio</span>
+        Estrutura: Alumínio
       </div>
       <div className="mt-10 px-8 font-poppins text-[30px] font-semibold text-black">
         Garantia
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">Instalação: 2 anos</span>
+        Instalação: 2 anos
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">Goteiras: 1 ano</span>
+        Goteiras: 1 ano
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">Inversor: 10 anos</span>
+        Inversor: 10 anos
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <span className="border-b-2 border-slate-400 pb-1">Painel: 10 anos com rendimento de até 100% e 25 anos para rendimento de até 80%</span>
+        Painel: 10 anos com rendimento de até 100% e 25 anos para rendimento de até 80%
       </div>
     </div>
   );
