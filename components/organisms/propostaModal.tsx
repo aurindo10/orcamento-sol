@@ -102,55 +102,39 @@ export default function CreatePropostaModal({
     return { parcelaMensalSimulacao: "", valorFinalSimulacao: "" };
   }, [simPrincipal, jurosMensalPercent, numParcelas]);
   const onSubmit = async () => {
+    setLoading("loading");
+    function base64ToBlob(base64: string, type: string): Blob {
+      const binStr = atob(base64);
+      const len = binStr.length;
+      const arr = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        arr[i] = binStr.charCodeAt(i);
+      }
+      return new Blob([arr], { type });
+    }
+
+    const searchParams = new URLSearchParams({
+      name: getValues("name") || "",
+      city: getValues("city") || "",
+      roofType: propostaInfo.roofType?.toString?.() || "",
+      productName: propostaInfo.productName?.toString?.() || "",
+      generation: propostaInfo.generation?.toString?.() || "",
+      inverter: propostaInfo.inverter?.toString?.() || "",
+      panel: propostaInfo.panel?.toString?.() || "",
+      value: propostaInfo.value?.toString?.() || "",
+    });
     if (includeSimulation) {
-      // Abrir página de proposta com parâmetros via query para impressão/exportação no navegador
-      const searchParams = new URLSearchParams({
-        name: getValues("name") || "",
-        city: getValues("city") || "",
-        roofType: propostaInfo.roofType?.toString?.() || "",
-        productName: propostaInfo.productName?.toString?.() || "",
-        generation: propostaInfo.generation?.toString?.() || "",
-        inverter: propostaInfo.inverter?.toString?.() || "",
-        panel: propostaInfo.panel?.toString?.() || "",
-        value: propostaInfo.value?.toString?.() || "",
-        includeSimulation: "true",
-      });
+      searchParams.set("includeSimulation", "true");
       if (simPrincipal) searchParams.set("simPrincipal", simPrincipal);
       if (jurosMensalPercent)
         searchParams.set("jurosMensalPercent", jurosMensalPercent);
       if (numParcelas) searchParams.set("numParcelas", numParcelas);
       if (parcelaMensalSimulacao)
         searchParams.set("monthlyPaymentSimulacao", parcelaMensalSimulacao);
-      if (valorFinalSimulacao)
-        searchParams.set("valorFinalSimulacao", valorFinalSimulacao);
-
-      const url = `/proposta?${searchParams.toString()}`;
-      window.open(url, "_blank");
-      setOpen(false);
-      return;
     }
-    const handleCreatePdf = async () => {
-      setLoading("loading");
-      function base64ToBlob(base64: string, type: string): Blob {
-        const binStr = atob(base64);
-        const len = binStr.length;
-        const arr = new Uint8Array(len);
-        for (let i = 0; i < len; i++) {
-          arr[i] = binStr.charCodeAt(i);
-        }
-        return new Blob([arr], { type });
-      }
-      const searchParams = new URLSearchParams({
-        name: getValues("name") || "",
-        city: getValues("city") || "",
-        roofType: propostaInfo.roofType?.toString?.() || "",
-        productName: propostaInfo.productName?.toString?.() || "",
-        generation: propostaInfo.generation?.toString?.() || "",
-        inverter: propostaInfo.inverter?.toString?.() || "",
-        panel: propostaInfo.panel?.toString?.() || "",
-        value: propostaInfo.value?.toString?.() || "",
-      });
-      const url = `${window.location.origin}/proposta?${searchParams.toString()}`;
+
+    const url = `${window.location.origin}/proposta?${searchParams.toString()}`;
+    try {
       const pdfInBase64 = await createPdf({ url });
       if (pdfInBase64) {
         const pdfBlob = base64ToBlob(pdfInBase64, "application/pdf");
@@ -160,10 +144,11 @@ export default function CreatePropostaModal({
         link.download = "file.pdf";
         link.click();
         URL.revokeObjectURL(objectUrl);
-        setLoading("");
       }
-    };
-    handleCreatePdf();
+    } finally {
+      setLoading("");
+      setOpen(false);
+    }
   };
   return (
     <Dialog.Root open={open} onOpenChange={() => setOpen(!open)}>
@@ -290,7 +275,15 @@ export default function CreatePropostaModal({
                       })
                     : "-"}
                 </div>
-                {/* Valor final removido da UI conforme solicitação */}
+                <div className="text-sm text-slate-200">
+                  Valor total do financiamento: {" "}
+                  {valorFinalSimulacao
+                    ? Number(valorFinalSimulacao).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })
+                    : "-"}
+                </div>
               </div>
             )}
             <span className="text-center text-xs text-red-600">
