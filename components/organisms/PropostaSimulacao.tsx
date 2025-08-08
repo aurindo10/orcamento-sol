@@ -57,29 +57,29 @@ export const PropostaSimulacao = ({ data }: { data?: SimulacaoData }) => {
         </div>
       </div>
 
-      <div className="mt-6 px-8 font-poppins text-[28px] font-semibold text-black">
-        Parâmetros da Simulação
-      </div>
+        <div className="mt-6 px-8 font-poppins text-[28px] font-semibold text-black">
+          Parâmetros da Simulação
+        </div>
       <div className="mt-4 grid grid-cols-12 gap-y-3 px-8 font-poppins text-[20px] font-semibold text-black">
         <div className="col-span-6">Valor base</div>
         <div className="col-span-6 text-right">{formatCurrency(principal)}</div>
         <div className="col-span-12">
-          <div className="h-px bg-slate-300" style={{ height: 1 }}></div>
+          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
         </div>
         <div className="col-span-6">Juros mensal</div>
         <div className="col-span-6 text-right">{jurosPercent ? `${jurosPercent}%` : "-"}</div>
         <div className="col-span-12">
-          <div className="h-px bg-slate-300" style={{ height: 1 }}></div>
+          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
         </div>
         <div className="col-span-6">Quantidade de parcelas</div>
         <div className="col-span-6 text-right">{parcelas ?? "-"}</div>
         <div className="col-span-12">
-          <div className="h-px bg-slate-300" style={{ height: 1 }}></div>
+          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
         </div>
         <div className="col-span-6">Parcela mensal (Price)</div>
         <div className="col-span-6 text-right">{formatCurrency(parcelaMensal)}</div>
         <div className="col-span-12">
-          <div className="h-px bg-slate-300" style={{ height: 1 }}></div>
+          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
         </div>
         {/* Valor final removido conforme solicitação */}
       </div>

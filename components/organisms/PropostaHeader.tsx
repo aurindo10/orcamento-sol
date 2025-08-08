@@ -54,9 +54,11 @@ export const PropostaHeader = ({ data }: { data?: PropostaHeaderData }) => {
       </div>
       <div className="absolute bottom-[25px] left-4 flex flex-col font-semibold text-black">
         <label className="font-poppins text-[40px] ">{q?.name ?? ""}</label>
-        <label className="font-poppins text-[20px]">
+        <div className="mt-1 h-[2px] w-3/4 bg-slate-400"></div>
+        <label className="mt-2 font-poppins text-[20px]">
           {`Proposta válida até dia ${formattedDate}`}
         </label>
+        <div className="mt-1 h-[2px] w-1/2 bg-slate-400"></div>
       </div>
     </div>
   );
