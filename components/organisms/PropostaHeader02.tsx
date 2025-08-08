@@ -21,7 +21,7 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
   const router = useRouter();
   const q: any = data ?? (router.query as any);
   return (
-    <div className="pdf-page relative h-[1123px] w-[794px] bg-white">
+    <div className="relative h-[1123px] w-[794px] bg-white">
       <div className="absolute right-[-1px] top-[-1px]">
         <Image src={right} alt="Sistema fotovoltaico" width={250} unoptimized />
       </div>
@@ -85,7 +85,7 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
         <div className="col-span-3 text-center">Valor</div>
         <div className="col-span-3 text-center">Valor á vista</div>
         <div className="col-span-12 px-8">
-          <div className=" h-[0.5px] border-slate-400 bg-slate-400"></div>
+          <div className="h-px bg-slate-300" style={{ height: 1 }}></div>
         </div>
         <div className="col-span-4  ml-8 text-start text-[16px]">
           {router.query.productName}

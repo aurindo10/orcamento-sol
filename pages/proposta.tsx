@@ -6,15 +6,24 @@ type PropostaPageProps = { includeSimulation: boolean };
 
 const Proposta = ({ includeSimulation }: PropostaPageProps) => {
   return (
-    <div id="proposta-root">
-      <PropostaHeader></PropostaHeader>
-      <div style={{ pageBreakAfter: "always" }}></div>
-      <PropostaHeader02></PropostaHeader02>
+    <div
+      id="proposta-root"
+      style={{
+        // força cada .pdf-page quebrar depois, exceto a última
+        // html2pdf respeita pagebreak: css
+        pageBreakInside: "avoid",
+      }}
+    >
+      <div className="pdf-page">
+        <PropostaHeader></PropostaHeader>
+      </div>
+      <div className="pdf-page">
+        <PropostaHeader02></PropostaHeader02>
+      </div>
       {includeSimulation && (
-        <>
-          <div style={{ pageBreakAfter: "always" }}></div>
+        <div className="pdf-page">
           <PropostaSimulacao></PropostaSimulacao>
-        </>
+        </div>
       )}
     </div>
   );
