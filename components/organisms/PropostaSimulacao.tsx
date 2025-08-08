@@ -64,8 +64,7 @@ export const PropostaSimulacao = () => {
         <div className="col-span-6">Parcela mensal (Price)</div>
         <div className="col-span-6 text-right">{formatCurrency(parcelaMensal)}</div>
         <div className="col-span-12 h-[0.5px] bg-slate-400" />
-        <div className="col-span-6">Valor final</div>
-        <div className="col-span-6 text-right">{formatCurrency(valorFinal)}</div>
+        {/* Valor final removido conforme solicitação */}
       </div>
 
       <div className="mt-10 px-8 font-poppins text-[16px] text-slate-700">

@@ -140,18 +140,18 @@ export default function CreatePropostaModal({
         }
         return new Blob([arr], { type });
       }
-      const pdfInBase64 = await createPdf({
-        productName: propostaInfo.productName,
-        name: getValues("name"),
-        generation: propostaInfo.generation.toString(),
-        inverter: propostaInfo.inverter,
-        roofType: propostaInfo.roofType,
-        power: propostaInfo.power.toString(),
-        city: getValues("city"),
-        panel: propostaInfo.panel,
-        area: "xx",
-        value: propostaInfo.value.toString(),
+      const searchParams = new URLSearchParams({
+        name: getValues("name") || "",
+        city: getValues("city") || "",
+        roofType: propostaInfo.roofType?.toString?.() || "",
+        productName: propostaInfo.productName?.toString?.() || "",
+        generation: propostaInfo.generation?.toString?.() || "",
+        inverter: propostaInfo.inverter?.toString?.() || "",
+        panel: propostaInfo.panel?.toString?.() || "",
+        value: propostaInfo.value?.toString?.() || "",
       });
+      const url = `${window.location.origin}/proposta?${searchParams.toString()}`;
+      const pdfInBase64 = await createPdf({ url });
       if (pdfInBase64) {
         const pdfBlob = base64ToBlob(pdfInBase64, "application/pdf");
         const objectUrl = URL.createObjectURL(pdfBlob);
@@ -290,15 +290,7 @@ export default function CreatePropostaModal({
                       })
                     : "-"}
                 </div>
-                <div className="text-sm text-slate-200">
-                  Valor final: {" "}
-                  {valorFinalSimulacao
-                    ? Number(valorFinalSimulacao).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })
-                    : "-"}
-                </div>
+                {/* Valor final removido da UI conforme solicitação */}
               </div>
             )}
             <span className="text-center text-xs text-red-600">
