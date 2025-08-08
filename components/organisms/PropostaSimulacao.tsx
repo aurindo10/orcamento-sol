@@ -51,7 +51,7 @@ export const PropostaSimulacao = ({ data }: { data?: SimulacaoData }) => {
           Simulação de Financiamento
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black ">
-          <span className="border-b-[0.1px] border-slate-500">
+          <span className="border-b-2 border-slate-500 pb-1">
             {`Cliente: ${q?.name ?? ""}`}
           </span>
         </div>

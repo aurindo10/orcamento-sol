@@ -53,9 +53,11 @@ export const PropostaHeader = ({ data }: { data?: PropostaHeaderData }) => {
         <Image src={logo} alt="Sistema fotovoltaico" width={170} unoptimized />
       </div>
       <div className="absolute bottom-[25px] left-4 flex flex-col font-semibold text-black">
-        <label className="inline-block border-b border-slate-400 pb-0.5 font-poppins text-[40px] ">{q?.name ?? ""}</label>
-        <label className="mt-2 inline-block border-b border-slate-400 pb-0.5 font-poppins text-[20px]">
-          {`Proposta válida até dia ${formattedDate}`}
+        <label className="font-poppins text-[40px]">
+          <span className="border-b-2 border-slate-400 pb-1">{q?.name ?? ""}</span>
+        </label>
+        <label className="mt-2 font-poppins text-[20px]">
+          <span className="border-b-2 border-slate-400 pb-1">{`Proposta válida até dia ${formattedDate}`}</span>
         </label>
       </div>
     </div>
