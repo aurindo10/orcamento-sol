@@ -64,6 +64,12 @@ export default function CreatePropostaModal({
   const [jurosMensalPercent, setJurosMensalPercent] = useState<string>("");
   const [numParcelas, setNumParcelas] = useState<string>("");
   const [simPrincipal, setSimPrincipal] = useState<string>("");
+  const [tabError, setTabError] = useState<string>("");
+  const [simErrors, setSimErrors] = useState<{
+    principal?: string;
+    juros?: string;
+    parcelas?: string;
+  }>({});
 
   useEffect(() => {
     // Prefill principal with product value when open
@@ -102,6 +108,20 @@ export default function CreatePropostaModal({
     return { parcelaMensalSimulacao: "", valorFinalSimulacao: "" };
   }, [simPrincipal, jurosMensalPercent, numParcelas]);
   const onSubmit = async () => {
+    // Validações antes de prosseguir
+    if (includeSimulation) {
+      const newErrors: { principal?: string; juros?: string; parcelas?: string } = {};
+      if (!simPrincipal) newErrors.principal = "Preencha o valor base";
+      if (!jurosMensalPercent) newErrors.juros = "Preencha os juros mensais";
+      if (!numParcelas) newErrors.parcelas = "Preencha a quantidade de parcelas";
+
+      if (newErrors.principal || newErrors.juros || newErrors.parcelas) {
+        setSimErrors(newErrors);
+        setActiveTab("simulacao");
+        return;
+      }
+    }
+
     setLoading("loading");
     const searchParams = new URLSearchParams({
       name: getValues("name") || "",
@@ -182,13 +202,16 @@ export default function CreatePropostaModal({
             <h3 className="mb-4 text-lg font-bold text-white">
               Crie uma proposta
             </h3>
-            <div className="mb-4 flex gap-2">
+            <div className="mb-2 flex gap-2">
               <button
                 type="button"
                 className={`btn btn-xs ${
                   activeTab === "dados" ? "btn-primary" : ""
                 }`}
-                onClick={() => setActiveTab("dados")}
+                onClick={() => {
+                  setTabError("");
+                  setActiveTab("dados");
+                }}
               >
                 Dados
               </button>
@@ -197,11 +220,25 @@ export default function CreatePropostaModal({
                 className={`btn btn-xs ${
                   activeTab === "simulacao" ? "btn-primary" : ""
                 }`}
-                onClick={() => setActiveTab("simulacao")}
+                onClick={() => {
+                  const city = (getValues("city") || "").trim();
+                  if (!city) {
+                    setTabError(
+                      "Preencha o nome da cidade na aba Dados antes de acessar a Simulação."
+                    );
+                    setActiveTab("dados");
+                    return;
+                  }
+                  setTabError("");
+                  setActiveTab("simulacao");
+                }}
               >
                 Simulação
               </button>
             </div>
+            {tabError && (
+              <div className="mb-2 text-xs font-medium text-red-500">{tabError}</div>
+            )}
             {activeTab === "dados" && (
               <>
                 <div className="flex gap-4">
@@ -257,8 +294,14 @@ export default function CreatePropostaModal({
                     type="number"
                     className="input input-bordered w-full text-white"
                     value={simPrincipal}
-                    onChange={(e) => setSimPrincipal(e.target.value)}
+                    onChange={(e) => {
+                      setSimPrincipal(e.target.value);
+                      if (simErrors.principal) setSimErrors((p) => ({ ...p, principal: undefined }));
+                    }}
                   />
+                  {includeSimulation && simErrors.principal && (
+                    <span className="mt-1 text-xs text-red-500">{simErrors.principal}</span>
+                  )}
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
@@ -270,8 +313,14 @@ export default function CreatePropostaModal({
                     className="input input-bordered w-full text-white"
                     placeholder="Ex: 1.99"
                     value={jurosMensalPercent}
-                    onChange={(e) => setJurosMensalPercent(e.target.value)}
+                    onChange={(e) => {
+                      setJurosMensalPercent(e.target.value);
+                      if (simErrors.juros) setSimErrors((p) => ({ ...p, juros: undefined }));
+                    }}
                   />
+                  {includeSimulation && simErrors.juros && (
+                    <span className="mt-1 text-xs text-red-500">{simErrors.juros}</span>
+                  )}
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
@@ -282,8 +331,14 @@ export default function CreatePropostaModal({
                     className="input input-bordered w-full text-white"
                     placeholder="Ex: 60"
                     value={numParcelas}
-                    onChange={(e) => setNumParcelas(e.target.value)}
+                    onChange={(e) => {
+                      setNumParcelas(e.target.value);
+                      if (simErrors.parcelas) setSimErrors((p) => ({ ...p, parcelas: undefined }));
+                    }}
                   />
+                  {includeSimulation && simErrors.parcelas && (
+                    <span className="mt-1 text-xs text-red-500">{simErrors.parcelas}</span>
+                  )}
                 </div>
                 <div className="mt-2 text-sm text-slate-200">
                   Parcela mensal: {" "}
@@ -303,23 +358,26 @@ export default function CreatePropostaModal({
                       })
                     : "-"}
                 </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <input
+                    id="include-simulation"
+                    type="checkbox"
+                    className="checkbox"
+                    checked={includeSimulation}
+                    onChange={(e) => {
+                      setIncludeSimulation(e.target.checked);
+                      if (!e.target.checked) setSimErrors({});
+                    }}
+                  />
+                  <label htmlFor="include-simulation" className="label-text">
+                    Incluir página de simulação no PDF
+                  </label>
+                </div>
               </div>
             )}
             <span className="text-center text-xs text-red-600">
               {errors.name?.message || errors.city?.message}
             </span>
-            <div className="mt-2 flex items-center gap-2">
-              <input
-                id="include-simulation"
-                type="checkbox"
-                className="checkbox"
-                checked={includeSimulation}
-                onChange={(e) => setIncludeSimulation(e.target.checked)}
-              />
-              <label htmlFor="include-simulation" className="label-text">
-                Incluir página de simulação no PDF
-              </label>
-            </div>
             <div className="flex justify-end gap-6">
               <button
                 className="btn-secondary btn mt-4"
