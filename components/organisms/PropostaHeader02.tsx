@@ -45,28 +45,22 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
           Detalhes da Proposta
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold  text-black ">
-          <div>{`Cliente: ${q?.name ?? ""}`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5">{`Cliente: ${q?.name ?? ""}`}</div>
         </div>
         <div className="mt-2 px-8 text-[22.5px] font-bold text-black">
-          <div className="font-poppins font-semibold">{`Localidade da usina: ${q?.city ?? ""}`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5 font-poppins font-semibold">{`Localidade da usina: ${q?.city ?? ""}`}</div>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <div>{`Tipo de estrutura: ${q?.roofType ?? ""}`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5">{`Tipo de estrutura: ${q?.roofType ?? ""}`}</div>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <div>{`Potência do sistema dimensionado: ${q?.productName ?? ""}`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5">{`Potência do sistema dimensionado: ${q?.productName ?? ""}`}</div>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <div>{`Energia estimada a ser gerada (média anual): ${q?.generation ?? ""}kWh/mês`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5">{`Energia estimada a ser gerada (média anual): ${q?.generation ?? ""}kWh/mês`}</div>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
-          <div>{`Área útil necessária para a instalação (estimada): ${`XX`}`}</div>
-          <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+          <div className="inline-block border-b border-slate-400 pb-0.5">{`Área útil necessária para a instalação (estimada): ${`XX`}`}</div>
         </div>
       </div>
       <div className="mt-6 px-8 font-poppins text-[30px] font-semibold text-black">
@@ -103,35 +97,28 @@ export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
         Detalhes do Sistema
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>{`Inversor: ${q?.inverter ?? ""}`}</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">{`Inversor: ${q?.inverter ?? ""}`}</div>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>{`Painel: ${q?.panel ?? ""}`}</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">{`Painel: ${q?.panel ?? ""}`}</div>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>Estrutura: Alumínio</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">Estrutura: Alumínio</div>
       </div>
       <div className="mt-10 px-8 font-poppins text-[30px] font-semibold text-black">
         Garantia
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>Instalação: 2 anos</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">Instalação: 2 anos</div>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>Goteiras: 1 ano</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">Goteiras: 1 ano</div>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div>Inversor: 10 anos</div>
-        <div className="mt-1 h-[2px] w-full bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">Inversor: 10 anos</div>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
-        <div className="w-3/4">Painel: 10 anos com rendimento de até 100% e 25 anos para rendimento de até 80%</div>
-        <div className="mt-1 h-[2px] w-3/4 bg-slate-400"></div>
+        <div className="inline-block border-b border-slate-400 pb-0.5">Painel: 10 anos com rendimento de até 100% e 25 anos para rendimento de até 80%</div>
       </div>
     </div>
   );
