@@ -6,12 +6,17 @@ type PropostaPageProps = { includeSimulation: boolean };
 
 const Proposta = ({ includeSimulation }: PropostaPageProps) => {
   return (
-    <>
+    <div id="proposta-root">
       <PropostaHeader></PropostaHeader>
       <div style={{ pageBreakAfter: "always" }}></div>
       <PropostaHeader02></PropostaHeader02>
-      {includeSimulation && <PropostaSimulacao></PropostaSimulacao>}
-    </>
+      {includeSimulation && (
+        <>
+          <div style={{ pageBreakAfter: "always" }}></div>
+          <PropostaSimulacao></PropostaSimulacao>
+        </>
+      )}
+    </div>
   );
 };
 

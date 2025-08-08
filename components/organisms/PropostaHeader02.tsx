@@ -6,19 +6,30 @@ import logo from "../../public/logo.png";
 import efeito from "../../public/efeito.png";
 import { useRouter } from "next/router";
 
-export const PropostaHeader02 = () => {
-  //ok
+type PropostaData = {
+  name?: string | string[];
+  city?: string | string[];
+  roofType?: string | string[];
+  productName?: string | string[];
+  generation?: string | string[];
+  inverter?: string | string[];
+  panel?: string | string[];
+  value?: string | string[];
+};
+
+export const PropostaHeader02 = ({ data }: { data?: PropostaData }) => {
   const router = useRouter();
+  const q: any = data ?? (router.query as any);
   return (
-    <div className="relative h-[1123px] w-[794px] bg-white">
+    <div className="pdf-page relative h-[1123px] w-[794px] bg-white">
       <div className="absolute right-[-1px] top-[-1px]">
-        <Image src={right} alt="Sistema fotovoltaico" width={250} />
+        <Image src={right} alt="Sistema fotovoltaico" width={250} unoptimized />
       </div>
       <div className="absolute bottom-[-1px] left-[-1px]">
-        <Image src={left} alt="Sistema fotovoltaico" width={250} />
+        <Image src={left} alt="Sistema fotovoltaico" width={250} unoptimized />
       </div>
       <div className="absolute bottom-[12px] right-4">
-        <Image src={logo} alt="Sistema fotovoltaico" width={170} />
+        <Image src={logo} alt="Sistema fotovoltaico" width={170} unoptimized />
       </div>
       <div className="absolute bottom-[0px] right-0">
         <Image
@@ -26,6 +37,7 @@ export const PropostaHeader02 = () => {
           alt="Sistema fotovoltaico"
           width={300}
           className="opacity-50"
+          unoptimized
         />
       </div>
       <div className="py-8">
@@ -34,27 +46,27 @@ export const PropostaHeader02 = () => {
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold  text-black ">
           <span className="border-b-[0.1px] border-slate-500">
-            {`Cliente: ${router.query.name}`}
+            {`Cliente: ${q?.name ?? ""}`}
           </span>
         </div>
         <div className="mt-2 px-8 text-[22.5px] font-bold text-black">
           <span className="border-b-[0.1px] border-slate-500 font-poppins font-semibold">
-            {`Localidade da usina: ${router.query.city}`}
+            {`Localidade da usina: ${q?.city ?? ""}`}
           </span>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
           <span className="border-b-[0.1px] border-slate-500">
-            {`Tipo de estrutura: ${router.query.roofType}`}
+            {`Tipo de estrutura: ${q?.roofType ?? ""}`}
           </span>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
           <span className="border-b-[0.1px] border-slate-500">
-            {`Potência do sistema dimensionado: ${router.query.productName}`}
+            {`Potência do sistema dimensionado: ${q?.productName ?? ""}`}
           </span>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
           <span className="border-b-[0.1px] border-slate-500">
-            {`Energia estimada a ser gerada (média anual): ${router.query.generation}kWh/mês`}
+            {`Energia estimada a ser gerada (média anual): ${q?.generation ?? ""}kWh/mês`}
           </span>
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black">
@@ -81,13 +93,13 @@ export const PropostaHeader02 = () => {
         <div className=" ">Unid.</div>
         <div className=" text-center">1</div>
         <div className=" col-span-3 text-center">
-          {Number(router.query.value).toLocaleString("pt-BR", {
+          {Number(q?.value ?? 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
         </div>
         <div className=" col-span-3 col-start-10 text-center ">
-          {(Number(router.query.value) * 0.95).toLocaleString("pt-BR", {
+          {(Number(q?.value ?? 0) * 0.95).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
@@ -98,12 +110,12 @@ export const PropostaHeader02 = () => {
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
         <span className="border-b-[0.1px] border-slate-500">
-          {`Inversor: ${router.query.inverter}`}
+          {`Inversor: ${q?.inverter ?? ""}`}
         </span>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">
         <span className="border-b-[0.1px] border-slate-500">
-          {`Painel: ${router.query.panel}`}
+          {`Painel: ${q?.panel ?? ""}`}
         </span>
       </div>
       <div className="mt-2 px-8 font-poppins text-[18px] font-semibold text-black">

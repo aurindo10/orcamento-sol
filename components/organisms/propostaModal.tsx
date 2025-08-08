@@ -103,17 +103,6 @@ export default function CreatePropostaModal({
   }, [simPrincipal, jurosMensalPercent, numParcelas]);
   const onSubmit = async () => {
     setLoading("loading");
-    function base64ToBlob(base64: string, type: string): Blob {
-      const pureBase64 = base64.includes(",") ? base64.split(",").pop()! : base64;
-      const binStr = atob(pureBase64);
-      const len = binStr.length;
-      const arr = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        arr[i] = binStr.charCodeAt(i);
-      }
-      return new Blob([arr], { type });
-    }
-
     const searchParams = new URLSearchParams({
       name: getValues("name") || "",
       city: getValues("city") || "",
@@ -134,39 +123,47 @@ export default function CreatePropostaModal({
         searchParams.set("monthlyPaymentSimulacao", parcelaMensalSimulacao);
     }
 
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const base = origin || "https://solengenharia.app";
-    const url = `${base}/proposta?${searchParams.toString()}`;
+    // Geração 100% frontend via html2pdf.js
     try {
-      const pdfInBase64 = await createPdf({
-        productName: propostaInfo.productName,
-        name: getValues("name"),
-        generation: propostaInfo.generation.toString(),
-        inverter: propostaInfo.inverter,
-        roofType: propostaInfo.roofType,
-        power: propostaInfo.power.toString(),
-        city: getValues("city"),
-        panel: propostaInfo.panel,
-        area: "xx",
-        value: propostaInfo.value.toString(),
-        url,
+      // lazy import para evitar SSR
+      const { default: html2pdf } = (await import(
+        /* webpackChunkName: "html2pdf" */ "html2pdf.js"
+      )) as any;
+      // Abrir/atualizar rota invisível em uma div dedicada para garantir que o DOM exista
+      // Aqui vamos criar um iframe temporário para renderizar a rota /proposta com os params
+      const iframe = document.createElement("iframe");
+      iframe.style.position = "fixed";
+      iframe.style.left = "-9999px";
+      iframe.style.top = "-9999px";
+      iframe.style.width = "794px";
+      iframe.style.height = "1123px";
+      document.body.appendChild(iframe);
+      const base = window.location.origin;
+      iframe.src = `${base}/proposta?${searchParams.toString()}`;
+      await new Promise<void>((resolve, reject) => {
+        iframe.onload = () => resolve();
+        iframe.onerror = () => reject(new Error("Falha ao carregar conteúdo para PDF"));
       });
-      if (pdfInBase64) {
-        const pdfBlob = base64ToBlob(pdfInBase64, "application/pdf");
-        const objectUrl = URL.createObjectURL(pdfBlob);
-        const link = document.createElement("a");
-        link.href = objectUrl;
-        const safeName = (getValues("name") || "proposta").replace(/[^\p{L}\p{N}_-]+/gu, "_");
-        link.download = `${safeName}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(objectUrl);
-      } else {
-        console.error("PDF base64 vazio/indefinido recebido do endpoint.");
-      }
+
+      const element = iframe.contentDocument?.getElementById("proposta-root");
+      if (!element) throw new Error("Container da proposta não encontrado");
+
+      const safeName = (getValues("name") || "proposta").replace(/[^\p{L}\p{N}_-]+/gu, "_");
+      await html2pdf()
+        .set({
+          margin: 0,
+          filename: `${safeName}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
+          jsPDF: { unit: "px", format: [794, 1123], orientation: "portrait" },
+          pagebreak: { mode: ["css", "legacy"] },
+        })
+        .from(element)
+        .save();
+
+      document.body.removeChild(iframe);
     } catch (e) {
-      console.error("Falha ao gerar o PDF:", e);
+      console.error("Falha ao gerar PDF no front:", e);
     } finally {
       setLoading("");
       setOpen(false);

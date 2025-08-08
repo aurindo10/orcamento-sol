@@ -5,7 +5,15 @@ import logo from "../../public/logo.png";
 import efeito from "../../public/efeito.png";
 import { useRouter } from "next/router";
 
-export const PropostaSimulacao = () => {
+type SimulacaoData = {
+  name?: string | string[];
+  jurosMensalPercent?: string | string[];
+  numParcelas?: string | string[];
+  simPrincipal?: string | string[];
+  monthlyPaymentSimulacao?: string | string[];
+};
+
+export const PropostaSimulacao = ({ data }: { data?: SimulacaoData }) => {
   const router = useRouter();
 
   const formatCurrency = (value: any) => {
@@ -14,27 +22,28 @@ export const PropostaSimulacao = () => {
     return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   };
 
-  const jurosPercent = router.query.jurosMensalPercent as string | undefined;
-  const parcelas = router.query.numParcelas as string | undefined;
-  const principal = router.query.simPrincipal as string | undefined;
-  const valorFinal = router.query.valorFinalSimulacao as string | undefined;
-  const parcelaMensal = router.query.monthlyPaymentSimulacao as
+  const q: any = data ?? (router.query as any);
+  const jurosPercent = q?.jurosMensalPercent as string | undefined;
+  const parcelas = q?.numParcelas as string | undefined;
+  const principal = q?.simPrincipal as string | undefined;
+  const valorFinal = undefined as unknown as string | undefined; // não exibimos no PDF
+  const parcelaMensal = q?.monthlyPaymentSimulacao as
     | string
     | undefined;
 
   return (
-    <div className="relative h-[1123px] w-[794px] bg-white">
+    <div className="pdf-page relative h-[1123px] w-[794px] bg-white">
       <div className="absolute right-[-1px] top-[-1px]">
-        <Image src={right} alt="Sistema fotovoltaico" width={250} />
+        <Image src={right} alt="Sistema fotovoltaico" width={250} unoptimized />
       </div>
       <div className="absolute bottom-[-1px] left-[-1px]">
-        <Image src={left} alt="Sistema fotovoltaico" width={250} />
+        <Image src={left} alt="Sistema fotovoltaico" width={250} unoptimized />
       </div>
       <div className="absolute bottom-[12px] right-4">
-        <Image src={logo} alt="Sistema fotovoltaico" width={170} />
+        <Image src={logo} alt="Sistema fotovoltaico" width={170} unoptimized />
       </div>
       <div className="absolute bottom-[0px] right-0">
-        <Image src={efeito} alt="Sistema fotovoltaico" width={300} className="opacity-50" />
+        <Image src={efeito} alt="Sistema fotovoltaico" width={300} className="opacity-50" unoptimized />
       </div>
 
       <div className="py-8">
@@ -43,7 +52,7 @@ export const PropostaSimulacao = () => {
         </div>
         <div className="mt-2 px-8 font-poppins text-[22.5px] font-semibold text-black ">
           <span className="border-b-[0.1px] border-slate-500">
-            {`Cliente: ${router.query.name ?? ""}`}
+            {`Cliente: ${q?.name ?? ""}`}
           </span>
         </div>
       </div>
